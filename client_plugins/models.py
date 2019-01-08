@@ -1,13 +1,35 @@
 from django.db import models
 
+
+class ClientPluginQueryset(models.query.QuerySet):
+    def client_supplied(self):
+        return self.filter(client_supplied=True)
+
+    def facility_supplied(self):
+        return self.filter(client_supplied=False)
+
+
+class ClientPluginManager(models.Manager):
+    def get_queryset(self):
+        return ClientPluginQueryset(self.model, using=self._db)
+
+    def client_supplied(self):
+        return self.get_queryset().client_supplied()
+
+    def facility_supplied(self):
+        return self.get_queryset().facility_supplied()
+
+
 class ClientPlugin(models.Model):
     client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='plugins')
     plugin = models.ForeignKey('plugins.Plugin', on_delete=models.CASCADE, related_name='clients')
     client_supplied = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
+    objects = ClientPluginManager()
+
     def __str__(self):
-        return self.plugin
+        return str(self.plugin)
 
     def set_client_supplied(self):
         self.client_supplied = True

@@ -42,6 +42,19 @@ class RentalProject(models.Model):
         self.mixing_completed_by = get_user_model()
         self.save()
 
+    def save(self, *args, **kwargs):
+        if self.abbreviation:
+            if not self.drive_user:
+                self.drive_user = self.abbreviation
+            if not self.drive_pass:
+                self.drive_pass = self.abbreviation
+            if not self.ms_user:
+                self.ms_user = self.abbreviation
+            if not self.ms_pass:
+                self.ms_pass = self.abbreviation
+        super().save(*args, **kwargs)
+
+
     class Meta:
         abstract = True
 

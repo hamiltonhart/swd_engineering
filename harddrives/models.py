@@ -1,4 +1,24 @@
 from django.db import models
+from django.db.models import Q
+
+
+class RentalDriveQueryset(models.query.QuerySet):
+    def available(self):
+        return self.filter(Q(feature_project=None) & Q(series_project=None))
+
+    def unavailable(self):
+        return self.filter(~Q(feature_project=None) | ~Q(series_project=None))
+
+
+class RentalDriveManager(models.Manager):
+    def get_queryset(self):
+        return RentalDriveQueryset(self.model, using=self._db)
+
+    def available(self):
+        return self.get_queryset().available()
+
+    def unavailable(self):
+        return self.get_queryset().unavailable()
 
 
 class RentalDrive(models.Model):
@@ -13,6 +33,8 @@ class RentalDrive(models.Model):
     drive_number = models.IntegerField(unique=True)
     drive_capacity_gb = models.IntegerField(choices=DRIVE_CAPACITY_CHOICES)
 
+    objects = RentalDriveManager()
+
     def __str__(self):
-        return self.drive_number
+        return str(self.drive_number)
 
