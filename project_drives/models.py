@@ -5,6 +5,22 @@ class ProjectDrive(models.Model):
     backed_up = models.BooleanField(default=False)
     erased = models.BooleanField(default=False)
 
+    def backup(self):
+        self.backed_up = True
+        self.save()
+
+    def unbackup(self):
+        self.backup_up = False
+        self.save()
+
+    def erase(self):
+        self.erased = True
+        self.save()
+
+    def unerase(self):
+        self.erased = False
+        self.save()
+    
     class Meta:
         abstract = True
 
