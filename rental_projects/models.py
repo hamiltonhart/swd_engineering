@@ -15,6 +15,17 @@ class RentalProject(models.Model):
         ("IMAX 12", "IMAX 12"),
     )
 
+    ROOM_CHOICES = (
+        ("Stage 2", "Stage 2"),
+        ("Stage 3", "Stage 3"),
+        ("Stage 4", "Stage 4"),
+        ("Stage 5", "Stage 5"),
+        ("Stage 6", "Stage 6"),
+        ("Stage 7", "Stage 7"),
+        ("Bay 9", "Bay 9"),
+        ("Bay 14", "Bay 14"),
+    )
+
     title = models.CharField(max_length=200, unique=True)
     abbreviation = models.CharField(max_length=50, unique=True)
 
@@ -28,7 +39,7 @@ class RentalProject(models.Model):
     ms_pass = models.CharField(max_length=50,unique=True, blank=True, null=True)
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, blank=True, null=True)
-    room = models.CharField(max_length=100)
+    room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True)
     # files
     

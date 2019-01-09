@@ -15,7 +15,7 @@ class ProjectClientQueryset(models.query.QuerySet):
 
 class ProjectClientManager(models.Manager):
     def get_queryset(self):
-        return ProjectClientQueryset(self.models, using=self._db)
+        return ProjectClientQueryset(self.model, using=self._db)
 
     def mixers(self):
         return self.get_queryset().mixers()
@@ -58,7 +58,7 @@ class FeatureClient(ProjectClient):
 
 class SeriesClient(ProjectClient):
     client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='series_projects')
-    project = models.ForeignKey('rental_projects.Feature', on_delete=models.CASCADE, related_name='series_clients')
+    project = models.ForeignKey('rental_projects.Series', on_delete=models.CASCADE, related_name='series_clients')
 
     def __str__(self):
         return str(self.client)

@@ -56,7 +56,7 @@ class Plugin(models.Model):
     objects = PluginManager()
 
     def __str__(self):
-        return f'{self.name}:  {self.vers}'
+        return f'{self.name}: {self.vers}'
 
     def archive(self):
         self.archived = True

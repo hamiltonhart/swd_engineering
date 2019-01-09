@@ -3,10 +3,10 @@ from django.db import models
 
 class ClientPluginQueryset(models.query.QuerySet):
     def client_supplied(self):
-        return self.filter(client_supplied=True)
+        return self.filter(client_license=True)
 
     def facility_supplied(self):
-        return self.filter(client_supplied=False)
+        return self.filter(client_license=False)
 
 
 class ClientPluginManager(models.Manager):
@@ -23,7 +23,7 @@ class ClientPluginManager(models.Manager):
 class ClientPlugin(models.Model):
     client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='plugins')
     plugin = models.ForeignKey('plugins.Plugin', on_delete=models.CASCADE, related_name='clients')
-    client_supplied = models.BooleanField(default=False)
+    client_license = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
     objects = ClientPluginManager()
@@ -32,11 +32,11 @@ class ClientPlugin(models.Model):
         return str(self.plugin)
 
     def set_client_supplied(self):
-        self.client_supplied = True
+        self.client_license = True
         self.save()
 
     def set_facility_supplied(self):
-        self.client_supplied = False
+        self.client_license = False
         self.save()
 
     def archive(self):
