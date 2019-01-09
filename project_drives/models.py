@@ -10,7 +10,7 @@ class ProjectDrive(models.Model):
         self.save()
 
     def unbackup(self):
-        self.backup_up = False
+        self.backed_up = False
         self.save()
 
     def erase(self):
@@ -30,7 +30,7 @@ class FeatureProjectDrive(ProjectDrive):
     drive = models.ForeignKey('harddrives.RentalDrive', on_delete=models.CASCADE, related_name='feature_project')
 
     def __str__(self):
-        return self.drive
+        return str(self.drive)
 
     class Meta:
         unique_together = (('project', 'drive'))
@@ -41,7 +41,7 @@ class SeriesProjectDrive(ProjectDrive):
     drive = models.ForeignKey('harddrives.RentalDrive', on_delete=models.CASCADE, related_name='series_project')
 
     def __str__(self):
-        return self.drive
+        return str(self.drive)
 
     class Meta:
         unique_together = (('project', 'drive'))    
