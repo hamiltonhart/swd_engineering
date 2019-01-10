@@ -44,9 +44,18 @@ class ProjectPlugin(models.Model):
         abstract = True
 
 
-class FeatureProjectPlugin(ProjectPlugin):
+class FeaturePluginQueryset(ProjectPluginQueryset):
+    pass
+
+class FeaturePluginManager(ProjectPluginManager):
+    pass
+
+
+class FeaturePlugin(ProjectPlugin):
     project = models.ForeignKey("rental_projects.Feature", on_delete=models.CASCADE, related_name='feature_plugins')
     plugin = models.ForeignKey("plugins.Plugin", on_delete=models.CASCADE, related_name='feature_projects')
+
+    objects = FeaturePluginManager()
 
     def __str__(self):
         return str(self.plugin)
@@ -55,9 +64,19 @@ class FeatureProjectPlugin(ProjectPlugin):
         unique_together = (('project', 'plugin'))
 
 
+class SeriesPluginQueryset(ProjectPluginQueryset):
+    pass
+
+
+class SeriesPluginManager(ProjectPluginManager):
+    pass
+
+
 class SeriesPlugin(ProjectPlugin):
     project = models.ForeignKey("rental_projects.Series", on_delete=models.CASCADE, related_name='series_plugins')
     plugin = models.ForeignKey("plugins.Plugin", on_delete=models.CASCADE, related_name='series_projects')
+
+    objects = FeaturePluginManager()
 
     def __str__(self):
         return str(self.plugin)
