@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class ClientPluginQueryset(models.query.QuerySet):
+class ContactPluginQueryset(models.query.QuerySet):
     def client_supplied(self):
         return self.filter(client_license=True)
 
@@ -9,9 +9,9 @@ class ClientPluginQueryset(models.query.QuerySet):
         return self.filter(client_license=False)
 
 
-class ClientPluginManager(models.Manager):
+class ContactPluginManager(models.Manager):
     def get_queryset(self):
-        return ClientPluginQueryset(self.model, using=self._db)
+        return ContactPluginQueryset(self.model, using=self._db)
 
     def client_supplied(self):
         return self.get_queryset().client_supplied()
@@ -20,13 +20,13 @@ class ClientPluginManager(models.Manager):
         return self.get_queryset().facility_supplied()
 
 
-class ClientPlugin(models.Model):
-    client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='plugins')
+class ContactPlugin(models.Model):
+    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='plugins')
     plugin = models.ForeignKey('plugins.Plugin', on_delete=models.CASCADE, related_name='clients')
     client_license = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
-    objects = ClientPluginManager()
+    objects = ContactPluginManager()
 
     def __str__(self):
         return str(self.plugin)

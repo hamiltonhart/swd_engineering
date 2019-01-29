@@ -1,22 +1,22 @@
 from django.test import TestCase
 
-from .models import ClientPlugin
-from contacts.models import Client
+from .models import ContactPlugin
+from contacts.models import Contact
 from plugins.models import Plugin
 
 
-class ClientPluginTests(TestCase):
+class ContactPluginTests(TestCase):
 
     def setUp(self):
-        # Client setup
-        self.client_a = Client(
+        # Contact setup
+        self.client_a = Contact(
             first_name="Afirst", 
             last_name="Alast",
             email="client_a@test.com"
         )
         self.client_a.save()
 
-        self.client_b = Client(
+        self.client_b = Contact(
             first_name="Bfirst", 
             last_name="Blast",
             email="client_b@test.com"
@@ -83,7 +83,7 @@ class ClientPluginTests(TestCase):
         self.assertFalse(confirm_false.archived)
 
     def test_set_client_facility_supplied(self):
-        plugin = ClientPlugin.objects.all()[0]
+        plugin = ContactPlugin.objects.all()[0]
         self.assertFalse(plugin.client_license)
 
         plugin.set_client_supplied()
@@ -94,9 +94,9 @@ class ClientPluginTests(TestCase):
 
 # Queryset testing
     def test_facility_supplied_queryset(self):
-        self.assertQuerysetEqual(ClientPlugin.objects.facility_supplied(), map(repr, ClientPlugin.objects.filter(client_license=False)), ordered=False)
+        self.assertQuerysetEqual(ContactPlugin.objects.facility_supplied(), map(repr, ContactPlugin.objects.filter(client_license=False)), ordered=False)
 
     def test_client_supplied_queryset(self):
-        self.assertFalse(ClientPlugin.objects.client_supplied(), map(repr, ClientPlugin.objects.filter(client_license=True)))
+        self.assertFalse(ContactPlugin.objects.client_supplied(), map(repr, ContactPlugin.objects.filter(client_license=True)))
 
 

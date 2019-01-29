@@ -6,8 +6,5 @@ from . import models
 
 
 class ContactList(LoginRequiredMixin, ListView):
-    pass
-
-class ContactClientList(LoginRequiredMixin, ListView):
-    model = models.Client
-    template_name = "client_list.html"
+    model = models.Contact
+    template_name = "contact_list.html"

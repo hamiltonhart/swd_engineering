@@ -30,7 +30,6 @@ class RentalProject(models.Model):
     abbreviation = models.CharField(max_length=50, unique=True)
 
     protools_vers = models.FloatField(default=12.4)
-    dolby_techs = models.ManyToManyField('contacts.Vendor', limit_choices_to={"company": "Dolby"})
 
     number_of_systems = models.IntegerField(default=4, blank=True, null=True)
     drive_user = models.CharField(max_length=50,unique=True, blank=True, null=True)

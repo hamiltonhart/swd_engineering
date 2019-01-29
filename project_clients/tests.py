@@ -1,9 +1,9 @@
 from django.test import TestCase
 
 from rental_projects.models import Feature, Series
-from contacts.models import Client
+from contacts.models import Contact
 
-class ProjectClientTests(TestCase):
+class ProjectContactTests(TestCase):
 
     def setUp(self):
         
@@ -21,15 +21,15 @@ class ProjectClientTests(TestCase):
         )
         self.series.save()
 
-        # Client Definitions
-        self.client_a = Client(
+        # Contact Definitions
+        self.client_a = Contact(
             first_name="Afirst",
             last_name="Alast",
             email="client_a@test.com",
         )
         self.client_a.save()
 
-        self.client_b = Client(
+        self.client_b = Contact(
             first_name="Bfirst",
             last_name="Blast",
             email="client_b@test.com",
@@ -40,7 +40,7 @@ class ProjectClientTests(TestCase):
         self.series.series_clients.create(client=self.client_a, project=self.series, client_role="DX")
     
 
-# Add/Remove Project Clients
+# Add/Remove Project Contacts
     def test_add_client_series(self):
         series_len = len(self.series.series_clients.all())
         self.assertEqual(series_len, 1)
@@ -76,14 +76,14 @@ class ProjectClientTests(TestCase):
 # Queryset Tests
 
     def test_client_project_mixers(self):
-        new_client_fx = Client(
+        new_client_fx = Contact(
             first_name="New", 
-            last_name="Client", 
+            last_name="Contact", 
             email="newclientfx@test.com"
         )
         new_client_fx.save()
 
-        new_client_dx_mx = Client(
+        new_client_dx_mx = Contact(
             first_name="New", 
             last_name="DXMX",
             email="dxmxclient@test.com"
@@ -111,7 +111,7 @@ class ProjectClientTests(TestCase):
         self.assertEqual(mixers[2].client.first_name, new_client_dx_mx.first_name)
 
     def test_client_project_recordists(self):
-        new_recordist = Client(
+        new_recordist = Contact(
             first_name="New",
             last_name="Recordist",
             email="newrecordist@test.com",
@@ -130,9 +130,9 @@ class ProjectClientTests(TestCase):
         self.assertEqual(recordists[0].client.first_name, new_recordist.first_name)
 
     def test_client_project_other_client(self):
-        other_client = Client(
+        other_client = Contact(
             first_name="Other",
-            last_name="Client",
+            last_name="Contact",
             email="otherclient@test.com"
         )
         other_client.save()

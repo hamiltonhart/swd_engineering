@@ -46,7 +46,7 @@ class ProjectClient(models.Model):
 
 
 class FeatureClient(ProjectClient):
-    client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='feature_projects')
+    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='feature_projects')
     project = models.ForeignKey('rental_projects.Feature', on_delete=models.CASCADE, related_name='feature_clients')
 
     def __str__(self):
@@ -57,7 +57,7 @@ class FeatureClient(ProjectClient):
 
 
 class SeriesClient(ProjectClient):
-    client = models.ForeignKey('contacts.Client', on_delete=models.CASCADE, related_name='series_projects')
+    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='series_projects')
     project = models.ForeignKey('rental_projects.Series', on_delete=models.CASCADE, related_name='series_clients')
 
     def __str__(self):
