@@ -1,3 +1,13 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create your views here.
+from . import models
+
+
+class ContactList(LoginRequiredMixin, ListView):
+    pass
+
+class ContactClientList(LoginRequiredMixin, ListView):
+    model = models.Client
+    template_name = "client_list.html"
