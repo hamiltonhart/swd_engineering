@@ -8,3 +8,4 @@ from . import models
 class ContactList(LoginRequiredMixin, ListView):
     model = models.Contact
     template_name = "contact_list.html"
+    context_object_name = "contact_list"

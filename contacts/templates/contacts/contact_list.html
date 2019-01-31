@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block bodyblock %}
+
+    {% if contact_list %}
+        {% for contact in contact_list %}
+            <p>{{contact.first_name}}</p>
+
+        {% endfor %}
+    {% else %}
+        <p>No contacts</p>
+    {% endif %}
+    
+
+{% endblock bodyblock %}
