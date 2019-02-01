@@ -141,5 +141,5 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'contact_list'
-LOGOUT_REDIRECT_URL = 'contact_list'
+LOGIN_REDIRECT_URL = 'contacts:contact_list'
+LOGOUT_REDIRECT_URL = 'contacts:contact_list'

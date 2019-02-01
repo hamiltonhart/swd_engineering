@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- {% load static %} -->
+{% load static %}
 <html lang="en">
 
 <head>
@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
 
     <title>
         {% block titleblock %}
@@ -26,7 +26,8 @@
     <div class="header">
         <div class="top-decoration"></div>
         <div class="header-wrapper">
-            <img src="../static/images/dlx_engineering_logo.png" alt="">
+            <!-- <img src="../static/images/dlx_engineering_logo.png" alt=""> -->
+            <img src="{% static 'images/dlx_engineering_logo.png' %}" alt="">
         </div>
     </div>
 
@@ -41,12 +42,13 @@
 
     {% endblock navblock %}
 
+
     <!-- Body -->
+    <div class="main-wrapper">
+        {% block bodyblock %}
 
-    {% block bodyblock %}
-
-    {% endblock bodyblock %}
-
+        {% endblock bodyblock %}
+    </div>
     <!-- Footer -->
 
     {% block footerblock %}

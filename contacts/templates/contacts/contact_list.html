@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 
+
 {% block bodyblock %}
 
     {% if contact_list %}
@@ -9,7 +10,9 @@
 
         {% endfor %}
     {% else %}
-        <p>No contacts</p>
+        <div class="message_text">
+            <h1>No contacts</h1>
+        </div>
     {% endif %}
     
 
