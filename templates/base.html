@@ -8,7 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+    {% block linkblock%}
+      
+    {% endblock linkblock %}
 
     <title>
         {% block titleblock %}

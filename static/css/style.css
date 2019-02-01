@@ -20,8 +20,7 @@ body {
 .top-decoration {
     width: 100%;
     height: 20px;
-    /* background-color: #E41E31; */
-    background-color: black;
+    background-color: #E41E31;
     background-image: linear-gradient(to top right, #E41E31, #7E0000);
 }
 
