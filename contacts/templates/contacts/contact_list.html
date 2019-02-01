@@ -15,8 +15,11 @@
         {% for contact in contact_list %}
             <div class="contact-card">
                 <div class="main-info">
-                    <h5>{{contact}}</h5>
-                    <p>{{contact.phone_number</p>
+                    <div class="name-info">
+                        <h2>{{contact}}</h2>
+                        <p id="contact-company-title">{{contact.company}} &middot; {{contact.title}}</p>
+                    </div>
+                    <p>{{contact.phone_number}}</p>
                     <p>{{contact.email}}</p>
                 </div>
             </div>
