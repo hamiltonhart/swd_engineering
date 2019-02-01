@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -8,6 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block linkblock%}
+      
+    {% endblock linkblock %}
 
     <title>
         {% block titleblock %}
@@ -22,8 +25,16 @@
 <body>
 
     <!-- Header -->
+    <div class="header">
+        <div class="top-decoration"></div>
+        <div class="header-wrapper">
+            <!-- <img src="../static/images/dlx_engineering_logo.png" alt=""> -->
+            <img src="{% static 'images/dlx_engineering_logo.png' %}" alt="">
+        </div>
+    </div>
 
     {% block headerblock %}
+    
 
     {% endblock headerblock %}
 
@@ -33,12 +44,13 @@
 
     {% endblock navblock %}
 
+
     <!-- Body -->
+    <div class="main-wrapper">
+        {% block bodyblock %}
 
-    {% block bodyblock %}
-
-    {% endblock bodyblock %}
-
+        {% endblock bodyblock %}
+    </div>
     <!-- Footer -->
 
     {% block footerblock %}

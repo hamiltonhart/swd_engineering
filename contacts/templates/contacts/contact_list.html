@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkblock %}
+  <link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+{% endblock linkblock %}
+
+{% block titleblock %}
+  Contacts
+{% endblock titleblock %}
+
+{% block bodyblock %}
+
+    {% if contact_list %}
+        {% for contact in contact_list %}
+            <div class="contact-card">
+                <div class="main-info">
+                    <h5>{{contact}}</h5>
+                    <p>{{contact.phone_number</p>
+                    <p>{{contact.email}}</p>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <div class="message-card">
+            <h1 class="contact-message">No contacts</h1>
+            <!-- Needs New Contact link -->
+            <p id="contact-submessage"><a href="#">Add contact</a></p>
+        </div>
+    {% endif %}
+    
+
+{% endblock bodyblock %}

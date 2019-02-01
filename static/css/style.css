@@ -1,0 +1,35 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    width: 100%;
+    max-height: 30vh;
+    border-bottom: 1px solid #979797;
+}
+
+.header-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 50px;
+}
+
+.top-decoration {
+    width: 100%;
+    height: 20px;
+    background-color: #E41E31;
+    background-image: linear-gradient(to top right, #E41E31, #7E0000);
+}
+
+.header-wrapper img {
+    height: 50px;
+    margin: auto 10px;
+    padding: 10px 0;
+}
+
+.main-wrapper {
+    margin: 15px;
+}
