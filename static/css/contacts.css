@@ -19,17 +19,23 @@
 }
 
 .contact-card p {
-    font-size: 1.3em;
     margin: 2px 2px 2px 15px;
+}
+
+.main-info > p {
+    font-size: 1.3em;
 }
 
 .name-info {
     display: flex;
+    flex-direction: column;
     margin: 8px;
 }
 
 #contact-company-title {
+    font-size: 1.2em;
     font-style: italic;
+    
 }
 
 .main-info {
@@ -71,4 +77,8 @@
     background: #E41E31;
     border-radius: 9px;
     color: white;
+}
+
+.card-link {
+    background-color: pink;
 }

@@ -9,20 +9,38 @@
   Contacts
 {% endblock titleblock %}
 
+{% block sortingblock %}
+    <div class="page-heading">
+            <h1>Contacts</h1>
+        </div>
+        
+        <!-- <div class="query-options">
+            <a href="#">
+                <div>
+                    <h2>
+                        All Contacts
+                    </h2>
+                </div>
+            </a>
+        </div> -->
+{% endblock sortingblock %}
+
 {% block bodyblock %}
 
     {% if contact_list %}
         {% for contact in contact_list %}
+        <a class="card-link" href="#">   
             <div class="contact-card">
                 <div class="main-info">
                     <div class="name-info">
                         <h2>{{contact}}</h2>
                         <p id="contact-company-title">{{contact.company}} &middot; {{contact.title}}</p>
                     </div>
-                    <p>{{contact.phone_number}}</p>
-                    <p>{{contact.email}}</p>
+                        <p>{{contact.phone_number}}</p>
+                        <p>{{contact.email}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
 
         {% endfor %}
     {% else %}
