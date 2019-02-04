@@ -12,11 +12,7 @@
       
     {% endblock linkblock %}
 
-    <title>
-        {% block titleblock %}
-
-        {% endblock titleblock %}
-    </title>
+    <title>{% block titleblock %}{% endblock titleblock %}</title>
 
 
 
@@ -29,7 +25,9 @@
         <div class="top-decoration"></div>
         <div class="header-wrapper">
             <!-- <img src="../static/images/dlx_engineering_logo.png" alt=""> -->
-            <img src="{% static 'images/dlx_engineering_logo.png' %}" alt="">
+            <a href="#">
+                <img src="{% static 'images/dlx_engineering_logo.png' %}" alt="">
+            </a>
         </div>
     </div>
 
@@ -41,6 +39,24 @@
     <!-- Navbar -->
 
     {% block navblock %}
+    <div class="nav-action-bar">
+        <div class="nav-wrapper">
+            <h2 id="current-page" onclick="showHideMenu()"></h2>
+            <ul class="navbar">
+                <li><a href="#">Contacts</a></li>
+                <li><a href="#">Rentals</a></li>
+                <li><a href="#">Harddrives</a></li>
+                <li><a href="#">Plugins</a></li>
+            </ul>
+        </div>
+        <div class="action-wrapper">
+            <h3 id="page-actions" onclick="showHideActionMenu()">Actions</h3>
+                <ul class="action-bar">
+                    {% block actionblock %}
+                    {% endblock actionblock %}
+                </ul>
+        </div>
+    </div>
 
     {% endblock navblock %}
 
@@ -61,5 +77,7 @@
     {% endblock footerblock %}
 
 </body>
+
+<script type="text/javascript" src="{% static 'js/master.js' %}"></script>
 
 </html>
