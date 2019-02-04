@@ -79,12 +79,3 @@
     background-color: pink;
 }
 
-.action-bar li {
-    list-style: none;
-    padding: none;
-    margin: none;
-}
-
-.action-bar a {
-    text-decoration: none;
-}
