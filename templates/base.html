@@ -32,37 +32,36 @@
     </div>
 
     {% block headerblock %}
-    
-
     {% endblock headerblock %}
 
     <!-- Navbar -->
 
-    {% block navblock %}
-    <div class="nav-action-bar">
+    <!-- <div class="nav-action-bar">
         <div class="nav-wrapper">
-            <h2 id="current-page" onclick="showHideMenu()"></h2>
-            <ul class="navbar">
-                <li><a href="#">Contacts</a></li>
-                <li><a href="#">Rentals</a></li>
-                <li><a href="#">Harddrives</a></li>
-                <li><a href="#">Plugins</a></li>
+            <h2 id="current-page" onclick="showHideMenu('navbar')"></h2>
+            <h2 id="page-actions" onclick="showHideMenu('action-bar')">Actions</h2>
+        </div>
+        <ul id="navbar" class="navbar">
+            <li><a href="#">Contacts</a></li>
+            <li><a href="#">Rentals</a></li>
+            <li><a href="#">Harddrives</a></li>
+            <li><a href="#">Plugins</a></li>
+        </ul>
+        <ul id="action-bar" class="navbar">
+            {% block actionbar %}
+            {% endblock actionbar %}
+        </ul>
+
+    </div> -->
+
+    <div class="page-menu-wrapper list-link-clear">
+    <a href="#"><h2 id="current-page" onclick="showHideMenu('page-menu')"></h2></a>
+            <ul id="page-menu">
+                {% block pagemenu %}
+                {% endblock pagemenu %}      
             </ul>
-        </div>
-        <div class="action-wrapper">
-            <h3 id="page-actions" onclick="showHideActionMenu()">Actions</h3>
-                <ul class="action-bar">
-                    {% block actionblock %}
-                    {% endblock actionblock %}
-                </ul>
-        </div>
     </div>
 
-    {% endblock navblock %}
-
-    {% block sortingblock %}
-      
-    {% endblock sortingblock %}
 
     <!-- Body -->
     <div class="main-wrapper">

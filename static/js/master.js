@@ -3,14 +3,14 @@
     
 // }
 
-function showHideMenu() {
-    var navbar = document.getElementsByClassName('navbar')[0]
+function showHideMenu(IdName) {
+    var menubar = document.getElementById(IdName)
 
-    if (navbar.style.display !== 'block') {
-        navbar.style.display = 'block';
+    if (menubar.style.display !== 'block') {
+        menubar.style.display = 'block';
     }
     else {
-        navbar.style.display = 'none';
+        menubar.style.display = 'none';
     }
 }
 
