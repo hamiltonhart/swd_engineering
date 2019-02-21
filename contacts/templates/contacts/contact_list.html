@@ -5,21 +5,29 @@
   <link rel="stylesheet" href="{% static 'css/contacts.css' %}">
 {% endblock linkblock %}
 
-{% block titleblock %}
-  Contacts
-{% endblock titleblock %}
+{% block titleblock %}Contacts{% endblock titleblock %}
+
+    {% block pagemenu %}
+        <li><a href="#">New Contact</a></li>
+    {% endblock pagemenu %}
+
 
 {% block bodyblock %}
 
     {% if contact_list %}
         {% for contact in contact_list %}
+        <a class="card-link" href="#">   
             <div class="contact-card">
                 <div class="main-info">
-                    <h5>{{contact}}</h5>
-                    <p>{{contact.phone_number</p>
-                    <p>{{contact.email}}</p>
+                    <div class="name-info">
+                        <h2>{{contact}}</h2>
+                        <p id="contact-company-title">{{contact.company}} &middot; {{contact.title}}</p>
+                    </div>
+                        <p>{{contact.phone_number}}</p>
+                        <p>{{contact.email}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
 
         {% endfor %}
     {% else %}
