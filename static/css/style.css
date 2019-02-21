@@ -134,6 +134,7 @@ ul, h1, h2, h3, h4, h5 {
     opacity: 0;
     transition: opacity 5ms;
     color: var(--default-color);
+    text-transform: uppercase;
 }
 
 .mainmenu:last-child {
@@ -142,7 +143,6 @@ ul, h1, h2, h3, h4, h5 {
 
 .mainmenu a:hover {
     color: var(--menu-hover-color);
-    font-size: 1.1em;
 }
 
 .menu-toggle:checked ~ .mainmenu{
