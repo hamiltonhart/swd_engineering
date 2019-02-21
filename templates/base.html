@@ -35,34 +35,23 @@
     {% endblock headerblock %}
 
     <!-- Navbar -->
+    <div class="navbar">
+        <h2 id="current-page">Logo</h2>
 
-    <!-- <div class="nav-action-bar">
-        <div class="nav-wrapper">
-            <h2 id="current-page" onclick="showHideMenu('navbar')"></h2>
-            <h2 id="page-actions" onclick="showHideMenu('action-bar')">Actions</h2>
-        </div>
-        <ul id="navbar" class="navbar">
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-toggle--label">
+            <span></span>
+        </label>
+
+        <ul class="mainmenu">
+            <li><a href="#">Home</a></li>
             <li><a href="#">Contacts</a></li>
             <li><a href="#">Rentals</a></li>
-            <li><a href="#">Harddrives</a></li>
-            <li><a href="#">Plugins</a></li>
+            <li><a href="#">Drives</a></li>
         </ul>
-        <ul id="action-bar" class="navbar">
-            {% block actionbar %}
-            {% endblock actionbar %}
-        </ul>
-
-    </div> -->
-
-    <div class="page-menu-wrapper list-link-clear">
-    <a href="#"><h2 id="current-page" onclick="showHideMenu('page-menu')"></h2></a>
-            <ul id="page-menu">
-                {% block pagemenu %}
-                {% endblock pagemenu %}      
-            </ul>
     </div>
 
-
+    <!-- End Navbar -->
     <!-- Body -->
     <div class="main-wrapper">
         {% block bodyblock %}
