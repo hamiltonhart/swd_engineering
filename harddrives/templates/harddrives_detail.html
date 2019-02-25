@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Drive {{drive.drive_number}}{% endblock titleblock %}
+
+{% block bodyblock %}
+    <h2>Drive: {{drive.drive_number}}</p></h2>
+    <h4><p>Capacity: {{drive.drive_capacity_gb}}</p></h4>
+
+    <br>
+
+    <p><a href="{% url 'harddrives:harddrives_update' drive.pk %}">+Update</a></p>
+    <p><a href="{% url 'harddrives:harddrives_delete' drive.pk %}">-Delete</a></p>
+
+    <br>
+    <p><a href="{% url 'harddrives:harddrives_list' %}">Back to Drive List</a></p>
+    <p><a href="{% url 'harddrives:harddrives_create' %}">New Drive</a></p>
+    
+
+{% endblock bodyblock %}

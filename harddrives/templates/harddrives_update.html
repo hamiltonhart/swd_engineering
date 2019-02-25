@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Update Drive {{drive.number}}{% endblock titleblock %}
+
+{% block bodyblock %}
+  
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <a class="btn cancel-btn" href="{% url 'harddrives:harddrives_list' %}">Cancel</a>
+        <input class="btn create-btn" type="submit" value="Update">
+    </form>
+
+{% endblock bodyblock %}

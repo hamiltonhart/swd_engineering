@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class PluginQueryset(models.query.QuerySet):
@@ -49,7 +50,7 @@ class Plugin(models.Model):
 
     manufacturer = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    vers = models.FloatField()
+    vers = models.FloatField(verbose_name='version')
     plugin_type = models.CharField(max_length=50, choices=PLUGIN_TYPE_CHOICES)
     archived = models.BooleanField(default=False)
 
@@ -57,6 +58,11 @@ class Plugin(models.Model):
 
     def __str__(self):
         return f'{self.name}: {self.vers}'
+
+    def get_absolute_url(self):
+        return reverse("plugins:plugins_detail", kwargs={"pk": self.pk})
+    
+    
 
     def archive(self):
         self.archived = True

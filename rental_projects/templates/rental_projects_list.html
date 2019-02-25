@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Rental Projects{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<a href="{% url 'rental_projects:rental_projects_create' %}">+ New Project</a>
+<br>
+  
+    {% if projects_list %}
+      
+      {% for project in projects_list %}
+          <br>
+          {% if project.season %}
+            <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}: Season {{project.season}}</a></h2>
+          
+            {% else %}
+              <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}</a></h2>  
+          {% endif %}
+          <p>{{project.abbreviation}}</p>
+          <p>{{project.additional_info}}</p>
+          <br>
+      {% endfor %}
+          
+    {% endif %}
+
+{% endblock bodyblock %}

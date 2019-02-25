@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{plugin.name}}{% endblock titleblock %}
+
+{% block bodyblock %}
+    
+    <h2>{{plugin.name}}</h2>
+    <h4>{{plugin.manufacturer}}</h4>
+    <p>Version: {{plugin.vers}}</p>
+    <p>Type: {{plugin.plugin_type}}</p>
+  
+    <br>
+    <p><a href="{% url 'plugins:plugins_update' plugin.pk %}">+ Update</a></p>
+    <p><a href="{% url 'plugins:plugins_delete' plugin.pk %}">-Delete</a></p>
+
+    <br>
+    <p><a href="{% url 'plugins:plugins_list' %}">Back to Plugins List</a></p>
+    <p><a href="{% url 'plugins:plugins_create' %}">Add New Plugin</a></p>
+
+{% endblock bodyblock %}

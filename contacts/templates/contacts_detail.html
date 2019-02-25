@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{contact}}{% endblock titleblock %}
+
+{% block bodyblock %}
+<h2>{{contact}}</h2>
+
+{% if contact.email %}
+    <p>{{contact.email}}</p>
+{% endif %}
+
+{% if contact.phone_number %}
+    <p>{{contact.phone_number}}</p>
+{% endif %}
+
+{% if contact.company %}
+ <p>{{contact.company}}</p>
+{% endif %}
+
+{% if contact.title %}
+    <p>{{contact.title}}</p>
+{% endif %}
+
+{% if contact.notes %}
+    <p>{{contact.notes}}</p>
+{% endif %}
+
+<br>
+<p><a href="{% url 'contacts:contacts_update' contact.pk %}">+ Update</a></p>
+<p><a href="{% url 'contacts:contacts_delete' contact.pk %}">- Delete</a></p>
+
+<br>
+<p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p>
+<p><a href="{% url 'contacts:contacts_create' %}">Add New Contact</a></p>
+
+
+  
+{% endblock bodyblock %}

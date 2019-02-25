@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Drives List{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<a href="{% url 'harddrives:harddrives_create' %}">+ New Drive</a>
+
+{% if drives_list %}
+    {% for drive in drives_list %}
+        <br>
+        <h2><a href="{% url 'harddrives:harddrives_detail' drive.pk %}">Drive: {{drive.drive_number}}</a></h2>
+        <h3>Capacity: {{drive.drive_capacity_gb}}</h3>
+        <br>
+    {% endfor %}
+    
+  
+{% endif %}
+
+{% endblock bodyblock %}

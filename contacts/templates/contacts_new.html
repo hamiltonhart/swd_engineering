@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}New Contact{% endblock titleblock %}
+
+{% block bodyblock %}
+  
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <a class="btn cancel-btn" href="{% url 'contacts:contacts_list' %}">Cancel</a>
+        <input class="btn create-btn" type="submit" value="Add Contact">
+    </form>
+
+    
+<br>
+<p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p>
+
+
+{% endblock bodyblock %}

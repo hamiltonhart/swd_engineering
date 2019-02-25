@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
+from django.urls import reverse
 
 
 class RentalProject(models.Model):
@@ -29,22 +29,36 @@ class RentalProject(models.Model):
     title = models.CharField(max_length=200, unique=True)
     abbreviation = models.CharField(max_length=50, unique=True)
 
+    season = models.IntegerField(blank=True, null=True)
+
     protools_vers = models.FloatField(default=12.4)
 
     number_of_systems = models.IntegerField(default=4, blank=True, null=True)
-    drive_user = models.CharField(max_length=50,unique=True, blank=True, null=True)
-    drive_pass = models.CharField(max_length=50,unique=True, blank=True, null=True)
-    ms_user = models.CharField(max_length=50,unique=True, blank=True, null=True)
-    ms_pass = models.CharField(max_length=50,unique=True, blank=True, null=True)
+    drive_user = models.CharField(max_length=50,unique=True, blank=True, null=True, verbose_name='Drive Username')
+    drive_pass = models.CharField(max_length=50,unique=True, blank=True, null=True, verbose_name='Drive Password')
+    ms_user = models.CharField(max_length=50,unique=True, blank=True, null=True, verbose_name='Media Shuttle Username')
+    ms_pass = models.CharField(max_length=50,unique=True, blank=True, null=True, verbose_name='Media Shuttle Password')
 
-    channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, blank=True, null=True)
+    channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, blank=True, null=True, verbose_name='Channel Configuration')
     room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
-    additional_info = models.TextField(blank=True, null=True)
+    additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     
     start_date = models.DateTimeField(default=timezone.now())
     mixing_complete_date = models.DateTimeField(null=True)
     project_complete_date = models.DateTimeField(null=True)
+
+    mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_mixing_marked_completed")
+    project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_project_marked_completed")
+
+    def __str__(self):
+        if self.season:
+            return f'{self.title} - s{self.season}'
+        else:
+            return self.title
+
+    def get_absolute_url(self):
+        return reverse("rental_projects:rental_projects_detail", kwargs={"pk": self.pk})
     
 
     def mixing_completed(self):
@@ -65,27 +79,25 @@ class RentalProject(models.Model):
         super().save(*args, **kwargs)
 
 
-    class Meta:
-        abstract = True
 
 
 
-class Feature(RentalProject):
-    mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_mixing_marked_completed")
-    project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_project_marked_completed")
+# class Feature(RentalProject):
+#     mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_mixing_marked_completed")
+#     project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_project_marked_completed")
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
 
 
-class Series(RentalProject):
-    season = models.IntegerField()
+# class Series(RentalProject):
+#     season = models.IntegerField()
 
-    mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="series_mixing_marked_completed")
-    project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="series_project_marked_completed")
+#     mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="series_mixing_marked_completed")
+#     project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="series_project_marked_completed")
 
-    def __str__(self):
-        return f'{self.title}: Season {str(self.season)}'
+#     def __str__(self):
+#         return f'{self.title}: Season {str(self.season)}'
 
-    class Meta:
-        unique_together = (('title', 'season'))
+#     class Meta:
+#         unique_together = (('title', 'season'))

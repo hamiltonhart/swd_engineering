@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Q
 
+from django.urls import reverse
+
 
 class RentalDriveQueryset(models.query.QuerySet):
     def available(self):
@@ -23,18 +25,22 @@ class RentalDriveManager(models.Manager):
 
 class RentalDrive(models.Model):
     DRIVE_CAPACITY_CHOICES = (
-        (250, '250GB'),
-        (500, '500GB'),
-        (1000, '1TB'),
-        (2000, '2TB'),
-        (3000, '3TB')
+        ('250GB', '250GB'),
+        ('500GB', '500GB'),
+        ('1TB', '1TB'),
+        ('2TB', '2TB'),
+        ('3TB', '3TB')
     )
 
     drive_number = models.IntegerField(unique=True)
-    drive_capacity_gb = models.IntegerField(choices=DRIVE_CAPACITY_CHOICES)
+    drive_capacity_gb = models.CharField(max_length=10, choices=DRIVE_CAPACITY_CHOICES)
 
     objects = RentalDriveManager()
 
     def __str__(self):
         return str(self.drive_number)
+
+    def get_absolute_url(self):
+        return reverse("harddrives:harddrives_detail", kwargs={"pk": self.pk})
+    
 

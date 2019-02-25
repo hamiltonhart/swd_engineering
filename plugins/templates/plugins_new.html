@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}New Plugin{% endblock titleblock %}
+
+{% block bodyblock %}
+  
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <a class="btn cancel-btn" href="{% url 'plugins:plugins_list' %}">Cancel</a>
+        <input class="btn create-btn" type="submit" value="Add Plugin">
+    </form>
+
+    
+    <br>
+    <p><a href="{% url 'plugins:plugins_list' %}">Back to Plugins List</a></p>
+    
+
+{% endblock bodyblock %}

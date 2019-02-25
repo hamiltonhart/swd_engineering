@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Feature, Series
+from .models import RentalProject
 
-admin.site.register(Feature)
-admin.site.register(Series)
+admin.site.register(RentalProject)
+

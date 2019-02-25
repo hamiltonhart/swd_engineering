@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Update {{project.title}}{% endblock titleblock %}
+
+{% block bodyblock %}
+  
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' %}">Cancel</a>
+        <input class="btn create-btn" type="submit" value="Update">
+    </form>
+
+    <br>
+    
+    <p><a href="{% url 'rental_projects:rental_projects_list' %}">Back to All Projects</a></p>
+
+{% endblock bodyblock %}

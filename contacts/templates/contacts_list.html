@@ -8,15 +8,16 @@
 {% block titleblock %}Contacts{% endblock titleblock %}
 
     {% block pagemenu %}
-        <li><a href="#">New Contact</a></li>
+        <!-- <li><a href="#">New Contact</a></li> -->
     {% endblock pagemenu %}
 
 
 {% block bodyblock %}
+<a href="{% url 'contacts:contacts_create' %}">+ New Contact</a>
 
-    {% if contact_list %}
-        {% for contact in contact_list %}
-        <a class="card-link" href="#">   
+    {% if contacts_list %}
+        {% for contact in contacts_list %}
+        <a class="card-link" href="{% url 'contacts:contacts_detail' contact.pk %}">
             <div class="contact-card">
                 <div class="main-info">
                     <div class="name-info">
@@ -34,7 +35,7 @@
         <div class="message-card">
             <h1 class="contact-message">No contacts</h1>
             <!-- Needs New Contact link -->
-            <p id="contact-submessage"><a href="#">Add contact</a></p>
+            <p id="contact-submessage"><a href="{% url 'contacts:contacts_create' %}">Add contact</a></p>
         </div>
     {% endif %}
     
