@@ -8,11 +8,11 @@ class Contact(models.Model):
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(
-        validators=[PHONE_REGEX], max_length=17, blank=True)
-    company = models.CharField(max_length=200, blank=True)
-    title = models.CharField(max_length=200, blank=True)
+        validators=[PHONE_REGEX], max_length=17, blank=True, null=True)
+    company = models.CharField(max_length=200, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True, null=True)
     # files = models.FileField()
     notes = models.TextField(blank=True)
 

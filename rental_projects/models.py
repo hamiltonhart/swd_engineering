@@ -45,11 +45,11 @@ class RentalProject(models.Model):
     # files
     
     start_date = models.DateTimeField(default=timezone.now())
-    mixing_complete_date = models.DateTimeField(null=True)
-    project_complete_date = models.DateTimeField(null=True)
+    mixing_complete_date = models.DateTimeField(blank=True, null=True)
+    project_complete_date = models.DateTimeField(blank=True, null=True)
 
-    mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_mixing_marked_completed")
-    project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, default=None, related_name="feature_project_marked_completed")
+    mixing_completed_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, null=True, default=None, related_name="feature_mixing_marked_completed")
+    project_complete_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, null=True, default=None, related_name="feature_project_marked_completed")
 
     def __str__(self):
         if self.season:
