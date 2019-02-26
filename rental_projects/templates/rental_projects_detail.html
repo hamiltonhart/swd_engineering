@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{% if project.season %}{{project.title}}: Season {{project.season}}{% else %}{{project.title}}{% endif %}
+  
+{% endblock titleblock %}
+
+{% block bodyblock %}
+    <h1>{{project.title}}</h1>
+    {% if project.season %}
+        <h3>Season {{project.season}}</h3>
+    {% endif %}
+    <h4>{{project.abbreviation}}</h4>
+    <p>{{project.channel_config}}</p>
+    <p>{{project.room}}</p>
+
+    <br>
+<p><a href="{% url 'rental_projects:rental_projects_update' project.pk %}">+ Update</a></p>
+<p><a href="{% url 'rental_projects:rental_projects_delete' project.pk %}">- Delete</a></p>
+<br>
+<p><a href="{% url 'rental_projects:rental_projects_list' %}">Back to All Projects</a></p>
+<p><a href="{% url 'rental_projects:rental_projects_create' %}">Add New Project</a></p>
+{% endblock bodyblock %}

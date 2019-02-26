@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Plugins List{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<a href="{% url 'plugins:plugins_create' %}">+ New Plugin</a>
+
+    {% if plugins_list %}
+        
+        {% for plugin in plugins_list %}
+            <br>
+            <p>Manufacturer: {{plugin.manufacturer}}</p>
+            <p>Name: <a href="{% url 'plugins:plugins_detail' plugin.pk %}">{{plugin.name}}</a></p>
+            <p>Version: {{plugin.vers}}</p>
+            <p>Type: {{plugin.plugin_type}}</p>
+            <br>            
+        {% endfor %}
+            
+    {% endif %}
+
+
+{% endblock bodyblock %}

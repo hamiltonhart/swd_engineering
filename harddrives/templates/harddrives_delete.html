@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Delete Drive{{drive.drive_number}}{% endblock titleblock %}
+
+{% block bodyblock %}
+<form method="POST">
+    {% csrf_token %}
+    <h2>Do you want to delete Drive {{drive.drive_number}}?</h2>
+    
+    <a class="btn cancel-btn" href="{% url 'harddrives:harddrives_list' %}">Cancel</a>
+    <input class="btn delete-btn" type="submit" value="Delete">
+
+    <br>
+    <p><a href="{% url 'harddrives:harddrives_list' %}">Back to Drive List</a></p>
+
+</form>
+
+
+  
+{% endblock bodyblock %}

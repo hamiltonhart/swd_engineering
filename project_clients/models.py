@@ -37,31 +37,37 @@ class ProjectClient(models.Model):
         ('Misc', 'Other'),
     )
 
+    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='rental_projects')
+    project = models.ForeignKey('rental_projects.RentalProject', on_delete=models.CASCADE, related_name='rental_clients')
     client_role = models.CharField(max_length=20, choices=CLIENT_ROLE_CHOICES, blank=True, null=True)
 
     objects = ProjectClientManager()
 
-    class Meta:
-        abstract = True
-
-
-class FeatureClient(ProjectClient):
-    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='feature_projects')
-    project = models.ForeignKey('rental_projects.Feature', on_delete=models.CASCADE, related_name='feature_clients')
-
     def __str__(self):
         return str(self.client)
 
     class Meta:
         unique_together = (('client', 'project'))
+    #     abstract = True
 
 
-class SeriesClient(ProjectClient):
-    client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='series_projects')
-    project = models.ForeignKey('rental_projects.Series', on_delete=models.CASCADE, related_name='series_clients')
+# class FeatureClient(ProjectClient):
+#     client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='feature_projects')
+#     project = models.ForeignKey('rental_projects.Feature', on_delete=models.CASCADE, related_name='feature_clients')
 
-    def __str__(self):
-        return str(self.client)
+#     def __str__(self):
+#         return str(self.client)
 
-    class Meta:
-        unique_together = (('client', 'project'))
+#     class Meta:
+#         unique_together = (('client', 'project'))
+
+
+# class SeriesClient(ProjectClient):
+#     client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='series_projects')
+#     project = models.ForeignKey('rental_projects.Series', on_delete=models.CASCADE, related_name='series_clients')
+
+#     def __str__(self):
+#         return str(self.client)
+
+#     class Meta:
+#         unique_together = (('client', 'project'))
