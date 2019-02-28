@@ -1,4 +1,4 @@
-.contact-card {
+/* .contact-card {
     display: flex;
 
     padding-bottom: 8px;
@@ -7,14 +7,16 @@
     border: 1px solid rgba(0,0,0,0);
     border-radius: 9px;
     box-shadow: 0 2px 4px black;
-}
+} */
 
-.contact-card h2, p {
+
+
+.card h2, p {
     margin: 0;
     padding: 0;
 }
 
-.contact-card p {
+.card p {
     margin: 2px 2px 2px 15px;
 }
 
@@ -37,6 +39,12 @@
 .main-info {
     display: flex;
     flex-direction: column;
+}
+
+.contact-info {
+    margin: 5px 0 2.5px 0;
+    font-size: 1.3em;
+
 }
 
 .message-card {

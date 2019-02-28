@@ -13,7 +13,8 @@
     {% if projects_list %}
       
       {% for project in projects_list %}
-          {% if project.season %}
+        <div class="card">
+        {% if project.season %}
             <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}: Season {{project.season}}</a></h2>
           
             {% else %}
@@ -21,7 +22,7 @@
           {% endif %}
           <p>{{project.abbreviation}}</p>
           <p>{{project.additional_info}}</p>
-          <br>
+        </div>  
       {% endfor %}
           
     {% endif %}

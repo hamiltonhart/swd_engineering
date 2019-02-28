@@ -2,9 +2,11 @@
 :root {
     --page-red: #E41E31;
     --page-grey: #979797;
+    --page-white: #f2f2f2;
+    --page-heading-color: #f2f2f2;
     --page-red-gradient: linear-gradient(to top right, #E41E31, #7E0000);
     --default-color: black;
-    --menu-hover-color: white;
+    --menu-hover-color: var(--page-white);
     --btn-radius: 9px;
 }
 
@@ -65,6 +67,8 @@ ul, h1, h2, h3, h4, h5 {
 
 .navbar {
     background: var(--page-red);
+    /* background: purple; */
+    background-image: var(--page-red-gradient);
     width: 100%;
     text-align: center;
     position: relative;
@@ -72,7 +76,7 @@ ul, h1, h2, h3, h4, h5 {
 }
 
 .navbar h2 {
-    color: var(--default-color);
+    color: var(--page-heading-color);
     padding: .5em;
 }
 
@@ -127,6 +131,7 @@ ul, h1, h2, h3, h4, h5 {
     transform-origin: top;
     transition: transform ease-out 150ms;
     background: var(--page-red);
+    background-image: var(--page-red-gradient);
 }
 
 .mainmenu a {
@@ -168,7 +173,7 @@ ul, h1, h2, h3, h4, h5 {
     margin: auto;
     padding: 15px;
 
-    background-color: var(--page-red);
+    /* background-color: var(--page-red); */
     text-transform: uppercase;
 }
 
@@ -201,26 +206,45 @@ ul, h1, h2, h3, h4, h5 {
     border: 3px solid var(--page-red);
 }
 
+/* Card Styling */
+
+.card {
+    display: flex;
+
+    padding-bottom: 8px;
+    margin: 12px 0;
+
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 9px;
+    box-shadow: 0 2px 4px black;
+}
+
 
 /* Button Styling */
 
 .btn {
-    box-shadow: 0 2px 4px black;
-    border-radius: var(--btn-radius);
+    font-size: inherit;
+    text-transform: uppercase;
+    font-weight: 600;
+    align-self: center;
+    padding: 10px 20px;
+    color: black;
+    background-color: var(--page-white);
+    border: none;
+    box-shadow: 0 1px 2px #000;
     margin: .25em;
-    padding: 1em;
-
-    font-size: 1.25em;
+    border-radius: var(--btn-radius);
 }
 
 .page-top-btns {
     display:flex;
     justify-content: space-between;
+    flex-wrap: none;
     margin-bottom: 2em;
 }
 
 .page-top-btns a {
-    padding-top: .5em;
+    padding-top: .75em;
     padding-bottom: .5em;
 }
 
@@ -231,8 +255,10 @@ ul, h1, h2, h3, h4, h5 {
 }
 
 .confirm-btn {
-    background-color: white;
-    border-color: white;
+    color: var(--page-white);
+    background-color: #E41E31;
+    background-image: linear-gradient(to top right, #E41E31, #7E0000);
+    
     
 }
 
@@ -244,6 +270,6 @@ ul, h1, h2, h3, h4, h5 {
 .delete-btn {
     border: 2px solid var(--page-red);
     color: var(--page-red);
-    background: white;
+    background: var(--page-white);
 }
 

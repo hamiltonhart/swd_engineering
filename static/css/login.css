@@ -51,7 +51,6 @@ body {
     flex-direction: column;
     justify-content: center;
     justify-items: center;
-    /* border: 1px solid #979797; */
     border-radius: 9px;
     width: 75%;
     max-width: 320px;
@@ -67,11 +66,10 @@ body {
 
 .login-card input {
     padding: 10px;
-    /* border: none; */
     border: 1px solid #979797;
     border-radius: 9px;
     margin: 10px 2px;
-    /* box-shadow: 0 0 1px 0 #979797; */
+
 }
 
 .login-card input[type=submit] {

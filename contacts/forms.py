@@ -10,6 +10,7 @@ class ContactsForm(forms.ModelForm):
             'last_name',
             'email',
             'phone_number',
+            'country',
             'company',
             'title', 'notes'
         ]

@@ -20,17 +20,19 @@
     {% if contacts_list %}
         {% for contact in contacts_list %}
         <a class="card-link" href="{% url 'contacts:contacts_detail' contact.pk %}">
-            <div class="contact-card">
+            <div class="card">
                 <div class="main-info">
                     <div class="name-info">
                         <h2>{{contact}}</h2>
                         <p id="contact-company-title">{{contact.company}} &middot; {{contact.title}}</p>
+                        <p class="contact-info">{{contact.phone_format}}</p>
+                        <p class="contact-info">{{contact.email}}</p>
                     </div>
-                        <p>{{contact.phone_number}}</p>
-                        <p>{{contact.email}}</p>
-                    </div>
+
+                    
                 </div>
-            </a>
+            </div>
+        </a>
 
         {% endfor %}
     {% else %}
