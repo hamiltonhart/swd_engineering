@@ -13,7 +13,9 @@
 
 
 {% block bodyblock %}
-<a href="{% url 'contacts:contacts_create' %}">+ New Contact</a>
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+</div>
 
     {% if contacts_list %}
         {% for contact in contacts_list %}

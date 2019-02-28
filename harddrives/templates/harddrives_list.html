@@ -5,7 +5,9 @@
 
 {% block bodyblock %}
 
-<a href="{% url 'harddrives:harddrives_create' %}">+ New Drive</a>
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
+</div>
 
 {% if drives_list %}
     {% for drive in drives_list %}

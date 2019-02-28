@@ -6,6 +6,12 @@
 {% endblock titleblock %}
 
 {% block bodyblock %}
+
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'rental_projects:rental_projects_list' %}">Back to All Projects</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">Add New Project</a>
+</div>
+
     <h1>{{project.title}}</h1>
     {% if project.season %}
         <h3>Season {{project.season}}</h3>
@@ -15,9 +21,11 @@
     <p>{{project.room}}</p>
 
     <br>
-<p><a href="{% url 'rental_projects:rental_projects_update' project.pk %}">+ Update</a></p>
-<p><a href="{% url 'rental_projects:rental_projects_delete' project.pk %}">- Delete</a></p>
-<br>
-<p><a href="{% url 'rental_projects:rental_projects_list' %}">Back to All Projects</a></p>
-<p><a href="{% url 'rental_projects:rental_projects_create' %}">Add New Project</a></p>
+
+<div class="page-bottom-btns">
+    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Update</a>
+    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
+</div>
+
+
 {% endblock bodyblock %}

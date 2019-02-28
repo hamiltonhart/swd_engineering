@@ -5,13 +5,14 @@
 
 {% block bodyblock %}
 
-<a href="{% url 'rental_projects:rental_projects_create' %}">+ New Project</a>
-<br>
+<div class="page-top-btns">
+  <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">New Project</a>
+</div>
+
   
     {% if projects_list %}
       
       {% for project in projects_list %}
-          <br>
           {% if project.season %}
             <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}: Season {{project.season}}</a></h2>
           

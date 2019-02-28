@@ -46,10 +46,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'rental_projects.apps.RentalProjectsConfig',
     'contacts.apps.ContactsConfig',
-    'plugins.apps.PluginsConfig',
     'harddrives.apps.HarddrivesConfig',
-    'project_plugins.apps.ProjectPluginsConfig',
-    'client_plugins.apps.ClientPluginsConfig',
     'project_clients.apps.ProjectClientsConfig',
     'project_drives.apps.ProjectDrivesConfig',
 ]

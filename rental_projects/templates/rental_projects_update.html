@@ -9,8 +9,10 @@
         {% csrf_token %}
         {{form.as_p}}
 
-        <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' %}">Cancel</a>
-        <input class="btn create-btn" type="submit" value="Update">
+        <div class="page-bottom-btns">
+            <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' %}">Cancel</a>
+            <input class="btn confirm-btn" type="submit" value="Update">
+        </div>
     </form>
 
     <br>

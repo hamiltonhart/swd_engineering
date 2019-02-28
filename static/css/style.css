@@ -5,6 +5,7 @@
     --page-red-gradient: linear-gradient(to top right, #E41E31, #7E0000);
     --default-color: black;
     --menu-hover-color: white;
+    --btn-radius: 9px;
 }
 
 
@@ -199,3 +200,50 @@ ul, h1, h2, h3, h4, h5 {
 .card-link > div:hover {
     border: 3px solid var(--page-red);
 }
+
+
+/* Button Styling */
+
+.btn {
+    box-shadow: 0 2px 4px black;
+    border-radius: var(--btn-radius);
+    margin: .25em;
+    padding: 1em;
+
+    font-size: 1.25em;
+}
+
+.page-top-btns {
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.page-top-btns a {
+    padding-top: .5em;
+    padding-bottom: .5em;
+}
+
+.page-bottom-btns {
+    display: flex;
+    margin: 2em 0;
+    font-size: 1.1em;
+}
+
+.confirm-btn {
+    background-color: white;
+    border-color: white;
+    
+}
+
+.cancel-btn {
+    background-color: var(--page-grey);
+    border-color: var(--page-grey);
+}
+
+.delete-btn {
+    border: 2px solid var(--page-red);
+    color: var(--page-red);
+    background: white;
+}
+

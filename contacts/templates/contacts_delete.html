@@ -6,16 +6,16 @@
 {% block bodyblock %}
 <form method="POST">
     {% csrf_token %}
-    <h2>Do you want to delete {{contact}}?</h2>
+    <h2 class="solo-text">Do you want to delete {{contact}}?</h2>
     
-    <a class="btn cancel-btn" href="{% url 'contacts:contacts_list' %}">Cancel</a>
-    <input class="btn delete-btn" type="submit" value="Delete">
+    <div class="page-bottom-btns">
+        <a class="btn cancel-btn" href="{% url 'contacts:contacts_list' %}">Cancel</a>
+        <input class="btn delete-btn" type="submit" value="Delete">
+    </div>
 
 </form>
 
-
-<br>
-<p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p>
+<!-- <p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p> -->
 
   
 {% endblock bodyblock %}
