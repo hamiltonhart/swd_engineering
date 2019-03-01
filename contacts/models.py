@@ -1,9 +1,16 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.urls import reverse
+import phonenumbers
 
 
 class Contact(models.Model):
+    COUNTRIES = (
+        ("US", "US"),
+        ("CA", "CANADA"),
+        ("GB", "UK"),
+    )
+
     PHONE_REGEX = RegexValidator(regex=r'^\+?1?\d{9,15}$')
 
     first_name = models.CharField(max_length=50)
@@ -11,6 +18,7 @@ class Contact(models.Model):
     email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(
         validators=[PHONE_REGEX], max_length=17, blank=True, null=True)
+    country = models.CharField(max_length=10, choices=COUNTRIES, default="US")
     company = models.CharField(max_length=200, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True, null=True)
     # files = models.FileField()
@@ -21,4 +29,11 @@ class Contact(models.Model):
 
     def get_absolute_url(self):
         return reverse("contacts:contacts_detail", kwargs={"pk": self.pk})
+
+    def phone_format(self):
+        parsed_number = phonenumbers.parse(self.phone_number, self.country)
+        if self.country == "US":
+            return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL)
+        else:
+            return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
     

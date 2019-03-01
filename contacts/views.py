@@ -14,8 +14,9 @@ class ContactCreateView(LoginRequiredMixin, CreateView):
             'last_name',
             'email',
             'phone_number',
+            'country',
             'company',
-            'title', 'notes'
+            'title', 'notes',
         ]
 
 
@@ -43,6 +44,7 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
             'last_name',
             'email',
             'phone_number',
+            'country',
             'company',
             'title', 'notes'
         ]

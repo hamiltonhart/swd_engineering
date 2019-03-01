@@ -4,6 +4,12 @@
 {% block titleblock %}{{contact}}{% endblock titleblock %}
 
 {% block bodyblock %}
+
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'contacts:contacts_list' %}">Back to Contacts</a>
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+</div>
+
 <h2>{{contact}}</h2>
 
 {% if contact.email %}
@@ -26,13 +32,11 @@
     <p>{{contact.notes}}</p>
 {% endif %}
 
-<br>
-<p><a href="{% url 'contacts:contacts_update' contact.pk %}">+ Update</a></p>
-<p><a href="{% url 'contacts:contacts_delete' contact.pk %}">- Delete</a></p>
+<div class="page-bottom-btns">
+    <a class="btn" href="{% url 'contacts:contacts_update' contact.pk %}">Update</a>
+    <a class="btn delete-btn" href="{% url 'contacts:contacts_delete' contact.pk %}">Delete</a>
+</div>
 
-<br>
-<p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p>
-<p><a href="{% url 'contacts:contacts_create' %}">Add New Contact</a></p>
 
 
   

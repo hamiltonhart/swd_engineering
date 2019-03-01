@@ -2,15 +2,23 @@
 :root {
     --page-red: #E41E31;
     --page-grey: #979797;
+    --page-white: #f2f2f2;
+    --page-heading-color: #f2f2f2;
     --page-red-gradient: linear-gradient(to top right, #E41E31, #7E0000);
     --default-color: black;
-    --menu-hover-color: white;
+    --menu-hover-color: var(--page-white);
+    --btn-radius: 9px;
 }
 
 
 body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+p {
     margin: 0;
     padding: 0;
 }
@@ -64,6 +72,8 @@ ul, h1, h2, h3, h4, h5 {
 
 .navbar {
     background: var(--page-red);
+    /* background: purple; */
+    background-image: var(--page-red-gradient);
     width: 100%;
     text-align: center;
     position: relative;
@@ -71,7 +81,7 @@ ul, h1, h2, h3, h4, h5 {
 }
 
 .navbar h2 {
-    color: var(--default-color);
+    color: var(--page-heading-color);
     padding: .5em;
 }
 
@@ -126,6 +136,7 @@ ul, h1, h2, h3, h4, h5 {
     transform-origin: top;
     transition: transform ease-out 150ms;
     background: var(--page-red);
+    background-image: var(--page-red-gradient);
 }
 
 .mainmenu a {
@@ -167,7 +178,7 @@ ul, h1, h2, h3, h4, h5 {
     margin: auto;
     padding: 15px;
 
-    background-color: var(--page-red);
+    /* background-color: var(--page-red); */
     text-transform: uppercase;
 }
 
@@ -188,14 +199,105 @@ ul, h1, h2, h3, h4, h5 {
     font-size: 1.2em;
 }
 
-
 /* Card Styling */
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 9px;
+    box-shadow: 0 2px 4px black;
+}
+
+
+/* .card-info p {
+    font-size: 1.2em;
+} */
+
+.card-heading {
+    margin: .75em 0 .1em 1em;
+}
+
+.card-subheading {
+    font-size: 1.2em;
+    font-style: italic;
+    margin-left: 2em;
+    margin-bottom: .5em;
+}
 
 .card-link {
     text-decoration: none;
     color: inherit;
 }
 
-.card-link > div:hover {
+.card:hover {
     border: 3px solid var(--page-red);
 }
+
+.main-info-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-info {
+    font-size: 1.25em;
+    margin: .5em 1.5em;
+}
+
+/* Button Styling */
+
+.btn {
+    font-size: inherit;
+    text-transform: uppercase;
+    font-weight: 600;
+    align-self: center;
+    padding: 10px 20px;
+    color: black;
+    background-color: var(--page-white);
+    border: none;
+    box-shadow: 0 1px 2px #000;
+    margin: .25em;
+    border-radius: var(--btn-radius);
+}
+
+.page-top-btns {
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: none;
+    margin-bottom: 2em;
+}
+
+.page-top-btns a {
+    padding-top: .75em;
+    padding-bottom: .5em;
+}
+
+.page-bottom-btns {
+    display: flex;
+    margin: 2em 0;
+    font-size: 1.1em;
+}
+
+.confirm-btn {
+    color: var(--page-white);
+    background-color: #E41E31;
+    background-image: linear-gradient(to top right, #E41E31, #7E0000);
+    
+    
+}
+
+.cancel-btn {
+    background-color: var(--page-grey);
+    border-color: var(--page-grey);
+}
+
+.delete-btn {
+    border: 2px solid var(--page-red);
+    color: var(--page-red);
+    background: var(--page-white);
+}
+

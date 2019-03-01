@@ -13,30 +13,36 @@
 
 
 {% block bodyblock %}
-<a href="{% url 'contacts:contacts_create' %}">+ New Contact</a>
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+</div>
 
     {% if contacts_list %}
         {% for contact in contacts_list %}
-        <a class="card-link" href="{% url 'contacts:contacts_detail' contact.pk %}">
-            <div class="contact-card">
+
+        <a class="card" href="{% url 'contacts:contacts_detail' contact.pk %}">
+            
+                <h2 class="card-heading">{{contact}}</h2>
+            <div class="main-info-wrapper">
+                <p class="card-subheading">{{contact.company}} &middot; {{contact.title}}</p>
+                
                 <div class="main-info">
-                    <div class="name-info">
-                        <h2>{{contact}}</h2>
-                        <p id="contact-company-title">{{contact.company}} &middot; {{contact.title}}</p>
-                    </div>
-                        <p>{{contact.phone_number}}</p>
-                        <p>{{contact.email}}</p>
-                    </div>
+                    <p>p: {{contact.phone_format}}</p>
+                    <p>e: {{contact.email}}</p>
                 </div>
-            </a>
+
+            </div>
+        </a>
 
         {% endfor %}
     {% else %}
+
         <div class="message-card">
             <h1 class="contact-message">No contacts</h1>
             <!-- Needs New Contact link -->
             <p id="contact-submessage"><a href="{% url 'contacts:contacts_create' %}">Add contact</a></p>
         </div>
+
     {% endif %}
     
 

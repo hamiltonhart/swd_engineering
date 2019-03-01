@@ -5,17 +5,27 @@
 
 {% block bodyblock %}
 
-<a href="{% url 'harddrives:harddrives_create' %}">+ New Drive</a>
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
+</div>
 
-{% if drives_list %}
-    {% for drive in drives_list %}
-        <br>
-        <h2><a href="{% url 'harddrives:harddrives_detail' drive.pk %}">Drive: {{drive.drive_number}}</a></h2>
-        <h3>Capacity: {{drive.drive_capacity_gb}}</h3>
-        <br>
-    {% endfor %}
+
+    {% if drives_list %}
+        {% for drive in drives_list %}
+
+        <a class="card" href="{% url 'harddrives:harddrives_detail' drive.pk %}">
+
+            <h2 class="card-heading">Drive: {{drive.drive_number}}</h2>
+            <div class="main-info-wrapper">
+                <div class="main-info">
+                    <p>Capacity: {{drive.drive_capacity_gb}}</p>
+                </div>
+            </div>
+
+        {% endfor %}
+        
     
-  
-{% endif %}
+    {% endif %}
+</a>
 
 {% endblock bodyblock %}

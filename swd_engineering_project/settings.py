@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,10 +47,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'rental_projects.apps.RentalProjectsConfig',
     'contacts.apps.ContactsConfig',
-    'plugins.apps.PluginsConfig',
     'harddrives.apps.HarddrivesConfig',
-    'project_plugins.apps.ProjectPluginsConfig',
-    'client_plugins.apps.ClientPluginsConfig',
     'project_clients.apps.ProjectClientsConfig',
     'project_drives.apps.ProjectDrivesConfig',
 ]
@@ -88,13 +86,25 @@ WSGI_APPLICATION = 'swd_engineering_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+db_from_env = dj_database_url.config()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': os.environ.get('PSQL_DB_NAME', ''),
+    'USER': os.environ.get('PSQL_DB_USER', ''),
+    'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
+    'HOST': 'localhost',
+    'PORT': '5432',
+        }
     }
-}
-
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

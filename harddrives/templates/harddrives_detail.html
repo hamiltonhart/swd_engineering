@@ -4,17 +4,18 @@
 {% block titleblock %}Drive {{drive.drive_number}}{% endblock titleblock %}
 
 {% block bodyblock %}
+    
+    <div class="page-top-btns">
+        <a class="btn" href="{% url 'harddrives:harddrives_list' %}">Back to Drive List</a>
+        <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
+    </div>
+
     <h2>Drive: {{drive.drive_number}}</p></h2>
     <h4><p>Capacity: {{drive.drive_capacity_gb}}</p></h4>
 
-    <br>
-
-    <p><a href="{% url 'harddrives:harddrives_update' drive.pk %}">+Update</a></p>
-    <p><a href="{% url 'harddrives:harddrives_delete' drive.pk %}">-Delete</a></p>
-
-    <br>
-    <p><a href="{% url 'harddrives:harddrives_list' %}">Back to Drive List</a></p>
-    <p><a href="{% url 'harddrives:harddrives_create' %}">New Drive</a></p>
+    <div class="page-bottom-btns">
+        <a class="btn" href="{% url 'harddrives:harddrives_update' drive.pk %}">Update</a>
+        <a class="btn delete-btn" href="{% url 'harddrives:harddrives_delete' drive.pk %}">Delete</a>
+    </div>
     
-
 {% endblock bodyblock %}
