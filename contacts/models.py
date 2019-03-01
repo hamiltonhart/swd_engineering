@@ -18,7 +18,7 @@ class Contact(models.Model):
     email = models.EmailField(unique=True, blank=True, null=True)
     phone_number = models.CharField(
         validators=[PHONE_REGEX], max_length=17, blank=True, null=True)
-    country_code = models.CharField(max_length=10, choices=COUNTRIES, default="US")
+    country = models.CharField(max_length=10, choices=COUNTRIES, default="US")
     company = models.CharField(max_length=200, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True, null=True)
     # files = models.FileField()

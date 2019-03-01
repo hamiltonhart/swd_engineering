@@ -18,6 +18,11 @@ body {
     padding: 0;
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -194,31 +199,54 @@ ul, h1, h2, h3, h4, h5 {
     font-size: 1.2em;
 }
 
-
-/* Card Styling */
-
-.card-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.card-link > div:hover {
-    border: 3px solid var(--page-red);
-}
-
 /* Card Styling */
 
 .card {
     display: flex;
+    flex-direction: column;
 
     padding-bottom: 8px;
-    margin: 12px 0;
+    margin-bottom: 8px;
 
     border: 1px solid rgba(0,0,0,0);
     border-radius: 9px;
     box-shadow: 0 2px 4px black;
 }
 
+
+/* .card-info p {
+    font-size: 1.2em;
+} */
+
+.card-heading {
+    margin: .75em 0 .1em 1em;
+}
+
+.card-subheading {
+    font-size: 1.2em;
+    font-style: italic;
+    margin-left: 2em;
+    margin-bottom: .5em;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    border: 3px solid var(--page-red);
+}
+
+.main-info-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-info {
+    font-size: 1.25em;
+    margin: .5em 1.5em;
+}
 
 /* Button Styling */
 

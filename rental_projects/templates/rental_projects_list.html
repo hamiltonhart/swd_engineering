@@ -13,18 +13,26 @@
     {% if projects_list %}
       
       {% for project in projects_list %}
-        <div class="card">
-        {% if project.season %}
-            <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}: Season {{project.season}}</a></h2>
-          
+      <a class="card" href="{%url 'rental_projects:rental_projects_detail' project.pk %}"> 
+          {% if project.season %}
+
+            <h2 class="card-heading">{{project.title}}: Season {{project.season}}</h2>
+
             {% else %}
-              <h2><a href="{%url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}</a></h2>  
-          {% endif %}
-          <p>{{project.abbreviation}}</p>
-          <p>{{project.additional_info}}</p>
-        </div>  
-      {% endfor %}
-          
-    {% endif %}
+
+            <h2 class="card-heading">{{project.title}}</h2>
+
+            {% endif %}
+
+            <div class="main-info-wrapper">
+              <p class="card-subheading">{{project.abbreviation}}</p>
+                <div class="main-info">
+                  <p>{{project.additional_info}}</p>
+                </div>
+            </div> 
+        {% endfor %}
+            
+      {% endif %}
+    </a> 
 
 {% endblock bodyblock %}
