@@ -1,7 +1,9 @@
 /* Basic Setup */
 :root {
     --page-red: #E41E31;
+    --page-dark-red: #7E0000;
     --page-grey: #979797;
+    --page-light-grey: #c0c0c0;
     --page-white: #f2f2f2;
     --page-heading-color: #f2f2f2;
     --page-red-gradient: linear-gradient(to top right, #E41E31, #7E0000);
@@ -214,10 +216,6 @@ ul, h1, h2, h3, h4, h5 {
 }
 
 
-/* .card-info p {
-    font-size: 1.2em;
-} */
-
 .card-heading {
     margin: .75em 0 .1em 1em;
 }
@@ -299,5 +297,62 @@ ul, h1, h2, h3, h4, h5 {
     border: 2px solid var(--page-red);
     color: var(--page-red);
     background: var(--page-white);
+}
+
+/* Detail Page */
+
+.page-heading {
+    font-size: 1.5em;
+}
+
+.page-heading h3 {
+    margin-left: 1em;
+}
+
+.section-header {
+    font-size: 2em;
+}
+
+.color-light-grey {
+    background-color: var(--page-light-grey);
+}
+
+.color-page-white {
+    background-color: var(--page-white);
+}
+
+.page-area {
+    margin: 1em 0;
+    padding: .5em 1.25em;
+    font-size: 1em;
+    border-radius: var(--btn-radius);
+}
+
+.page-area-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: .25em;
+    grid-row-gap: 1em;
+    align-items: center;
+    margin: 1em;
+}
+
+.page-area-info p {
+    font-size: 1.5em;
+}
+
+.client-flex {
+    display: flex;
+    align-items: center;
+    margin: 1em;
+}
+
+.client-flex a {
+    color: var(--page-dark-red);
+}
+
+.client-flex p {
+    margin-left: 1em;
+    font-size: 1.25em;
 }
 

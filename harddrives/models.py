@@ -38,7 +38,7 @@ class RentalDrive(models.Model):
     objects = RentalDriveManager()
 
     def __str__(self):
-        return str(self.drive_number)
+        return str(f'{self.drive_number}: {self.drive_capacity_gb}')
 
     def get_absolute_url(self):
         return reverse("harddrives:harddrives_detail", kwargs={"pk": self.pk})

@@ -29,12 +29,12 @@ class ProjectClientManager(models.Manager):
 
 class ProjectClient(models.Model):
     CLIENT_ROLE_CHOICES = (
-        ('DX', 'DX Mixer'),
-        ('MX', 'MX Mixer'),
-        ('DXMX', 'DX/MX Mixer'),
-        ('FX', 'FX Mixer'),
-        ('REC', 'Recordist'),
-        ('Misc', 'Other'),
+        ('DX Mixer', 'DX Mixer'),
+        ('MX Mixer', 'MX Mixer'),
+        ('DX/MX Mixer', 'DX/MX Mixer'),
+        ('FX Mixer', 'FX Mixer'),
+        ('Recordist', 'Recordist'),
+        ('Other', 'Other'),
     )
 
     client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='rental_projects')

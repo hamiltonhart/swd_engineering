@@ -12,15 +12,95 @@
     <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">Add New Project</a>
 </div>
 
-    <h1>{{project.title}}</h1>
-    {% if project.season %}
-        <h3>Season {{project.season}}</h3>
-    {% endif %}
-    <h4>{{project.abbreviation}}</h4>
-    <p>{{project.channel_config}}</p>
-    <p>{{project.room}}</p>
+    <div class="page-heading">
+        <h1>{{project.title}}</h1>
+            {% if project.season %}
+                <h3>Season {{project.season}}</h3>
+            {% endif %}
+    </div> 
+    <!-- .page-heading end -->
+<div class="color-page-white page-area">
+    <p class="section-header">Basic Information</p>
+    <div class="page-area-info">
+        <p>Abbreviation:</p>
+        <p>{{ project.abbreviation}}</p>
+        <p>Room:</p>
+        <p>{{project.room}}</p>
+        <p>Channel Configuration:</p>
+        <p>{{project.channel_config}}</p>
+    </div>
+</div>
+    
+<div class="color-light-grey page-area">
+    <p class="section-header">Clients</p>
+    <div class="client-list">
+        {% for client in project.rental_clients.all %}
+            <div class="client-flex">
+                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client}}</a></h2>
+                <p>{{client.client_role}}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
-    <br>
+<div class="color-page-white page-area">
+    <p class="section-header">Login Information</p>
+    <div class="page-area-info">
+        <p>Drive Username:</p>
+        <p>{{ project.drive_user}}</p>
+        <p>Drive Password:</p>
+        <p>{{project.drive_pass}}</p>
+        <p>Media Shuttle Username:</p>
+        <p>{{project.ms_user}}</p>
+        <p>Media Shuttle Password:</p>
+        <p>{{project.ms_pass}}</p>
+    </div>
+</div>
+
+<div class="color-light-grey page-area">
+        <p class="section-header">Drives</p>
+        <div class="page-area-info">
+            {% for drive in project.rental_drives.all %}
+                <div class="client-flex">
+                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive}}</a></h2>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+        
+<div class="color-page-white page-area">
+        <p class="section-header">Notes</p>
+        <div class="page-area-info">
+                <p>{{ project.additional_info }}</p>
+                
+            </div>
+    </div>
+
+    <div class="color-light-grey page-area">
+            <p class="section-header">Dates</p>
+            <div class="page-area-info">
+                <p>Start Date:</p>
+                    {% if project.start_date %}
+                        <p>{{ project.start_date|date:'M d Y'}}</p>
+                    {% else %}
+                        <p>----</p>
+                    {% endif %}
+                
+                <p>Mixing Complete Date:</p>
+                    {% if project.mixing_complete_date %}
+                        <p>{{project.mixing_complete_date|date:'M d Y'}}</p>
+                    {% else %}
+                        <p>------</p>
+                    {% endif %}
+                
+                <p>Backup Date:</p>
+                    {% if project.project_complete_date %}
+                        <p>{{project.project_complete_date|date:'M d Y'}}</p>
+                    {% else %}
+                        <p>------</p>
+                    {% endif %}
+            </div>
+        </div>
 
 <div class="page-bottom-btns">
     <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Update</a>
