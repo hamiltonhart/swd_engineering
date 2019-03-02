@@ -10,8 +10,47 @@
         <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
     </div>
 
-    <h2>Drive: {{drive.drive_number}}</p></h2>
-    <h4><p>Capacity: {{drive.drive_capacity_gb}}</p></h4>
+    <div class="page-heading">
+            <h1>Drive: {{drive.drive_number}}</h1>
+            <h4><p>Capacity: {{drive.drive_capacity_gb}}</p></h4>
+        </div>
+
+    <div class="color-page-white page-area">
+            <p class="section-header">Current Project</p>
+        <div class="page-area-info">
+            {% if drive.rental_project.all %}
+            {% for project in drive.rental_project.all %}
+                <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.pk %}">
+                    {{project.project}}
+                </a></p>
+            {% endfor %}
+            {% else %}
+            <p>Unassigned</p>
+            {% endif %}
+        </div>
+    </div>
+    {% if drive.rental_project.all %}
+        <div class="color-light-grey page-area">
+            <p class="section-header">Other Project Drives</p>
+            <div class="page-area-info">
+                
+                {% for project in drive.rental_project.all %}
+                    {% for other_drive in project.project.rental_drives.all %}
+                        {% if other_drive.pk == drive.pk %}
+                          
+                        {% else %}
+                        <p><a href="{% url 'harddrives:harddrives_detail' other_drive.drive.pk %}">
+                            {{other_drive}}
+                        </a></p>
+                        {% endif %}
+                    {% endfor %}
+                        
+                {% endfor %}
+                    
+            </div>
+        </div>
+    {% endif %}
+        
 
     <div class="page-bottom-btns">
         <a class="btn" href="{% url 'harddrives:harddrives_update' drive.pk %}">Update</a>
