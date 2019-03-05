@@ -7,6 +7,9 @@ class ProjectDrive(models.Model):
     backed_up = models.BooleanField(default=False)
     erased = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.drive)
+
     def backup(self):
         self.backed_up = True
         self.save()

@@ -10,27 +10,64 @@
     <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
 </div>
 
-<h2>{{contact}}</h2>
+    <div class="page-heading">
+        <h1>{{contact}}</h1>
+        <!-- <div class="contact-subheading">
+            {% if contact.company %}
+            <h3>{{contact.company}}</h3>
+            {% endif %}
+            {% if contact.title %}
+                <h3>{{contact.title}}</h3>
+            {% endif %}
+        </div> -->
+    </div>
+    <div class="color-page-white page-area">
+        <p class="section-header">Basic Information</p>
+        <div class="page-area-info">
+                {% if contact.company %}
+                    <p>Company:</p>
+                    <p>{{contact.company}}</p>
+                {% endif %}
+                {% if contact.title %}
+                    <p>Title:</p>
+                    <p>{{contact.title}}</p>
+                {% endif %}
+                {% if contact.email %}
+                    <p>Email:</p>
+                    <p><a href="mailto:{{contact.email}}">
+                            {{contact.email}}
+                        </a></p>
+                {% endif %}
 
-{% if contact.email %}
-    <p>{{contact.email}}</p>
-{% endif %}
+                {% if contact.phone_number %}
+                    <p>Phone:</p>
+                    
+                    <p><a href="tel:{{contact.phone_number}}">
+                        {{contact.phone_format}}
+                    </a></p>
+                {% endif %}
+        </div>
+    </div>
 
-{% if contact.phone_number %}
-    <p>{{contact.phone_number}}</p>
-{% endif %}
+    <div class="color-light-grey page-area">
+            <p class="section-header">Notes</p>
+            <div class="page-area-info">
+                <p>{{contact.notes}}</p>
+            </div>
+        </div>
 
-{% if contact.company %}
- <p>{{contact.company}}</p>
-{% endif %}
-
-{% if contact.title %}
-    <p>{{contact.title}}</p>
-{% endif %}
-
-{% if contact.notes %}
-    <p>{{contact.notes}}</p>
-{% endif %}
+        <div class="color-page-white page-area">
+                <p class="section-header">Projects</p>
+                <div class="page-area-info">
+                   
+                   {% for project in contact.rental_projects.all %}
+                       <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.pk %}">
+                           {{project.project}}
+                       </a></p>
+                   {% endfor %}
+                       
+                </div>
+            </div>
 
 <div class="page-bottom-btns">
     <a class="btn" href="{% url 'contacts:contacts_update' contact.pk %}">Update</a>
