@@ -44,9 +44,24 @@
         </label>
 
         <ul class="mainmenu">
-            <li><a href="{% url 'contacts:contacts_list' %}">Contacts</a></li>
-            <li><a href="{% url 'rental_projects:rental_projects_list' %}">Rentals</a></li>
-            <li><a href="{% url 'harddrives:harddrives_list' %}">Drives</a></li>
+            <li><a href="{% url 'contacts:contacts_list' %}">Contacts</a>
+                <ul class="submenu">
+                    <li><a href="{% url 'contacts:contacts_list' %}">List All</a></li>
+                    <li><a href="{% url 'contacts:contacts_create' %}">New Contact</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'rental_projects:rental_projects_list' %}">Rentals</a>
+                <ul class="submenu">
+                    <li><a href="{% url 'rental_projects:rental_projects_create' %}">New Rental</a></li>
+                    <li><a href="#">Show Current</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'harddrives:harddrives_list' %}">Drives</a>
+                <ul class="submenu">
+                    <li><a href="{% url 'harddrives:harddrives_list' %}">Available</a></li>
+                    <li><a href="{% url 'harddrives:harddrives_create' %}">New Drive</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 
