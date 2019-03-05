@@ -53,7 +53,7 @@ class RentalProject(models.Model):
 
     def __str__(self):
         if self.season:
-            return f'{self.title} - s{self.season}'
+            return f'{self.title}: Season {self.season}'
         else:
             return self.title
 
