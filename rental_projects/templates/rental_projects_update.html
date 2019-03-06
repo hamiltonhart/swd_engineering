@@ -7,16 +7,14 @@
   
     <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        <div class="form-content">
+            {{form.as_p}}
+        </div>
 
         <div class="page-bottom-btns">
             <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' %}">Cancel</a>
             <input class="btn confirm-btn" type="submit" value="Update">
         </div>
     </form>
-
-    <br>
-    
-    <p><a href="{% url 'rental_projects:rental_projects_list' %}">Back to All Projects</a></p>
 
 {% endblock bodyblock %}

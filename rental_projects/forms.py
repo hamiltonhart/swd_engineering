@@ -17,10 +17,13 @@ class RentalProjectForm(forms.ModelForm):
             'ms_pass',
             'channel_config',
             'room',
-            # 'clients',
+            'start_date',
             'additional_info',
-            'start_date'
+            # 'clients',
+            
         ]
-        # widgets = {
-        #     'clients': forms.RadioSelect(),
-        # }
+        widgets = {
+            # 'clients': forms.RadioSelect(),
+            'season': forms.TextInput(),
+            'protools_vers': forms.TextInput(),
+        }

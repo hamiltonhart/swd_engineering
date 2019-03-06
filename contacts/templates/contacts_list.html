@@ -27,8 +27,14 @@
                 <p class="card-subheading">{{contact.company}} &middot; {{contact.title}}</p>
                 
                 <div class="main-info">
-                    <p>p: {{contact.phone_format}}</p>
-                    <p>e: {{contact.email}}</p>
+                    {% if contact.phone_number %}
+                        <p>p: {{contact.phone_format}}</p>  
+                    {% endif %}
+
+                    {% if contact.email %}
+                        <p>e: {{contact.email}}</p>    
+                    {% endif %}
+                        
                 </div>
 
             </div>

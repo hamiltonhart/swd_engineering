@@ -7,24 +7,15 @@
   
     <form method="POST">
         {% csrf_token %}
-        <!-- {{form.as_p}} -->
         
         <div class="form-content">
-            {{ form }}
-                
+            {{form.as_p}}
         </div>
-            
-        
 
         <div class="form-btns">
             <a class="btn cancel-btn" href="{% url 'contacts:contacts_list' %}">Cancel</a>
             <input class="btn confirm-btn" type="submit" value="Add Contact">
         </div>
     </form>
-
-    
-<br>
-<p><a href="{% url 'contacts:contacts_list' %}">Back to All Contacts</a></p>
-
 
 {% endblock bodyblock %}

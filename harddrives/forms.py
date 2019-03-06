@@ -8,3 +8,6 @@ class RentalDriveForm(forms.ModelForm):
             'drive_number',
             'drive_capacity_gb',
         ]
+        widgets = {
+            'drive_number': forms.TextInput(),
+        }

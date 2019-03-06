@@ -7,7 +7,10 @@
   
     <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        
+        <div class="form-content">
+            {{form.as_p}}
+        </div>
 
         <div class="page-bottom-btns">
             <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' %}">Cancel</a>
