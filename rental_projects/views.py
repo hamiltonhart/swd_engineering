@@ -22,7 +22,20 @@ class RentalProjectListView(LoginRequiredMixin, ListView):
     context_object_name = "projects_list"
 
     def get_queryset(self):
-        return models.RentalProject.objects.all().order_by('title')
+        if self.kwargs["display_option"] == "all" or self.kwargs["display_option"] == '':
+            return models.RentalProject.objects.all().order_by('title')
+        elif self.kwargs["display_option"] == "current":
+            return models.RentalProject.objects.filter(mixing_complete_date=None)
+        elif self.kwargs["display_option"] == "51":
+            return models.RentalProject.objects.filter(channel_config="5.1")
+        elif self.kwargs["display_option"] == "71":
+            return models.RentalProject.objects.filter(channel_config="7.1")
+        elif self.kwargs["display_option"] == "atmos":
+            return models.RentalProject.objects.filter(channel_config="ATMOS")
+        elif self.kwargs["display_option"] == "imax6":
+            return models.RentalProject.objects.filter(channel_config="IMAX 6")
+        elif self.kwargs["display_option"] == "imax12":
+            return models.RentalProject.objects.filter(channel_config="IMAX 12")
 
 
 class RentalProjectDetailView(LoginRequiredMixin, DetailView):

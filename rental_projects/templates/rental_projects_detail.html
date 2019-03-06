@@ -8,7 +8,7 @@
 {% block bodyblock %}
 
 <div class="page-top-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_list' %}">All Rentals</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</a>
     <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">Add New Rental</a>
 </div>
 

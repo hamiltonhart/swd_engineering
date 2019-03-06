@@ -17,7 +17,17 @@ class DriveListView(LoginRequiredMixin, ListView):
     template_name = "harddrives_list.html"
     
     def get_queryset(self):
-        return models.RentalDrive.objects.all().order_by('drive_number')
+        # return models.RentalDrive.objects.all().order_by('drive_number')
+        if self.kwargs["display_option"] == "all" or self.kwargs["display_option"] == '':
+            return models.RentalDrive.objects.all().order_by('drive_number')
+        elif self.kwargs["display_option"] == "available":
+            return models.RentalDrive.objects.available()
+        elif self.kwargs["display_option"] == "unavailable":
+            return models.RentalDrive.objects.unavailable()
+        else:
+            return models.RentalDrive.objects.filter(drive_capacity_gb=self.kwargs["display_option"])
+
+
 
 class DriveDetailView(LoginRequiredMixin, DetailView):
     model = models.RentalDrive
