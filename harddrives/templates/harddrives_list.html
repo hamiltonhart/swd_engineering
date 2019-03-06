@@ -9,6 +9,16 @@
     <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
 </div>
 
+    
+        <select name="harddrive_filters" id="query-select" class="query-select" onChange=selectCallLink()>
+            <option value="{% url 'harddrives:harddrives_list' 'all' %}">All Drives</option>
+            <option value="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</option>
+            <option value="{% url 'harddrives:harddrives_list' '250GB' %}">250GB</option>
+            <option value="{% url 'harddrives:harddrives_list' '500GB' %}">500GB</option>
+            <option value="{% url 'harddrives:harddrives_list' '1TB' %}">1TB</option>
+            <option value="{% url 'harddrives:harddrives_list' '2TB' %}">2TB</option>
+        </select>
+
 
     {% if drives_list %}
         {% for drive in drives_list %}
@@ -21,11 +31,14 @@
                     <p>Capacity: {{drive.drive_capacity_gb}}</p>
                 </div>
             </div>
-
+        </a>
         {% endfor %}
-        
     
     {% endif %}
-</a>
+
 
 {% endblock bodyblock %}
+
+{% block scriptblock %}
+
+{% endblock scriptblock %}

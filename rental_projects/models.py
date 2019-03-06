@@ -33,7 +33,7 @@ class RentalProject(models.Model):
 
     protools_vers = models.FloatField(default=18.4, verbose_name="ProTools Version")
 
-    number_of_systems = models.IntegerField(blank=True, verbose_name="Number of Systems")
+    number_of_systems = models.IntegerField(blank=True, null=True, verbose_name="Number of Systems")
     drive_user = models.CharField(max_length=50, blank=True, verbose_name='Drive Username')
     drive_pass = models.CharField(max_length=50, blank=True, verbose_name='Drive Password')
     ms_user = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Username')

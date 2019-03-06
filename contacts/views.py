@@ -19,7 +19,8 @@ class ContactListView(LoginRequiredMixin, ListView):
     context_object_name = "contacts_list"
 
     def get_queryset(self):
-        return models.Contact.objects.all().order_by('first_name')
+        if self.kwargs["display_options"] == "all":
+            return models.Contact.objects.all().order_by('first_name')
 
 
 class ContactDetailView(LoginRequiredMixin, DetailView):
