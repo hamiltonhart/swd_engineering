@@ -4,20 +4,13 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from . import models
+from .forms import ContactsForm
 
 
 class ContactCreateView(LoginRequiredMixin, CreateView):
     model = models.Contact
     template_name = "contacts_new.html"
-    fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'country',
-            'company',
-            'title', 'notes',
-        ]
+    form_class = ContactsForm
 
 
 class ContactListView(LoginRequiredMixin, ListView):
@@ -39,15 +32,7 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Contact
     template_name = "contacts_update.html"
     context_object_name = "contact"
-    fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'country',
-            'company',
-            'title', 'notes'
-        ]
+    form_class = ContactsForm
 
 
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
