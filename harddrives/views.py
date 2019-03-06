@@ -4,14 +4,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from . import models
+from .forms import RentalDriveForm
 
 class DriveCreateView(LoginRequiredMixin, CreateView):
     model = models.RentalDrive
     template_name = "harddrives_new.html"
-    fields = [
-            'drive_number',
-            'drive_capacity_gb',
-        ]
+    # fields = [
+    #         'drive_number',
+    #         'drive_capacity_gb',
+    #     ]
+    form_class = RentalDriveForm
 
 class DriveListView(LoginRequiredMixin, ListView):
     model = models.RentalDrive
@@ -30,10 +32,11 @@ class DriveUpdateView(LoginRequiredMixin, UpdateView):
     model = models.RentalDrive
     template_name = "harddrives_update.html"
     context_object_name = "drive"
-    fields = [
-            'drive_number',
-            'drive_capacity_gb',
-        ]
+    # fields = [
+    #         'drive_number',
+    #         'drive_capacity_gb',
+    #     ]
+    form_class = RentalDriveForm
 
 class DriveDeleteView(LoginRequiredMixin, DeleteView):
     model = models.RentalDrive

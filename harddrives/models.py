@@ -32,8 +32,8 @@ class RentalDrive(models.Model):
         ('3TB', '3TB')
     )
 
-    drive_number = models.IntegerField(unique=True)
-    drive_capacity_gb = models.CharField(max_length=10, choices=DRIVE_CAPACITY_CHOICES)
+    drive_number = models.IntegerField(unique=True, verbose_name="Drive Number")
+    drive_capacity_gb = models.CharField(max_length=10, choices=DRIVE_CAPACITY_CHOICES, verbose_name="Drive Capacity")
 
     objects = RentalDriveManager()
 
