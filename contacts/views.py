@@ -33,7 +33,7 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "contacts_update.html"
     context_object_name = "contact"
     form_class = ContactsForm
-
+    
 
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Contact

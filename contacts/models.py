@@ -36,4 +36,11 @@ class Contact(models.Model):
             return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL)
         else:
             return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+
+    def save(self, *args, **kwargs):
+        self.first_name = str(self.first_name).capitalize()
+        self.last_name = str(self.last_name).capitalize()
+        if self.title:
+            self.title = str(self.title).capitalize()
+        super().save(*args, **kwargs)
     
