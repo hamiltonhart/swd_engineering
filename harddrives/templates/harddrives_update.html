@@ -7,9 +7,11 @@
   
     <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        <div class="form-content">
+            {{form.as_p}}
+        </div>
 
-        <div class="page-bottom-btns">
+        <div class="form-btns">
             <a class="btn cancel-btn" href="{% url 'harddrives:harddrives_list' %}">Cancel</a>
             <input class="btn confirm-btn" type="submit" value="Update">
         </div>
