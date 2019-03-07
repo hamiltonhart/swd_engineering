@@ -44,7 +44,15 @@ class ProjectClient(models.Model):
     objects = ProjectClientManager()
 
     def __str__(self):
-        return str(self.client)
+        return f'{str(self.client)} - {str(self.project)}'
 
     class Meta:
         unique_together = (('client', 'project'))
+
+
+class ClientMediaShuttle(models.Model):
+    project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE, related_name="media_shuttle_ips")
+    client_ms = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f'{str(self.project_client)} - {self.client_ms}'

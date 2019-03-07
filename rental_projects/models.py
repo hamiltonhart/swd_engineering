@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 
+
 class RentalProject(models.Model):
     CHANNEL_CONFIG_CHOICES = (
         ("ST", "Stereo"),
@@ -40,7 +41,7 @@ class RentalProject(models.Model):
     ms_pass = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Password')
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
-    room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
+    # room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     

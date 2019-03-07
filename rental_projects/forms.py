@@ -16,7 +16,7 @@ class RentalProjectForm(forms.ModelForm):
             'ms_user',
             'ms_pass',
             'channel_config',
-            'room',
+            # 'room',
             'start_date',
             'additional_info',
             # 'clients',

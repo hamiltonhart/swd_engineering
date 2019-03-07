@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'rental_projects.apps.RentalProjectsConfig',
     'contacts.apps.ContactsConfig',
     'harddrives.apps.HarddrivesConfig',
+    'rooms.apps.RoomsConfig',
     'project_clients.apps.ProjectClientsConfig',
     'project_drives.apps.ProjectDrivesConfig',
+    'project_rooms.apps.ProjectRoomsConfig',
 ]
 
 MIDDLEWARE = [
@@ -86,25 +88,26 @@ WSGI_APPLICATION = 'swd_engineering_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# db_from_env = dj_database_url.config()
 # DATABASES = {
 #     'default': {
-#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     'NAME': os.environ.get('PSQL_DB_NAME', ''),
-#     'USER': os.environ.get('PSQL_DB_USER', ''),
-#     'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
-#     'HOST': 'localhost',
-#     'PORT': '5432',
-#         }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
-# DATABASES['default'].update(db_from_env)
+# }
+
+db_from_env = dj_database_url.config()
+DATABASES = {
+    'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # 'NAME': os.environ.get('PSQL_DB_NAME', ''),
+    'NAME': 'swd_engineering',
+    'USER': os.environ.get('PSQL_DB_USER', ''),
+    'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
+    'HOST': 'localhost',
+    'PORT': '5432',
+        }
+    }
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
