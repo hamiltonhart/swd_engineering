@@ -39,5 +39,5 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Contact
     template_name = "contacts_delete.html"
-    success_url = reverse_lazy("contacts:contacts_list")
+    success_url = reverse_lazy("contacts:contacts_list" "all")
     context_object_name = "contact"

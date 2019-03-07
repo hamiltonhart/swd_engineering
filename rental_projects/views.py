@@ -55,4 +55,4 @@ class RentalProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = models.RentalProject
     context_object_name = "project"
     template_name = "rental_projects_delete.html"
-    success_url = reverse_lazy("rental_projects:rental_projects_list")
+    success_url = reverse_lazy("rental_projects:rental_projects_list", kwargs={"display_option":"all"})

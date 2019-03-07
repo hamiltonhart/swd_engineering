@@ -1,0 +1,21 @@
+{% extends "base" %}
+{% load static %}
+
+{% block titleblock %}Project Rooms{% endblock titleblock %}
+
+{% block bodyblock %}
+  
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-content">
+            {{form.as_p}}
+        </div>
+
+        <div class="page-bottom-btns">
+            <!-- <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">Cancel</a> -->
+            <input class="btn confirm-btn" type="submit" value="Create Project Room">
+        </div>
+    </form>
+
+{% endblock bodyblock %}

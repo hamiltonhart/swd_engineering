@@ -99,8 +99,8 @@ db_from_env = dj_database_url.config()
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    # 'NAME': os.environ.get('PSQL_DB_NAME', ''),
-    'NAME': 'swd_engineering',
+    'NAME': os.environ.get('PSQL_DB_NAME', ''),
+    # 'NAME': 'swd_engineering',
     'USER': os.environ.get('PSQL_DB_USER', ''),
     'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
     'HOST': 'localhost',

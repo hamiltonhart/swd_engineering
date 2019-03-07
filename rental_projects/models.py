@@ -89,17 +89,17 @@ class RentalProject(models.Model):
             drive.delete()
 
     def save(self, *args, **kwargs):
-        self.title = str(self.title).capitalize()
+        self.title = str(self.title).title()
         if not self.abbreviation:
-            self.abbreviation = str(self.title).lower().strip()
+            self.abbreviation = str(self.title).lower().replace(" ", "")
         if not self.drive_user:
-            self.drive_user = self.abbreviation
+            self.drive_user = str(self.abbreviation).lower().replace(" ", "")
         if not self.drive_pass:
-            self.drive_pass = self.abbreviation
+            self.drive_pass = str(self.abbreviation).lower().replace(" ", "")
         if not self.ms_user:
-            self.ms_user = self.abbreviation
+            self.ms_user = str(self.abbreviation).lower().replace(" ", "")
         if not self.ms_pass:
-            self.ms_pass = self.abbreviation
+            self.ms_pass = str(self.abbreviation).lower().replace(" ", "")
         super().save(*args, **kwargs)
 
     class Meta:
