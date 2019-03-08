@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django import forms
 
 from . import models
@@ -10,10 +11,10 @@ from .forms import RentalProjectForm
 # Feature Project Views
 
 
-class RentalProjectCreateView(LoginRequiredMixin, CreateView):
-    model = models.RentalProject
-    template_name = "rental_projects_new.html"
-    form_class = RentalProjectForm
+# class RentalProjectCreateView(LoginRequiredMixin, CreateView):
+#     model = models.RentalProject
+#     template_name = "rental_projects_new.html"
+#     form_class = RentalProjectForm
 
 
 class RentalProjectListView(LoginRequiredMixin, ListView):
@@ -56,3 +57,15 @@ class RentalProjectDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = "project"
     template_name = "rental_projects_delete.html"
     success_url = reverse_lazy("rental_projects:rental_projects_list", kwargs={"display_option":"all"})
+
+
+# Function Views
+
+@login_required
+def project_create_view(request):
+    form = RentalProjectForm
+    if request.method == "POST":
+        if form.is_valid():
+            
+
+    return render(request, 'rental_projects_new.html', {'form':form})

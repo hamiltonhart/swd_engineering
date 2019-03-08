@@ -16,16 +16,16 @@ class RentalProject(models.Model):
         ("IMAX 12", "IMAX 12"),
     )
 
-    ROOM_CHOICES = (
-        ("Stage 2", "Stage 2"),
-        ("Stage 3", "Stage 3"),
-        ("Stage 4", "Stage 4"),
-        ("Stage 5", "Stage 5"),
-        ("Stage 6", "Stage 6"),
-        ("Stage 7", "Stage 7"),
-        ("Bay 9", "Bay 9"),
-        ("Bay 14", "Bay 14"),
-    )
+    # ROOM_CHOICES = (
+    #     ("Stage 2", "Stage 2"),
+    #     ("Stage 3", "Stage 3"),
+    #     ("Stage 4", "Stage 4"),
+    #     ("Stage 5", "Stage 5"),
+    #     ("Stage 6", "Stage 6"),
+    #     ("Stage 7", "Stage 7"),
+    #     ("Bay 9", "Bay 9"),
+    #     ("Bay 14", "Bay 14"),
+    # )
 
     title = models.CharField(max_length=200)
     abbreviation = models.CharField(max_length=50, blank=True)
@@ -41,6 +41,11 @@ class RentalProject(models.Model):
     ms_pass = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Password')
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
+
+    clients = models.ManyToManyField("contacts.Contact", through="project_clients.ProjectClient")
+    rental_drives = models.ManyToManyField("harddrives.RentalDrive", through="project_drives.ProjectDrive")
+    rooms = models.ManyToManyField("rooms.Room", through="project_rooms.ProjectRoom")
+
     # room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files

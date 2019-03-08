@@ -16,10 +16,11 @@ class RentalProjectForm(forms.ModelForm):
             'ms_user',
             'ms_pass',
             'channel_config',
-            # 'room',
             'start_date',
             'additional_info',
-            # 'clients',
+            'clients',
+            'rooms',
+            'rental_drives',
             
         ]
         widgets = {
