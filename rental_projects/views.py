@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,14 +7,24 @@ from django import forms
 
 from . import models
 from .forms import RentalProjectForm
+# RentalProjectAddClientForm
+
+from project_clients.models import ProjectClient
+from project_drives.models import ProjectDrive
+from project_rooms.models import ProjectRoom
+# from contacts.models import Contact
+
+from project_clients.forms import ProjectClientForm
+from project_drives.forms import ProjectDriveForm
+from project_rooms.forms import ProjectRoomForm
 
 # Feature Project Views
 
 
-# class RentalProjectCreateView(LoginRequiredMixin, CreateView):
-#     model = models.RentalProject
-#     template_name = "rental_projects_new.html"
-#     form_class = RentalProjectForm
+class RentalProjectCreateView(LoginRequiredMixin, CreateView):
+    model = models.RentalProject
+    template_name = "rental_projects_new.html"
+    form_class = RentalProjectForm
 
 
 class RentalProjectListView(LoginRequiredMixin, ListView):
@@ -62,10 +72,38 @@ class RentalProjectDeleteView(LoginRequiredMixin, DeleteView):
 # Function Views
 
 @login_required
-def project_create_view(request):
-    form = RentalProjectForm
+def project_detail_view(request, pk):
+    
+    project = models.RentalProject.objects.get(pk=pk)
     if request.method == "POST":
-        if form.is_valid():
-            
+        
+        add_client_form = ProjectClientForm(request.POST)
+        add_drive_form = ProjectDriveForm(request.POST)
+        add_room_form = ProjectRoomForm(request.POST)
 
-    return render(request, 'rental_projects_new.html', {'form':form})
+        if add_client_form.is_valid():
+            client = add_client_form.cleaned_data['client']
+            client_role = add_client_form.cleaned_data['client_role']
+            ProjectClient.objects.create(client=client, project=project, client_role=client_role)
+        elif add_drive_form.is_valid():
+            drive = add_drive_form.cleaned_data['drive']
+            ProjectDrive.objects.create(drive=drive, project=project)
+        elif add_room_form.is_valid():
+            room = add_room_form.cleaned_data['room']
+            ProjectRoom.objects.create(room=room, project=project)
+
+        return HttpResponseRedirect(f'/rental_projects/{pk}/')    
+    
+    add_client_form = ProjectClientForm()
+    add_drive_form = ProjectDriveForm()
+    add_room_form = ProjectRoomForm()
+
+    context_dict = {
+        'project':project,
+        'add_client_form':add_client_form,
+        'add_drive_form':add_drive_form,
+        'add_room_form':add_room_form,
+    }
+
+
+    return render(request, 'rental_projects_detail.html', context_dict)

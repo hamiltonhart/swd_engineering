@@ -4,9 +4,11 @@ from . import views
 app_name = "rental_projects"
 
 urlpatterns = [
-    path('new/', views., name="rental_projects_create"),
+    path('new/', views.RentalProjectCreateView.as_view(), name="rental_projects_create"),
     path('list/<str:display_option>/', views.RentalProjectListView.as_view(), name="rental_projects_list"),
-    path('<int:pk>/', views.RentalProjectDetailView.as_view(), name="rental_projects_detail"),
+    # path('<int:pk>/', views.RentalProjectDetailView.as_view(), name="rental_projects_detail"),
     path("update/<int:pk>/", views.RentalProjectUpdateView.as_view(), name="rental_projects_update"),
     path("delete/<int:pk>/", views.RentalProjectDeleteView.as_view(), name="rental_projects_delete"),
+    path('<int:pk>/', views.project_detail_view, name="rental_projects_detail"),
+    # path('new/', views.project_create_view, name="rental_projects_create"),
 ]

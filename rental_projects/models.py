@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.urls import reverse
 
+import datetime
 
 
 class RentalProject(models.Model):
@@ -42,15 +43,15 @@ class RentalProject(models.Model):
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
 
-    clients = models.ManyToManyField("contacts.Contact", through="project_clients.ProjectClient")
-    rental_drives = models.ManyToManyField("harddrives.RentalDrive", through="project_drives.ProjectDrive")
-    rooms = models.ManyToManyField("rooms.Room", through="project_rooms.ProjectRoom")
+    # clients = models.ManyToManyField("contacts.Contact", through="project_clients.ProjectClient")
+    # rental_drives = models.ManyToManyField("harddrives.RentalDrive", through="project_drives.ProjectDrive")
+    # rooms = models.ManyToManyField("rooms.Room", through="project_rooms.ProjectRoom")
 
     # room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     
-    start_date = models.DateField(default=timezone.now())
+    start_date = models.DateField(default=datetime.date.today)
     mixing_complete_date = models.DateField(blank=True, null=True)
     project_complete_date = models.DateField(blank=True, null=True)
 

@@ -18,9 +18,9 @@ class RentalProjectForm(forms.ModelForm):
             'channel_config',
             'start_date',
             'additional_info',
-            'clients',
-            'rooms',
-            'rental_drives',
+            # 'clients',
+            # 'rooms',
+            # 'rental_drives',
             
         ]
         widgets = {
@@ -28,3 +28,13 @@ class RentalProjectForm(forms.ModelForm):
             'season': forms.TextInput(),
             'protools_vers': forms.TextInput(),
         }
+
+# class RentalProjectAddClientForm(forms.ModelForm):
+#     class Meta:
+#         model = RentalProject
+#         fields = [
+#             'clients',
+#         ]
+        # widgets = {
+        #     'clients': forms.Select(),
+        # }

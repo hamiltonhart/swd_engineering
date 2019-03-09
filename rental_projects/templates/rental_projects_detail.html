@@ -18,6 +18,7 @@
                 <h3>Season {{project.season}}</h3>
             {% endif %}
     </div> 
+
     <!-- .page-heading end -->
 <div class="color-page-white page-area">
     <p class="section-header">Basic Information</p>
@@ -25,7 +26,21 @@
         <p>Abbreviation:</p>
         <p>{{ project.abbreviation}}</p>
         <p>Room:</p>
-        <p>{{project.room}}</p>
+        {% if project.rental_rooms.all %}
+            {% for room in project.rental_rooms.all %}
+                <p>{{room.room}}</p>
+            {% endfor %}
+                
+        {% else %}
+            <p>------</p>
+            <p><form method="POST">
+                {% csrf_token %}
+                {{add_room_form}}
+
+                <input type="submit" value="Add">
+            </form></p>  
+        {% endif %}
+        
         <p>Channel Configuration:</p>
         <p>{{project.channel_config}}</p>
     </div>
@@ -36,10 +51,16 @@
     <div class="client-list">
         {% for client in project.rental_clients.all %}
             <div class="client-flex">
-                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client}}</a></h2>
-                <p>{{client.client_role}}</p>
+                <h2><a href="{% url 'contacts:contacts_detail' client.pk %}">{{client.client}}</a></h2>
+                <p>{{ client.client_role }}</p>
             </div>
         {% endfor %}
+        <form method="POST">
+            {% csrf_token %}
+            {{add_client_form}}
+
+            <input type="submit" value="Add">
+        </form>
     </div>
 </div>
 
@@ -62,9 +83,16 @@
         <div class="page-area-info">
             {% for drive in project.rental_drives.all %}
                 <div class="client-flex">
-                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive}}</a></h2>
+                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
                 </div>
             {% endfor %}
+
+            <p><form method="POST">
+                    {% csrf_token %}
+                    {{add_drive_form}}
+        
+                    <input type="submit" value="Add">
+                </form></p> 
         </div>
     </div>
         
