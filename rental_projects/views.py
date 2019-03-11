@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 
 from . import models
-from .forms import RentalProjectForm
+from .forms import RentalProjectForm, RentalProjectCompletedForm, RentalProjectBackupForm, RentalProjectCompletedForm
 # RentalProjectAddClientForm
 
 from project_clients.models import ProjectClient
@@ -14,8 +14,8 @@ from project_drives.models import ProjectDrive
 from project_rooms.models import ProjectRoom
 # from contacts.models import Contact
 
-from project_clients.forms import ProjectClientForm
-from project_drives.forms import ProjectDriveForm
+from project_clients.forms import ProjectClientForm, ProjectClientDeleteForm
+from project_drives.forms import ProjectDriveForm, ProjectDriveDeleteForm
 from project_rooms.forms import ProjectRoomForm
 
 # Feature Project Views
@@ -36,7 +36,7 @@ class RentalProjectListView(LoginRequiredMixin, ListView):
         if self.kwargs["display_option"] == "all" or self.kwargs["display_option"] == '':
             return models.RentalProject.objects.all().order_by('title')
         elif self.kwargs["display_option"] == "current":
-            return models.RentalProject.objects.filter(mixing_complete_date=None)
+            return models.RentalProject.objects.filter(mixing_complete_date=None).order_by('title')
         elif self.kwargs["display_option"] == "51":
             return models.RentalProject.objects.filter(channel_config="5.1")
         elif self.kwargs["display_option"] == "71":
@@ -49,10 +49,10 @@ class RentalProjectListView(LoginRequiredMixin, ListView):
             return models.RentalProject.objects.filter(channel_config="IMAX 12")
 
 
-class RentalProjectDetailView(LoginRequiredMixin, DetailView):
-    model = models.RentalProject
-    template_name = "rental_projects_detail.html"
-    context_object_name = "project"
+# class RentalProjectDetailView(LoginRequiredMixin, DetailView):
+#     model = models.RentalProject
+#     template_name = "rental_projects_detail.html"
+#     context_object_name = "project"
 
 
 class RentalProjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -80,7 +80,8 @@ def project_detail_view(request, pk):
         add_client_form = ProjectClientForm(request.POST)
         add_drive_form = ProjectDriveForm(request.POST)
         add_room_form = ProjectRoomForm(request.POST)
-
+        complete_project_form = RentalProjectCompletedForm(request.POST)
+        
         if add_client_form.is_valid():
             client = add_client_form.cleaned_data['client']
             client_role = add_client_form.cleaned_data['client_role']
@@ -91,6 +92,11 @@ def project_detail_view(request, pk):
         elif add_room_form.is_valid():
             room = add_room_form.cleaned_data['room']
             ProjectRoom.objects.create(room=room, project=project)
+        elif complete_project_form.is_valid():
+            if project.mixing_complete_date:
+                project.mixing_incomplete()
+            else:
+                project.mixing_completed()
 
         return HttpResponseRedirect(f'/rental_projects/{pk}/')    
     
@@ -105,5 +111,49 @@ def project_detail_view(request, pk):
         'add_room_form':add_room_form,
     }
 
-
     return render(request, 'rental_projects_detail.html', context_dict)
+
+
+@login_required
+def delete_rental_project_drives(request, pk):
+    project = models.RentalProject.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = ProjectDriveDeleteForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['project_drives'].all().delete()
+
+            return HttpResponseRedirect("/rental_projects/list/all/")
+    
+    form = ProjectDriveDeleteForm()
+
+    context_dict = {
+        "form":form,
+        "project":project,
+    }
+
+    return render(request, "delete_rental_project_drives.html", context_dict)
+
+
+@login_required
+def rental_project_backup(request, pk):
+    project = models.RentalProject.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = RentalProjectBackupForm(request.POST)
+        if form.is_valid():
+            project.backup(request.user)
+
+            return HttpResponseRedirect(f'/rental_projects/list/all/')
+    
+    form = RentalProjectBackupForm()
+
+    context_dict = {
+        "form":form,
+        "project":project,
+    }
+
+    return render(request, 'rental_projects_backup.html', context_dict)
+
+
+

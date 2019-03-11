@@ -28,7 +28,7 @@ function getURL() {
     var querySelect = document.getElementById("query-select");
     var field_match = false;
     if (querySelect.name === "harddrive_filters"){
-        var harddrive_filters_fields = ["all", "available", "250", "500", "1TB", "2TB"];
+        var harddrive_filters_fields = ["all", "available", "in-use", "250", "500", "1TB", "2TB"];
         for (var i = 0; field_match == false; i++){
             if (window.location.pathname.includes(harddrive_filters_fields[i])){
                     querySelect.selectedIndex = i;

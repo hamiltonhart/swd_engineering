@@ -32,13 +32,12 @@
             {% endfor %}
                 
         {% else %}
-            <p>------</p>
-            <p><form method="POST">
+            <form method="POST">
                 {% csrf_token %}
                 {{add_room_form}}
 
                 <input type="submit" value="Add">
-            </form></p>  
+            </form>
         {% endif %}
         
         <p>Channel Configuration:</p>
@@ -51,16 +50,19 @@
     <div class="client-list">
         {% for client in project.rental_clients.all %}
             <div class="client-flex">
-                <h2><a href="{% url 'contacts:contacts_detail' client.pk %}">{{client.client}}</a></h2>
+                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client.client}}</a></h2>
                 <p>{{ client.client_role }}</p>
             </div>
         {% endfor %}
-        <form method="POST">
-            {% csrf_token %}
-            {{add_client_form}}
+        
+            <div class="section-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{add_client_form}}
 
-            <input type="submit" value="Add">
-        </form>
+                    <input type="submit" value="Add">
+                </form>
+        </div>
     </div>
 </div>
 
@@ -81,19 +83,34 @@
 <div class="color-light-grey page-area">
         <p class="section-header">Drives</p>
         <div class="page-area-info">
-            {% for drive in project.rental_drives.all %}
-                <div class="client-flex">
-                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
-                </div>
-            {% endfor %}
+            {% if project.number_of_systems %}
+                
+                <h2>{{project.number_of_systems}} drives used.</h2>
+            
+            {% elif project.rental_drives.all %}
+                
+                {% for drive in project.rental_drives.all %}
+                    <div class="client-flex">
+                        <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
+                    </div>
+                {% endfor %}
 
-            <p><form method="POST">
+            {% else %}
+                    <h2>No Drives Assigned</h2>
+            {% endif %}
+            
+            
+            
+            
+        </div>
+            <div class="section-form">
+                <form method="POST">
                     {% csrf_token %}
                     {{add_drive_form}}
         
                     <input type="submit" value="Add">
-                </form></p> 
-        </div>
+                </form>
+            </div>
     </div>
         
 <div class="color-page-white page-area">
@@ -130,8 +147,30 @@
             </div>
         </div>
 
-<div class="page-bottom-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Update</a>
+        <div class="color-page-white page-area">
+            <p class="section-header">Media Shuttle</p>
+            <div class="page-area-info">
+                <p><a href="#">Edit MS</a></p>
+                <p>Client Name</p>
+                <p>Media Shuttle IP</p>
+            </div>
+        </div>
+    
+
+
+        <div class="page-bottom-btns">
+
+    <form method=POST>  <!-- Needs formatting and isn't working -->
+        {% csrf_token %}
+
+        {% if project.mixing_complete_date %}
+            <input class="btn" type="submit" value="Incomplete"> 
+        {% else %}   
+            <input class="btn" type="submit" value="Complete">
+        {% endif %}
+    </form>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.pk %}">Backup</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
     <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
 </div>
 

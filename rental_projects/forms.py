@@ -29,12 +29,14 @@ class RentalProjectForm(forms.ModelForm):
             'protools_vers': forms.TextInput(),
         }
 
-# class RentalProjectAddClientForm(forms.ModelForm):
-#     class Meta:
-#         model = RentalProject
-#         fields = [
-#             'clients',
-#         ]
-        # widgets = {
-        #     'clients': forms.Select(),
-        # }
+class RentalProjectCompletedForm(forms.ModelForm):
+    class Meta:
+        model = RentalProject
+        fields = []
+
+
+class RentalProjectBackupForm(forms.ModelForm):
+    class Meta:
+        model = RentalProject
+        fields = []
+

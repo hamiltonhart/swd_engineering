@@ -305,6 +305,8 @@ ul, h1, h2, h3, h4, h5 {
     display: flex;
     margin: 2em 0;
     font-size: 1.1em;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .confirm-btn {
@@ -386,6 +388,41 @@ ul, h1, h2, h3, h4, h5 {
     margin-left: 1em;
     font-size: 1.25em;
 }
+
+
+.section-form {
+    margin: 2em 0;
+}
+
+.section-form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .remove-btn,
+.remove-btn::before,
+.remove-btn::after {
+    display: inline-block;
+    height: 2px;
+    width: 2em;
+    background-color: var(--page-dark-red);
+    position: relative;
+}
+
+.remove-btn::before,
+.remove-btn::after {
+    display: absolute;
+    content: "";
+}
+
+.remove-btn::before {
+    transform: rotate(45deg);
+}
+
+.remove-btn::after {
+    transform: rotate(135deg);
+} */
 
 /* Forms */
 

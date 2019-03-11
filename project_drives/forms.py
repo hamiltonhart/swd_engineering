@@ -12,3 +12,8 @@ class ProjectDriveForm(forms.ModelForm):
         model = ProjectDrive
         fields = ["drive"]
         
+
+class ProjectDriveDeleteForm(forms.ModelForm):
+    class Meta:
+        model = ProjectDrive
+        fields = []

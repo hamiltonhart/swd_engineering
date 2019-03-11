@@ -13,6 +13,7 @@
         <select name="harddrive_filters" id="query-select" class="query-select" onChange=selectCallLink()>
             <option value="{% url 'harddrives:harddrives_list' 'all' %}">All Drives</option>
             <option value="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</option>
+            <option value="{% url 'harddrives:harddrives_list' 'in-use' %}">In Use Drives</option>
             <option value="{% url 'harddrives:harddrives_list' '250GB' %}">250GB</option>
             <option value="{% url 'harddrives:harddrives_list' '500GB' %}">500GB</option>
             <option value="{% url 'harddrives:harddrives_list' '1TB' %}">1TB</option>

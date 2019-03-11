@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{project.title}} Media Shuttle{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<div class="page-top-btns">
+    <a class="btn" href="#">Add Client</a>
+</div>
+
+
+{% for project_client in project_clients %}
+    <a href="">{{ project_client.client }}</a>
+    
+    
+{% endfor %}
+    
+
+
+
+{% endblock bodyblock %}
+
+{% block scriptblock %}
+
+{% endblock scriptblock %}

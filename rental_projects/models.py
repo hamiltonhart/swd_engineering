@@ -82,17 +82,27 @@ class RentalProject(models.Model):
         return reverse("rental_projects:rental_projects_detail", kwargs={"pk": self.pk})
     
 
-    def mixing_completed(self):
+    def mixing_completed(self, user):
         self.mixing_complete_date = timezone.now()
-        self.mixing_completed_by = get_user_model()
+        self.mixing_completed_by = user
         self.save()
 
-    def backup(self):
+    def mixing_incomplete(self):
+        self.mixing_complete_date = None
+        self.mixing_completed_by = None
+        self.save()
+
+    def backup(self, user):
         self.project_complete_date = timezone.now()
-        self.project_complete_by = get_user_model()
+        self.project_complete_by = user
         self.number_of_systems = len(self.rental_drives.all())
         for drive in self.rental_drives.all():
             drive.delete()
+
+        if not self.mixing_complete_date:
+            self.mixing_completed()
+        else:
+            self.save()
 
     def save(self, *args, **kwargs):
         self.title = str(self.title).title()

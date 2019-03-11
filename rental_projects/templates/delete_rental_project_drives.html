@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Remove Drive{% endblock titleblock %}
+
+{% block bodyblock %}
+<form method="POST">
+    {% csrf_token %}
+    
+        <h2>Which drives would you like to remove from {{ project.title }}?</h2>
+
+        
+        {% for project_drive in project.rental_drives.all %}
+            
+            <p><input type="checkbox" name="project_drives" value="{{ project_drive }}"> {{ project_drive.drive }}</p>
+
+        {% endfor %}
+    
+    <div class="page-bottom-btns">
+        <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_detail' project.pk %}">Cancel</a>
+        <input class="btn delete-btn" type="submit" value="Remove">
+    </div>
+
+</form>
+
+  
+{% endblock bodyblock %}
