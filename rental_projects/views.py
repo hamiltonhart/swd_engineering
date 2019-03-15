@@ -75,6 +75,7 @@ class RentalProjectDeleteView(LoginRequiredMixin, DeleteView):
 def project_detail_view(request, pk):
     
     project = models.RentalProject.objects.get(pk=pk)
+    project_rooms = ProjectRoom.objects.filter(project=project)
     if request.method == "POST":
         
         add_client_form = ProjectClientForm(request.POST)
@@ -91,7 +92,12 @@ def project_detail_view(request, pk):
             ProjectDrive.objects.create(drive=drive, project=project)
         elif add_room_form.is_valid():
             room = add_room_form.cleaned_data['room']
-            ProjectRoom.objects.create(room=room, project=project)
+            try:
+                edit_room = ProjectRoom.objects.get(room=room, project=project)
+                edit_room.primary_room = True
+                edit_room.save()
+            except:
+                ProjectRoom.objects.create(room=room, project=project, primary_room=True)
         elif complete_project_form.is_valid():
             if project.mixing_complete_date:
                 project.mixing_incomplete()
@@ -104,11 +110,17 @@ def project_detail_view(request, pk):
     add_drive_form = ProjectDriveForm()
     add_room_form = ProjectRoomForm()
 
+    current_primary = None
+    for room in project_rooms:
+        if room.primary_room:
+            current_primary = room
+
     context_dict = {
         'project':project,
         'add_client_form':add_client_form,
         'add_drive_form':add_drive_form,
         'add_room_form':add_room_form,
+        'current_primary':current_primary,
     }
 
     return render(request, 'rental_projects_detail.html', context_dict)

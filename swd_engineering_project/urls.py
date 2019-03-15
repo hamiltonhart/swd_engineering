@@ -23,5 +23,6 @@ urlpatterns = [
     path('rental_projects/', include('rental_projects.urls')),
     path('project_drives/', include('project_drives.urls')),
     path('media_shuttle/', include('project_clients.urls')),
+    path('project_rooms/', include('project_rooms.urls')),
     path('users/', include('django.contrib.auth.urls')),
 ]

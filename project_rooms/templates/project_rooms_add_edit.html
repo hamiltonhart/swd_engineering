@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{ project.title }} Rooms{% endblock titleblock %}
+
+{% block bodyblock %}
+<div class="page-top-btns">
+        <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}</a>
+        
+    </div>
+    
+        <!-- <div class="page-heading">
+            <h1>{{project.title}}</h1>
+                {% if project.season %}
+                    <h3>Season {{project.season}}</h3>
+                {% endif %}
+        </div>  -->
+    
+        <!-- .page-heading end -->
+    <div class="color-light-grey page-area">
+        <div class="flex-header">
+            <p class="section-header">Project Rooms</p>
+        </div>
+        <div class="text-emphasis">
+            
+            {% for room in project_rooms %}
+            {% if room.primary_room %}
+                <div class="client-flex">
+                    <p class="text-emphasis-bold">{{ room.room }}</p>
+                </div>
+                {% else %}
+                <div class="client-flex">
+                    <p>{{ room.room }}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+             
+        </div>
+        <div class="section-form">
+            <form class="form-flex-column" method="POST">
+                {% csrf_token %}
+                <div class="form-bottom">
+                    <div class="form-field">
+                        {{ form.room.label_tag }}
+                        {{ form.room }}
+                    </div>
+                    <div class="form-field">
+                        {{ form.primary_room.label_tag }}
+                        {{ form.primary_room }}
+                    </div>
+                </div>
+                <div class="bottom-form-btns">
+                    <input class="btn btn-sm form-field" name="add_edit" type="submit" value="Add/Edit">
+                    <input class="btn btn-sm form-field" name="remove" type="submit" value="Remove">
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock bodyblock %}
