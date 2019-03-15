@@ -8,7 +8,7 @@
 {% block bodyblock %}
 
 <div class="page-top-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">Rentals List</a>
     <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">Add New Rental</a>
 </div>
 
@@ -21,21 +21,22 @@
 
     <!-- .page-heading end -->
 <div class="color-page-white page-area">
-    <p class="section-header">Basic Information</p>
+    <div class="flex-header">
+        <p class="section-header">Basic Information</p>
+        <a href="{% url 'project_rooms:project_rooms_add_edit' project.pk %}">Add/Edit Rooms</a>
+    </div>
     <div class="page-area-info">
         <p>Abbreviation:</p>
         <p>{{ project.abbreviation}}</p>
         <p>Room:</p>
-        {% if project.rental_rooms.all %}
-            {% for room in project.rental_rooms.all %}
-                <p>{{room.room}}</p>
-            {% endfor %}
+        {% if current_primary %}
+            <p>{{current_primary.room}}</p>
                 
         {% else %}
             <form method="POST">
                 {% csrf_token %}
                 {{add_room_form}}
-
+                <input name="primary_room" type="hidden" value="True">
                 <input type="submit" value="Add">
             </form>
         {% endif %}
@@ -63,7 +64,7 @@
                     {% csrf_token %}
                     {{add_client_form}}
 
-                    <input type="submit" value="Add">
+                    <input class="btn btn-sm" type="submit" value="Add">
                 </form>
                 
         </div>

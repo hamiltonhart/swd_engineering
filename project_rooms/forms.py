@@ -10,3 +10,12 @@ class ProjectRoomForm(forms.ModelForm):
     class Meta:
         model = ProjectRoom
         fields = ['room']
+
+class ProjectRoomAddEditRemoveForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectRoomAddEditRemoveForm, self).__init__(*args, **kwargs)
+        self.fields["room"].queryset = self.fields["room"].queryset.order_by('name')
+
+    class Meta:
+        model = ProjectRoom
+        fields = ['room', 'primary_room']
