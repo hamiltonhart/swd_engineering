@@ -44,15 +44,20 @@ class ProjectClient(models.Model):
     objects = ProjectClientManager()
 
     def __str__(self):
-        return f'{str(self.client)} - {str(self.project)}'
+        return f'{str(self.client)}'
 
     class Meta:
         unique_together = (('client', 'project'))
 
 
 class ClientMediaShuttle(models.Model):
-    project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE, related_name="media_shuttle_ips")
-    client_ms = models.CharField(max_length=10)
+    project_client = models.ForeignKey(ProjectClient, on_delete=models.CASCADE, related_name="ms_rooms", verbose_name="client")
+    project_room = models.ForeignKey('project_rooms.ProjectRoom', on_delete=models.CASCADE, related_name="ms_clients", verbose_name="room")
+    project = models.ForeignKey('rental_projects.RentalProject', on_delete=models.CASCADE, related_name="ms_clients", verbose_name="project")
+    client_ms = models.CharField(max_length=50, verbose_name="IP", blank=True)
 
     def __str__(self):
         return f'{str(self.project_client)} - {self.client_ms}'
+
+    class Meta:
+        unique_together = (('project', 'client_ms'))

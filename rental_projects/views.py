@@ -96,7 +96,7 @@ def project_detail_view(request, pk):
             if project.mixing_complete_date:
                 project.mixing_incomplete()
             else:
-                project.mixing_completed()
+                project.mixing_completed(request.user)
 
         return HttpResponseRedirect(f'/rental_projects/{pk}/')    
     

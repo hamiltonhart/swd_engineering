@@ -1,23 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block titleblock %}{{project.title}} Media Shuttle{% endblock titleblock %}
+{% block titleblock %}{{project.title}}: Media Shuttle{% endblock titleblock %}
 
 {% block bodyblock %}
 
 <div class="page-top-btns">
-    <a class="btn" href="#">Add Client</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.pk %}">Back to Project</a>
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add Client</a>
 </div>
 
+<h1 class="page-heading-attn">10.254.129.250</h1>
 
-{% for project_client in project_clients %}
-    <a href="">{{ project_client.client }}</a>
-    
-    
-{% endfor %}
-    
+{% for room in project_rooms %}
+    <div class="color-light-grey page-area">
+        <div class="flex-header">
+            <p class="section-header">{{ room.room }}</p>
+        </div>
 
+        <div class="color-page-white page-area instructions">
+            <div class="instruction">
+                <p>IP Range: </p><h3 class="box-highlight text-emphasis">{{ room.room.media_shuttle_ip_range }}</h3>
+            </div>
+            <div class="instruction">
+                <p>Subnet: </p><h3>{{ room.room.media_shuttle_subnet }}</h3>
+            </div>
+            <div class="instruction">
+                <p>Router: </p><h3>{{ room.room.media_shuttle_host }}</h3>
+            </div>
+        </div>
+         
+        <div class="">
+            
+            {% for client in ms_clients %}
+            
+                    {% if client.project_room == room %}
+                    <div class="client-flex">
+                        <h2><a href="{% url 'contacts:contacts_detail' client.project_client.client.pk %}">{{ client.project_client.client }}</a></h2>
+                        <!-- <div class="sub-info"> -->
+                            <p>{{ client.project_client.client_role }}</p>
+                            <p>{{ client.client_ms }}</p>
+                        
+                        </div>
+                    {% endif %}  <!-- client.project_room == room -->
+                
+            {% endfor %} <!-- client in ms_clients -->
+        
+    </div>
+    <div class="section-form">
+            <form class="form-flex-column" method="POST">
+                {% csrf_token %}
+                <div class="form-bottom">
+                <div class="form-field">
+                    <p>{{ form.project_client.label_tag }}</p>
+                    <p>{{ form.project_client }}</p>
+                </div>
+                <div class="form-field">
+                        <p>{{ form.client_ms.label_tag }}</p>
+                        <p>{{ form.client_ms }}</p>
+                    </div>
+                </div>
+                <input type="hidden" name="project_room" value="{{ room.pk }}">
+                <div class="bottom-form-btns">
+                    <input class="btn btn-sm form-field" name="add_edit" type="submit" value="Add/Edit">
+                    <input class="btn btn-sm form-field" name="delete" type="submit" value="Delete">
+                </div>
+            </form>
+    </div>
+    </div>  
+    
+{% endfor %} <!-- room in project_rooms -->
 
+     
 
 {% endblock bodyblock %}
 

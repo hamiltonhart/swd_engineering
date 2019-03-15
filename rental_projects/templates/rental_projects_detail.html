@@ -46,7 +46,10 @@
 </div>
     
 <div class="color-light-grey page-area">
-    <p class="section-header">Clients</p>
+    <div class="flex-header">
+        <p class="section-header">Clients</p>
+        <a href="{% url 'project_clients:project_clients_ms_list' project.pk %}">Media Shuttle Setup</a>
+    </div>
     <div class="client-list">
         {% for client in project.rental_clients.all %}
             <div class="client-flex">
@@ -62,6 +65,7 @@
 
                     <input type="submit" value="Add">
                 </form>
+                
         </div>
     </div>
 </div>
@@ -98,9 +102,7 @@
             {% else %}
                     <h2>No Drives Assigned</h2>
             {% endif %}
-            
-            
-            
+
             
         </div>
             <div class="section-form">
@@ -147,20 +149,9 @@
             </div>
         </div>
 
-        <div class="color-page-white page-area">
-            <p class="section-header">Media Shuttle</p>
-            <div class="page-area-info">
-                <p><a href="#">Edit MS</a></p>
-                <p>Client Name</p>
-                <p>Media Shuttle IP</p>
-            </div>
-        </div>
-    
-
-
         <div class="page-bottom-btns">
 
-    <form method=POST>  <!-- Needs formatting and isn't working -->
+    <form method=POST>  <!-- Needs formatting -->
         {% csrf_token %}
 
         {% if project.mixing_complete_date %}

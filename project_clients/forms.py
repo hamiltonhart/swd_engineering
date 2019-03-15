@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import ProjectClient
+from .models import ProjectClient, ClientMediaShuttle
 
 
 class ProjectClientForm(forms.ModelForm):
@@ -17,3 +17,11 @@ class ProjectClientDeleteForm(forms.ModelForm):
     class Meta:
         model = ProjectClient
         fields = []
+
+class ClientMediaShuttleForm(forms.ModelForm):
+    class Meta:
+        model = ClientMediaShuttle
+        fields = [
+            "project_client",
+            "client_ms",
+        ]
