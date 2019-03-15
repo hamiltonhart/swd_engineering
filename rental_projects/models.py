@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.urls import reverse
 
+import datetime
+
 
 class RentalProject(models.Model):
     CHANNEL_CONFIG_CHOICES = (
@@ -13,17 +15,6 @@ class RentalProject(models.Model):
         ("DTS", "DTS"),
         ("IMAX 6", "IMAX 6"),
         ("IMAX 12", "IMAX 12"),
-    )
-
-    ROOM_CHOICES = (
-        ("Stage 2", "Stage 2"),
-        ("Stage 3", "Stage 3"),
-        ("Stage 4", "Stage 4"),
-        ("Stage 5", "Stage 5"),
-        ("Stage 6", "Stage 6"),
-        ("Stage 7", "Stage 7"),
-        ("Bay 9", "Bay 9"),
-        ("Bay 14", "Bay 14"),
     )
 
     title = models.CharField(max_length=200)
@@ -40,11 +31,11 @@ class RentalProject(models.Model):
     ms_pass = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Password')
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
-    room = models.CharField(max_length=100, choices=ROOM_CHOICES, blank=True, null=True)
+
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     
-    start_date = models.DateField(default=timezone.now())
+    start_date = models.DateField(default=datetime.date.today)
     mixing_complete_date = models.DateField(blank=True, null=True)
     project_complete_date = models.DateField(blank=True, null=True)
 
@@ -75,30 +66,40 @@ class RentalProject(models.Model):
         return reverse("rental_projects:rental_projects_detail", kwargs={"pk": self.pk})
     
 
-    def mixing_completed(self):
+    def mixing_completed(self, user):
         self.mixing_complete_date = timezone.now()
-        self.mixing_completed_by = get_user_model()
+        self.mixing_completed_by = user
         self.save()
 
-    def backup(self):
+    def mixing_incomplete(self):
+        self.mixing_complete_date = None
+        self.mixing_completed_by = None
+        self.save()
+
+    def backup(self, user):
         self.project_complete_date = timezone.now()
-        self.project_complete_by = get_user_model()
+        self.project_complete_by = user
         self.number_of_systems = len(self.rental_drives.all())
         for drive in self.rental_drives.all():
             drive.delete()
 
+        if not self.mixing_complete_date:
+            self.mixing_completed(user)
+        else:
+            self.save()
+
     def save(self, *args, **kwargs):
-        self.title = str(self.title).capitalize()
+        self.title = str(self.title).title()
         if not self.abbreviation:
-            self.abbreviation = str(self.title).lower().strip()
+            self.abbreviation = str(self.title).lower().replace(" ", "")
         if not self.drive_user:
-            self.drive_user = self.abbreviation
+            self.drive_user = str(self.abbreviation).lower().replace(" ", "")
         if not self.drive_pass:
-            self.drive_pass = self.abbreviation
+            self.drive_pass = str(self.abbreviation).lower().replace(" ", "")
         if not self.ms_user:
-            self.ms_user = self.abbreviation
+            self.ms_user = str(self.abbreviation).lower().replace(" ", "")
         if not self.ms_pass:
-            self.ms_pass = self.abbreviation
+            self.ms_pass = str(self.abbreviation).lower().replace(" ", "")
         super().save(*args, **kwargs)
 
     class Meta:

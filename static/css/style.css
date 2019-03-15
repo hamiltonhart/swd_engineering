@@ -289,6 +289,12 @@ ul, h1, h2, h3, h4, h5 {
     border-radius: var(--btn-radius);
 }
 
+.btn-sm {
+    font-size: .85em;
+    text-align: center;
+    padding: 7px 10px;
+}
+
 .page-top-btns {
     display:flex;
     justify-content: space-between;
@@ -305,14 +311,14 @@ ul, h1, h2, h3, h4, h5 {
     display: flex;
     margin: 2em 0;
     font-size: 1.1em;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .confirm-btn {
     color: var(--page-white);
     background-color: #E41E31;
     background-image: linear-gradient(to top right, #E41E31, #7E0000);
-    
-    
 }
 
 .cancel-btn {
@@ -330,6 +336,13 @@ ul, h1, h2, h3, h4, h5 {
 
 .page-heading {
     font-size: 1.5em;
+}
+
+.page-heading-attn {
+    display: flex;
+    justify-content: center;
+    font-size: 2em;
+    margin-bottom: .75em;
 }
 
 .page-heading h3 {
@@ -372,18 +385,58 @@ ul, h1, h2, h3, h4, h5 {
     color: var(--page-dark-red);
 }
 
+.flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.client-list {
+    margin-top: 0;
+}
+
 .client-flex {
     display: flex;
     align-items: center;
     margin: 1em;
 }
 
-.client-flex a {
+.client-flex a,
+.flex-header a {
     color: var(--page-dark-red);
+}
+
+.flex-header a {
+    font-size: 1.5em;
 }
 
 .client-flex p {
     margin-left: 1em;
+    font-size: 1.25em;
+}
+
+.sub-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    align-content: space-around;
+}
+
+.instructions {
+    text-align: center;
+}
+
+.instruction {
+    font-size: 1.3em;
+    margin: .7em;
+}
+
+.box-highlight {
+    border: 3px solid var(--page-dark-red);
+}
+
+.text-emphasis {
     font-size: 1.25em;
 }
 
@@ -435,6 +488,39 @@ select {
     margin-bottom: 10px;
 }
 
+.section-form {
+    margin: 2em 0;
+    font-size: 1.2em;
+}
+
+.section-form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-form input[type="text"] {
+    width: 33vw;
+}
+
+.section-form select {
+    width: 40vw;
+}
+
+.form-field {
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+}
+
+.form-bottom {
+    display: flex;
+}
+
+.form-flex-column {
+    flex-direction: column;
+
+
+}
 /* 
 label[for="id_first_name"] {
     grid-row: 1;

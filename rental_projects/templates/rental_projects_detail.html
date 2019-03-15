@@ -18,6 +18,7 @@
                 <h3>Season {{project.season}}</h3>
             {% endif %}
     </div> 
+
     <!-- .page-heading end -->
 <div class="color-page-white page-area">
     <p class="section-header">Basic Information</p>
@@ -25,21 +26,47 @@
         <p>Abbreviation:</p>
         <p>{{ project.abbreviation}}</p>
         <p>Room:</p>
-        <p>{{project.room}}</p>
+        {% if project.rental_rooms.all %}
+            {% for room in project.rental_rooms.all %}
+                <p>{{room.room}}</p>
+            {% endfor %}
+                
+        {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                {{add_room_form}}
+
+                <input type="submit" value="Add">
+            </form>
+        {% endif %}
+        
         <p>Channel Configuration:</p>
         <p>{{project.channel_config}}</p>
     </div>
 </div>
     
 <div class="color-light-grey page-area">
-    <p class="section-header">Clients</p>
+    <div class="flex-header">
+        <p class="section-header">Clients</p>
+        <a href="{% url 'project_clients:project_clients_ms_list' project.pk %}">Media Shuttle Setup</a>
+    </div>
     <div class="client-list">
         {% for client in project.rental_clients.all %}
             <div class="client-flex">
-                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client}}</a></h2>
-                <p>{{client.client_role}}</p>
+                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client.client}}</a></h2>
+                <p>{{ client.client_role }}</p>
             </div>
         {% endfor %}
+        
+            <div class="section-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{add_client_form}}
+
+                    <input type="submit" value="Add">
+                </form>
+                
+        </div>
     </div>
 </div>
 
@@ -60,12 +87,32 @@
 <div class="color-light-grey page-area">
         <p class="section-header">Drives</p>
         <div class="page-area-info">
-            {% for drive in project.rental_drives.all %}
-                <div class="client-flex">
-                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive}}</a></h2>
-                </div>
-            {% endfor %}
+            {% if project.number_of_systems %}
+                
+                <h2>{{project.number_of_systems}} drives used.</h2>
+            
+            {% elif project.rental_drives.all %}
+                
+                {% for drive in project.rental_drives.all %}
+                    <div class="client-flex">
+                        <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                    <h2>No Drives Assigned</h2>
+            {% endif %}
+
+            
         </div>
+            <div class="section-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{add_drive_form}}
+        
+                    <input type="submit" value="Add">
+                </form>
+            </div>
     </div>
         
 <div class="color-page-white page-area">
@@ -102,8 +149,19 @@
             </div>
         </div>
 
-<div class="page-bottom-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Update</a>
+        <div class="page-bottom-btns">
+
+    <form method=POST>  <!-- Needs formatting -->
+        {% csrf_token %}
+
+        {% if project.mixing_complete_date %}
+            <input class="btn" type="submit" value="Incomplete"> 
+        {% else %}   
+            <input class="btn" type="submit" value="Complete">
+        {% endif %}
+    </form>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.pk %}">Backup</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
     <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
 </div>
 

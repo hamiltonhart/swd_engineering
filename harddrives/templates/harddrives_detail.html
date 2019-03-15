@@ -18,8 +18,8 @@
     <div class="color-page-white page-area">
             <p class="section-header">Current Project</p>
         <div class="page-area-info">
-            {% if drive.rental_project.all %}
-            {% for project in drive.rental_project.all %}
+            {% if drive.rental_projects.all %}
+            {% for project in drive.rental_projects.all %}
                 <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.pk %}">
                     {{project.project}}
                 </a></p>
@@ -29,18 +29,18 @@
             {% endif %}
         </div>
     </div>
-    {% if drive.rental_project.all %}
+    {% if drive.rental_projects.all %}
         <div class="color-light-grey page-area">
             <p class="section-header">Other Project Drives</p>
             <div class="page-area-info">
                 
-                {% for project in drive.rental_project.all %}
+                {% for project in drive.rental_projects.all %}
                     {% for other_drive in project.project.rental_drives.all %}
-                        {% if other_drive.pk == drive.pk %}
+                        {% if other_drive.drive.pk == drive.pk %}
                           
                         {% else %}
                         <p><a href="{% url 'harddrives:harddrives_detail' other_drive.drive.pk %}">
-                            {{other_drive}}
+                            {{other_drive.drive}}
                         </a></p>
                         {% endif %}
                     {% endfor %}

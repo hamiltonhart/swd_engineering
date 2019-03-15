@@ -6,10 +6,10 @@ from django.urls import reverse
 
 class RentalDriveQueryset(models.query.QuerySet):
     def available(self):
-        return self.filter(Q(rental_project=None))
+        return self.filter(Q(rental_projects=None))
 
     def unavailable(self):
-        return self.filter(~Q(rental_project=None))
+        return self.filter(~Q(rental_projects=None))
 
 
 class RentalDriveManager(models.Manager):

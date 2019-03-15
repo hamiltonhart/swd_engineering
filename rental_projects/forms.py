@@ -16,10 +16,11 @@ class RentalProjectForm(forms.ModelForm):
             'ms_user',
             'ms_pass',
             'channel_config',
-            'room',
             'start_date',
             'additional_info',
             # 'clients',
+            # 'rooms',
+            # 'rental_drives',
             
         ]
         widgets = {
@@ -27,3 +28,15 @@ class RentalProjectForm(forms.ModelForm):
             'season': forms.TextInput(),
             'protools_vers': forms.TextInput(),
         }
+
+class RentalProjectCompletedForm(forms.ModelForm):
+    class Meta:
+        model = RentalProject
+        fields = []
+
+
+class RentalProjectBackupForm(forms.ModelForm):
+    class Meta:
+        model = RentalProject
+        fields = []
+
