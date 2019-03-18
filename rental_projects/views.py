@@ -77,31 +77,49 @@ def project_detail_view(request, pk):
     project = models.RentalProject.objects.get(pk=pk)
     project_rooms = ProjectRoom.objects.filter(project=project)
     if request.method == "POST":
-        
-        add_client_form = ProjectClientForm(request.POST)
-        add_drive_form = ProjectDriveForm(request.POST)
-        add_room_form = ProjectRoomForm(request.POST)
-        complete_project_form = RentalProjectCompletedForm(request.POST)
-        
-        if add_client_form.is_valid():
-            client = add_client_form.cleaned_data['client']
-            client_role = add_client_form.cleaned_data['client_role']
-            ProjectClient.objects.create(client=client, project=project, client_role=client_role)
-        elif add_drive_form.is_valid():
-            drive = add_drive_form.cleaned_data['drive']
-            ProjectDrive.objects.create(drive=drive, project=project)
-        elif add_room_form.is_valid():
-            room = add_room_form.cleaned_data['room']
-            try:
-                edit_room = ProjectRoom.objects.get(room=room, project=project)
-                edit_room.primary_room = True
-                edit_room.save()
-            except:
-                ProjectRoom.objects.create(room=room, project=project, primary_room=True)
-        elif complete_project_form.is_valid():
-            if project.mixing_complete_date:
-                project.mixing_incomplete()
-            else:
+        if "client_add_edit" in request.POST:
+            add_client_form = ProjectClientForm(request.POST)
+            if add_client_form.is_valid():
+                client = add_client_form.cleaned_data['client']
+                client_role = add_client_form.cleaned_data['client_role']
+                try:
+                    edit_client = ProjectClient.objects.get(client=client, project=project)
+                    edit_client.client_role = client_role
+                    edit_client.save()
+                except:
+                    ProjectClient.objects.create(client=client, project=project, client_role=client_role)
+        elif "client_remove" in request.POST:
+            add_client_form = ProjectClientForm(request.POST)
+            if add_client_form.is_valid():
+                client = add_client_form.cleaned_data['client']
+                try:
+                    client_to_delete = ProjectClient.objects.get(client=client, project=project)
+                    client_to_delete.delete()
+                except:
+                    pass
+        elif "drive_add" in request.POST:
+            add_drive_form = ProjectDriveForm(request.POST)
+            if add_drive_form.is_valid():
+                drive = add_drive_form.cleaned_data['drive']
+                ProjectDrive.objects.create(drive=drive, project=project)
+        elif "add_room" in request.POST:
+            add_room_form = ProjectRoomForm(request.POST)
+            if add_room_form.is_valid():
+                room = add_room_form.cleaned_data['room']
+                try:
+                    edit_room = ProjectRoom.objects.get(room=room, project=project)
+                    edit_room.primary_room = True
+                    edit_room.save()
+                except:
+                    ProjectRoom.objects.create(room=room, project=project, primary_room=True)
+        elif "project_incomplete" in request.POST:
+            complete_project_form = RentalProjectCompletedForm(request.POST)
+            if complete_project_form.is_valid():
+                if project.mixing_complete_date:
+                    project.mixing_incomplete()
+        elif "project_complete" in request.POST:
+            complete_project_form = RentalProjectCompletedForm(request.POST)
+            if complete_project_form.is_valid():
                 project.mixing_completed(request.user)
 
         return HttpResponseRedirect(f'/rental_projects/{pk}/')    
