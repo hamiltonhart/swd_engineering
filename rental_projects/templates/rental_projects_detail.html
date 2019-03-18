@@ -23,7 +23,7 @@
 <div class="color-page-white page-area">
     <div class="flex-header">
         <p class="section-header">Basic Information</p>
-        <a href="{% url 'project_rooms:project_rooms_add_edit' project.pk %}">Add/Edit Rooms</a>
+        <a href="{% url 'project_rooms:project_rooms_add_edit' project.pk %}">Room Details</a>
     </div>
     <div class="page-area-info">
         <p>Abbreviation:</p>
@@ -35,9 +35,9 @@
         {% else %}
             <form method="POST">
                 {% csrf_token %}
-                {{add_room_form}}
+                {{add_room_form.room}}
                 <input name="primary_room" type="hidden" value="True">
-                <input type="submit" value="Add">
+                <input name="add_room" class="btn btn-sm" type="submit" value="Add">
             </form>
         {% endif %}
         
@@ -49,7 +49,7 @@
 <div class="color-light-grey page-area">
     <div class="flex-header">
         <p class="section-header">Clients</p>
-        <a href="{% url 'project_clients:project_clients_ms_list' project.pk %}">Media Shuttle Setup</a>
+        <a href="{% url 'project_clients:project_clients_ms_list' project.pk %}">Media Shuttle Details</a>
     </div>
     <div class="client-list">
         {% for client in project.rental_clients.all %}
@@ -60,11 +60,22 @@
         {% endfor %}
         
             <div class="section-form">
-                <form method="POST">
+                <form class="form-flex-column" method="POST">
                     {% csrf_token %}
-                    {{add_client_form}}
-
-                    <input class="btn btn-sm" type="submit" value="Add">
+                    <div class="form-bottom">
+                        <div class="form-field">
+                            <p>{{add_client_form.client.label_tag}}</p>
+                            <p>{{add_client_form.client}}</p>
+                        </div>
+                        <div class="form-field">
+                                <p>{{add_client_form.client_role.label_tag}}</p>
+                                <p>{{add_client_form.client_role}}</p>
+                        </div>
+                    </div>
+                    <div class="bottom-form-btns">
+                        <input class="btn btn-sm" name="client_add_edit" type="submit" value="Add/Edit">
+                        <input class="btn btn-sm" name="client_remove" type="submit" value="Remove">
+                    </div>
                 </form>
                 
         </div>
@@ -109,11 +120,19 @@
             <div class="section-form">
                 <form method="POST">
                     {% csrf_token %}
-                    {{add_drive_form}}
+                    {{add_drive_form.drive}}
         
-                    <input type="submit" value="Add">
+                    <input class="btn btn-sm" name="drive_add" type="submit" value="Add">
                 </form>
             </div>
+            <!-- <div class="section-form">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{remove_drive_form.drive}}
+            
+                        <input class="btn btn-sm" name="drive_add" type="submit" value="Remove">
+                    </form>
+                </div> -->
     </div>
         
 <div class="color-page-white page-area">
@@ -156,9 +175,9 @@
         {% csrf_token %}
 
         {% if project.mixing_complete_date %}
-            <input class="btn" type="submit" value="Incomplete"> 
+            <input name="project_incomplete" class="btn btn-sm" type="submit" value="Incomplete"> 
         {% else %}   
-            <input class="btn" type="submit" value="Complete">
+            <input name="project_complete" class="btn btn-sm" type="submit" value="Complete">
         {% endif %}
     </form>
     <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.pk %}">Backup</a>
