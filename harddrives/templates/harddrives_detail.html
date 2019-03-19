@@ -20,7 +20,7 @@
         <div class="page-area-info">
             {% if drive.rental_projects.all %}
             {% for project in drive.rental_projects.all %}
-                <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.pk %}">
+                <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
                     {{project.project}}
                 </a></p>
             {% endfor %}

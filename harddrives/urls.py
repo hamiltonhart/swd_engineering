@@ -4,6 +4,7 @@ from . import views
 app_name = "harddrives"
 
 urlpatterns = [
+    path('', views.drive_redirect_list_view, name='drive_list_home'),
     path('new/', views.DriveCreateView.as_view(), name="harddrives_create"),
     path('list/<str:display_option>/', views.DriveListView.as_view(), name="harddrives_list"),
     path('<int:pk>/', views.DriveDetailView.as_view(), name="harddrives_detail"),

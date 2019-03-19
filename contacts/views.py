@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,3 +41,7 @@ class ContactDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "contacts_delete.html"
     success_url = reverse_lazy("contacts:contacts_list" "all")
     context_object_name = "contact"
+
+
+def contacts_redirect_list_view(request):
+    return HttpResponseRedirect(reverse('contacts:contacts_list', kwargs={'display_options':'all'}))

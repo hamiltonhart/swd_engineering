@@ -18,7 +18,7 @@ class RentalProject(models.Model):
     )
 
     title = models.CharField(max_length=200)
-    abbreviation = models.CharField(max_length=50, blank=True)
+    abbreviation = models.CharField(max_length=50, blank=True, unique=True)
 
     season = models.IntegerField(blank=True, null=True)
 
@@ -63,7 +63,7 @@ class RentalProject(models.Model):
             return self.title
 
     def get_absolute_url(self):
-        return reverse("rental_projects:rental_projects_detail", kwargs={"pk": self.pk})
+        return reverse("rental_projects:rental_projects_detail", kwargs={"abbr": self.abbreviation})
     
 
     def mixing_completed(self, user):
@@ -91,7 +91,12 @@ class RentalProject(models.Model):
     def save(self, *args, **kwargs):
         self.title = str(self.title).title()
         if not self.abbreviation:
-            self.abbreviation = str(self.title).lower().replace(" ", "")
+            abbr_title = str(self.title).lower().replace(" ", "")
+            if self.season:
+                abbr_season = str(self.season)
+                self.abbreviation = abbr_title + abbr_season
+            else:
+                self.abbreviation = str(self.title).lower().replace(" ", "")
         if not self.drive_user:
             self.drive_user = str(self.abbreviation).lower().replace(" ", "")
         if not self.drive_pass:

@@ -4,6 +4,7 @@ from . import views
 app_name = "contacts"
 
 urlpatterns = [
+    path('', views.contacts_redirect_list_view, name='contacts_list_home'),
     path('new/', views.ContactCreateView.as_view(), name="contacts_create"),
     path('list/<str:display_options>/', views.ContactListView.as_view(), name="contacts_list"),
     path('<int:pk>/', views.ContactDetailView.as_view(), name="contacts_detail"),
