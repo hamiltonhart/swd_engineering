@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -47,4 +47,5 @@ class DriveDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("harddrives:harddrives_list")
 
 
-
+def drive_redirect_list_view(request):
+    return HttpResponseRedirect(reverse('harddrives:harddrives_list', kwargs={'display_option': 'available'}))

@@ -23,7 +23,7 @@
 <div class="color-page-white page-area">
     <div class="flex-header">
         <p class="section-header">Basic Information</p>
-        <a href="{% url 'project_rooms:project_rooms_add_edit' project.pk %}">Room Details</a>
+        <a href="{% url 'project_rooms:project_rooms_add_edit' project.abbreviation %}">Room Details</a>
     </div>
     <div class="page-area-info">
         <p>Abbreviation:</p>
@@ -49,7 +49,7 @@
 <div class="color-light-grey page-area">
     <div class="flex-header">
         <p class="section-header">Clients</p>
-        <a href="{% url 'project_clients:project_clients_ms_list' project.pk %}">Media Shuttle Details</a>
+        <a href="{% url 'project_clients:project_clients_ms_list' project.abbreviation %}">Media Shuttle Details</a>
     </div>
     <div class="client-list">
         {% for client in project.rental_clients.all %}
@@ -125,14 +125,6 @@
                     <input class="btn btn-sm" name="drive_add" type="submit" value="Add">
                 </form>
             </div>
-            <!-- <div class="section-form">
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{remove_drive_form.drive}}
-            
-                        <input class="btn btn-sm" name="drive_add" type="submit" value="Remove">
-                    </form>
-                </div> -->
     </div>
         
 <div class="color-page-white page-area">
@@ -180,9 +172,9 @@
             <input name="project_complete" class="btn btn-sm" type="submit" value="Complete">
         {% endif %}
     </form>
-    <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.pk %}">Backup</a>
-    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
-    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.abbreviation %}">Backup</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.abbreviation %}">Edit</a>
+    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.abbreviation %}">Delete</a>
 </div>
 
 

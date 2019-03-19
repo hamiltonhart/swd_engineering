@@ -5,7 +5,7 @@
 
 {% block bodyblock %}
 <div class="page-top-btns">
-        <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.pk %}">{{project.title}}</a>
+        <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}}</a>
         
     </div>
     

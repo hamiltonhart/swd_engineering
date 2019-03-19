@@ -6,14 +6,9 @@ from .models import ProjectDrive
 class ProjectDriveForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectDriveForm, self).__init__(*args, **kwargs)
-        self.fields["drive"].queryset = self.fields["drive"].queryset.order_by('drive_number')
+        self.fields["drive"].queryset = self.fields["drive"].queryset.order_by(
+            'drive_number')
 
     class Meta:
         model = ProjectDrive
         fields = ["drive"]
-        
-
-class ProjectDriveDeleteForm(forms.ModelForm):
-    class Meta:
-        model = ProjectDrive
-        fields = []

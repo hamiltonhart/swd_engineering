@@ -8,8 +8,8 @@ from rental_projects.models import RentalProject
 
 
 @login_required
-def manage_project_rooms(request, pk):
-    project = RentalProject.objects.get(pk=pk)
+def manage_project_rooms(request, abbr):
+    project = RentalProject.objects.get(abbreviation=abbr)
     project_rooms = ProjectRoom.objects.filter(project=project).order_by("room")
 
     if request.POST and "add_edit" in request.POST:
@@ -43,9 +43,9 @@ def manage_project_rooms(request, pk):
             try:
                 project_room_delete = ProjectRoom.objects.get(room=room, project=project)
                 project_room_delete.delete()
-                return HttpResponseRedirect(reverse('project_rooms:project_rooms_add_edit', kwargs={'pk':project.pk}))
+                return HttpResponseRedirect(reverse('project_rooms:project_rooms_add_edit', kwargs={'abbr':project.abbreviation}))
             except:
-                return HttpResponseRedirect(reverse('project_rooms:project_rooms_add_edit', kwargs={'pk':project.pk}))
+                return HttpResponseRedirect(reverse('project_rooms:project_rooms_add_edit', kwargs={'abbr':project.abbreviation}))
 
     form = ProjectRoomAddEditRemoveForm()
     

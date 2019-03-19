@@ -15,8 +15,8 @@ from project_rooms.models import ProjectRoom
 # Function Views
 
 @login_required
-def project_client_ms_list(request, pk):
-    project = RentalProject.objects.get(pk=pk)
+def project_client_ms_list(request, abbr):
+    project = RentalProject.objects.get(abbreviation=abbr)
     project_rooms = project.rental_rooms.all()
     ms_clients = project.ms_clients.all()
 
@@ -36,7 +36,7 @@ def project_client_ms_list(request, pk):
                 )
                 ms_to_edit.client_ms = client_ms
                 ms_to_edit.save()
-                return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"pk":project.pk}))
+                return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
             except:
                 ClientMediaShuttle.objects.create(
                     project_client=project_client,
@@ -44,7 +44,7 @@ def project_client_ms_list(request, pk):
                     project=project,
                     client_ms=client_ms
                 )
-                return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"pk":project.pk}))
+                return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
 
     elif request.method == "POST" and "delete" in request.POST:
         form = ClientMediaShuttleForm(request.POST)
@@ -61,7 +61,7 @@ def project_client_ms_list(request, pk):
             )
 
             ms_to_delete.delete()
-            return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"pk":project.pk}))
+            return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
 
 
 

@@ -61,7 +61,7 @@
                 <div class="page-area-info">
                    
                    {% for project in contact.rental_projects.all %}
-                       <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.pk %}">
+                       <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
                            {{project.project}}
                        </a></p>
                    {% endfor %}

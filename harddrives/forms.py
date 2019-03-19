@@ -11,3 +11,4 @@ class RentalDriveForm(forms.ModelForm):
         widgets = {
             'drive_number': forms.TextInput(),
         }
+

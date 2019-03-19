@@ -18,13 +18,8 @@ class RentalProjectForm(forms.ModelForm):
             'channel_config',
             'start_date',
             'additional_info',
-            # 'clients',
-            # 'rooms',
-            # 'rental_drives',
-            
         ]
         widgets = {
-            # 'clients': forms.RadioSelect(),
             'season': forms.TextInput(),
             'protools_vers': forms.TextInput(),
         }
