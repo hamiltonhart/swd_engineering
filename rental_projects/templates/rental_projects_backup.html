@@ -6,7 +6,7 @@
 {% block bodyblock %}
 <form method="POST">
     {% csrf_token %}
-    <h2 class="warning-text">Backups cannot be undone.</h2>
+    <h2 class="warning-text">Backups cannot be undone!</h2>
     {% if project.season %}
         
         <h2>Do you want to backup {{project.title}}: Season {{project.season}}?</h2>

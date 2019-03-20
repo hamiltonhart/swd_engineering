@@ -18,6 +18,8 @@ from project_clients.forms import ProjectClientForm, ProjectClientDeleteForm
 from project_drives.forms import ProjectDriveForm
 from project_rooms.forms import ProjectRoomForm
 
+import datetime
+
 # Feature Project Views
 
 
@@ -25,6 +27,7 @@ class RentalProjectCreateView(LoginRequiredMixin, CreateView):
     model = models.RentalProject
     template_name = "rental_projects_new.html"
     form_class = RentalProjectForm
+        
 
 
 class RentalProjectListView(LoginRequiredMixin, ListView):
@@ -71,6 +74,30 @@ class RentalProjectDeleteView(LoginRequiredMixin, DeleteView):
 
 
 # Function Views
+
+# @login_required
+# def rental_project_create(request):
+#     project = models.RentalProject
+
+#     if request.method =="POST":
+#         form = RentalProjectForm(request.POST)
+#         if form.is_valid():
+#             year = form.cleaned_data['year']
+#             month = form.cleaned_data['month']
+#             day = form.cleaned_data['day']
+#             date_info = [year, month, day]
+#             for x in date_info:
+#                 date_info.pop(x)
+#                 if x[0] == "0":
+#                     date_info.append(int(x[1:]))
+#                 else:
+#                     date_info.append(int(x))
+#             datetime.date(date_info[0], date_info[1], date_info[2])
+#             models.RentalProject.objects.create()
+
+
+            
+
 
 @login_required
 def project_detail_view(request, abbr):

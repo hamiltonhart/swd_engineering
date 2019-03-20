@@ -99,17 +99,17 @@
 <div class="color-light-grey page-area">
         <p class="section-header">Drives</p>
         <div class="page-area-info">
-            {% if project.number_of_systems %}
-                
-                <h2>{{project.number_of_systems}} drives used.</h2>
+            {% if project.rental_drives.all %}
             
-            {% elif project.rental_drives.all %}
+            {% for drive in project.rental_drives.all %}
+                <div class="client-flex">
+                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
+                </div>
+            {% endfor %}
+            
+            {% elif project.number_of_systems %}
                 
-                {% for drive in project.rental_drives.all %}
-                    <div class="client-flex">
-                        <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
-                    </div>
-                {% endfor %}
+                <h2>{{project.number_of_systems}} drives used.</h2>            
 
             {% else %}
                     <h2>No Drives Assigned</h2>
@@ -117,6 +117,9 @@
 
             
         </div>
+            {% if project.project_complete_date %}
+
+            {% else %}
             <div class="section-form">
                 <form method="POST">
                     {% csrf_token %}
@@ -125,6 +128,8 @@
                     <input class="btn btn-sm" name="drive_add" type="submit" value="Add">
                 </form>
             </div>
+            {% endif %}
+            
     </div>
         
 <div class="color-page-white page-area">
@@ -159,22 +164,32 @@
                         <p>------</p>
                     {% endif %}
             </div>
+            <div class="section-form btn-form">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% if project.mixing_complete_date %}
+                        <input name="project_incomplete" class="btn btn-sm" type="submit" value="Incomplete"> 
+                    {% else %}   
+                        <input name="project_complete" class="btn btn-sm" type="submit" value="Complete">
+                    {% endif %}
+                </form>
+                {% if project.project_complete_date and project.mixing_complete_date %}
+                  
+                {% else %}
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <a class="btn btn-sm delete-btn" href="{% url 'rental_projects:rental_projects_backup' project.abbreviation %}">Backup</a>
+                </form>
+                {% endif %}
+                
+            </div>
         </div>
 
-        <div class="page-bottom-btns">
-
-    <form method=POST>  <!-- Needs formatting -->
-        {% csrf_token %}
-
-        {% if project.mixing_complete_date %}
-            <input name="project_incomplete" class="btn btn-sm" type="submit" value="Incomplete"> 
-        {% else %}   
-            <input name="project_complete" class="btn btn-sm" type="submit" value="Complete">
-        {% endif %}
-    </form>
-    <a class="btn" href="{% url 'rental_projects:rental_projects_backup' project.abbreviation %}">Backup</a>
-    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.abbreviation %}">Edit</a>
-    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.abbreviation %}">Delete</a>
+        <div class="page-bottom-btns flex-align-right">
+    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
+    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
 </div>
 
 
