@@ -243,6 +243,11 @@ ul, h1, h2, h3, h4, h5 {
     box-shadow: 0 2px 4px black;
 }
 
+.home-card{
+    color: var(--page-red);
+    text-transform: uppercase;
+}
+
 .card-heading {
     margin: .75em 0 .1em 1em;
 }

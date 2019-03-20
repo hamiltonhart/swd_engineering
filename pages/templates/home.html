@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}Home{% endblock titleblock %}
+
+{% block bodyblock %}
+
+
+
+      
+
+        <a class="card home-card" href="{%url 'contacts:contacts_list' 'all' %}"> 
+            <h1 class="card-heading">Contacts</h1>
+        </a> 
+
+        <a class="card home-card" href="{%url 'rental_projects:rental_projects_list' 'all' %}"> 
+            <h1 class="card-heading">Rental Projects</h1>
+        </a> 
+
+        <a class="card home-card" href="{%url 'harddrives:harddrives_list' 'available' %}"> 
+            <h1 class="card-heading">Drives</h1>
+        </a> 
+
+{% endblock bodyblock %}
