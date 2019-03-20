@@ -6,7 +6,7 @@
 {% block bodyblock %}
 
 <div class="page-top-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">Back to Project</a>
+    <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project}}</a>
     <a class="btn" href="{% url 'contacts:contacts_create' %}">Add Client</a>
 </div>
 
@@ -63,7 +63,7 @@
                 <input type="hidden" name="project_room" value="{{ room.pk }}">
                 <div class="bottom-form-btns">
                     <input class="btn btn-sm form-field" name="add_edit" type="submit" value="Add/Edit">
-                    <input class="btn btn-sm form-field" name="delete" type="submit" value="Delete">
+                    <input class="btn btn-sm form-field" name="delete" type="submit" value="Remove">
                 </div>
             </form>
     </div>

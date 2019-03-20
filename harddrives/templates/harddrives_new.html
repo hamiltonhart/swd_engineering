@@ -9,7 +9,16 @@
         {% csrf_token %}
         
         <div class="form-content">
-            {{form.as_p}}
+
+            <p>{{form.drive_number.label_tag}}</p>
+            <p>{{form.drive_number.errors}}</p>
+            <p>{{form.drive_number}}</p>
+
+            <p>{{form.drive_capacity_gb.errors}}</p>
+            <div class="flex-horizontal">
+                <p>{{form.drive_capacity_gb.label_tag}}</p>
+                <p>{{form.drive_capacity_gb}}</p>
+            </div>
         </div>
 
         <div class="form-btns">
@@ -19,3 +28,4 @@
     </form>
 
 {% endblock bodyblock %}
+

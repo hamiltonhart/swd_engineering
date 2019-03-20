@@ -8,11 +8,62 @@
     <form method="POST">
         {% csrf_token %}
         <div class="form-content">
-            {{form.as_p}}
-        </div>
+
+                <p>{{form.title.errors}}</p>
+                <p>{{form.title.label_tag}}</p>
+                <p>{{form.title}}</p>
+                
+                <p>{{form.season.errors}}</p>
+                <p>{{form.season.label_tag}}</p>
+                <p>{{form.season}}</p>
+    
+                <p>{{form.abbreviation.errors}}</p>
+                <p>{{form.abbreviation.label_tag}}</p>
+                <p>{{form.abbreviation}}</p>
+    
+                <p>{{form.protools_vers.errors}}</p>
+                <p>{{form.protools_vers.label_tag}}</p>
+                <p>{{form.protools_vers}}</p>
+    
+                <p>{{form.drive_user.errors}}</p>
+                <p>{{form.drive_user.label_tag}}</p>
+                <p>{{form.drive_user}}</p>
+    
+                <p>{{form.drive_pass.errors}}</p>
+                <p>{{form.drive_pass.label_tag}}</p>
+                <p>{{form.drive_pass}}</p>
+    
+                <p>{{form.ms_user.errors}}</p>
+                <p>{{form.ms_user.label_tag}}</p>
+                <p>{{form.ms_user}}</p>
+    
+                <p>{{form.ms_pass.errors}}</p>
+                <p>{{form.ms_pass.label_tag}}</p>
+                <p>{{form.ms_pass}}</p>
+    
+                <p>{{form.channel_config.errors}}</p>
+                <div class="flex-horizontal">
+                    <p>{{form.channel_config.label_tag}}</p>
+                    <p>{{form.channel_config}}</p>
+                </div>
+    
+                <p>{{form.start_date.errors}}</p>
+                <div class="flex-horizontal">
+                    <p>{{ form.start_date.label_tag }}</p>
+                    <p>{{ form.start_date }}</p>
+                    
+                </div>
+    
+                <p>{{form.additional_info.errors}}</p>
+                <p>{{form.additional_info.label_tag}}</p>
+                <p>{{form.additional_info}}</p>
+                
+                
+    
+            </div>
 
         <div class="page-bottom-btns">
-            <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">Cancel</a>
+            <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">Cancel</a>
             <input class="btn confirm-btn" type="submit" value="Update">
         </div>
     </form>

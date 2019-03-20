@@ -67,17 +67,19 @@ class RentalProject(models.Model):
     
 
     def mixing_completed(self, user):
-        self.mixing_complete_date = timezone.now()
+        self.mixing_complete_date = datetime.date.today()
         self.mixing_completed_by = user
         self.save()
 
     def mixing_incomplete(self):
         self.mixing_complete_date = None
         self.mixing_completed_by = None
+        self.project_complete_by = None
+        self.project_complete_date = None
         self.save()
 
     def backup(self, user):
-        self.project_complete_date = timezone.now()
+        self.project_complete_date = datetime.date.today()
         self.project_complete_by = user
         self.number_of_systems = len(self.rental_drives.all())
         for drive in self.rental_drives.all():
