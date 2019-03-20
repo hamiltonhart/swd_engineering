@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'os.environ.get("DJANGO_SECRET_KEY", "")'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','swdengineering.herokuapp.com']
 
 
 # Application definition
@@ -99,12 +99,12 @@ WSGI_APPLICATION = 'swd_engineering_project.wsgi.application'
 db_from_env = dj_database_url.config()
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': os.environ.get('PSQL_DB_NAME', ''),
-    'USER': os.environ.get('PSQL_DB_USER', ''),
-    'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
-    'HOST': 'localhost',
-    'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('PSQL_DB_NAME', ''),
+        'USER': os.environ.get('PSQL_DB_USER', ''),
+        'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
+        'HOST': 'localhost',
+        'PORT': '5432',
         }
     }
 DATABASES['default'].update(db_from_env)
