@@ -26,7 +26,7 @@ SECRET_KEY = 'os.environ.get("DJANGO_SECRET_KEY", "")'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'swdengineering.herokuapp.com']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # Third Party
@@ -158,5 +159,5 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'contacts:contact_list'
-LOGOUT_REDIRECT_URL = 'contacts:contact_list'
+LOGIN_REDIRECT_URL = 'pages:home'
+LOGOUT_REDIRECT_URL = 'pages:home'
