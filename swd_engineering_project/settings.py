@@ -44,9 +44,9 @@ INSTALLED_APPS = [
 
 
     # Local
+    'rental_projects.apps.RentalProjectsConfig',
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
-    'rental_projects.apps.RentalProjectsConfig',
     'contacts.apps.ContactsConfig',
     'harddrives.apps.HarddrivesConfig',
     'rooms.apps.RoomsConfig',
