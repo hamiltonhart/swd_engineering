@@ -404,6 +404,10 @@ ul, h1, h2, h3, h4, h5 {
     color: var(--page-dark-red);
 }
 
+.page-area-full-width {
+    grid-column: 1 / -1;
+}
+
 .flex-header {
     display: flex;
     justify-content: space-between;
