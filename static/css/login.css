@@ -1,3 +1,17 @@
+/* Basic Setup */
+:root {
+    --page-red: #E41E31;
+    --page-dark-red: #7E0000;
+    --page-grey: #979797;
+    --page-light-grey: #c0c0c0;
+    --page-white: #f2f2f2;
+    --page-heading-color: #f2f2f2;
+    --page-red-gradient: linear-gradient(to top right, #E41E31, #7E0000);
+    --default-color: black;
+    --menu-hover-color: black;
+    --btn-radius: 9px;
+}
+
 body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 10px;
@@ -6,7 +20,7 @@ body {
 }
 
 .header {
-    border-bottom: 1px solid #979797;
+    border-bottom: 1px solid var(--page-grey);
 }
 
 .header-wrapper {
@@ -18,8 +32,8 @@ body {
 .top-decoration {
     width: 100%;
     height: 20px;
-    background-color: #E41E31;
-    background-image: linear-gradient(to top right, #E41E31, #7E0000);
+    background-color: var(--page-red);
+    background-image: var(--page-red-gradient);
 }
 
 .header h1 {
@@ -42,7 +56,6 @@ body {
 .card-wrapper {
     display: flex;
     flex-direction: column;
-    max-height: 450px;
     min-height: 350px;
 }
 
@@ -64,9 +77,18 @@ body {
     box-shadow: 0 2px 4px #000
 }
 
+.errorlist {
+    padding-left: 0;
+    list-style: none;
+    text-align: justify;
+    text-transform: none;
+    font-size: .9em;
+    color: var(--page-red);
+}
+
 .login-card input {
     padding: 10px;
-    border: 1px solid #979797;
+    border: 1px solid var(--page-grey);
     border-radius: 9px;
     margin: 10px 2px;
 
@@ -78,9 +100,9 @@ body {
     font-weight: 600;
     align-self: center;
     padding: 10px 20px;
-    color: white;
-    background-color: #E41E31;
-    background-image: linear-gradient(to top right, #E41E31, #7E0000);
+    color: var(--page-white);
+    background-color: var(--page-red);
+    background-image: var(--page-red-gradient);
     border: none;
     box-shadow: 0 1px 2px #000;
 }
@@ -96,13 +118,10 @@ body {
     font-weight: 600;
 }
 
-.login-card input[type=text] {
-    text-align: center;
-    font-size: inherit;
-}
-
-.login-card input[type=password] {
-    text-align: center;
+.login-card input[type=text],
+.login-card input[type=password]
+{
+    text-align: left;
     font-size: inherit;
 }
 
