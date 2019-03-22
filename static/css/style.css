@@ -129,7 +129,7 @@ ul, h1, h2, h3, h4, h5 {
     left: 0;
     top: 100;
     width: 100%;
-    height: 300%;
+    /* height: 300%; */
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -159,7 +159,13 @@ ul, h1, h2, h3, h4, h5 {
 .mainmenu li {
     display: flex;
     position: relative;
+    margin-bottom: 1em;
 }
+
+/* .mainmenu li:last-child {
+    margin-top: 4em;
+} */
+
 
 .mainmenu:last-child {
     padding-bottom: .3em;
@@ -196,6 +202,17 @@ ul, h1, h2, h3, h4, h5 {
     opacity: 1;
 }
 
+.menu-first {
+    margin-top: 2em;
+}
+
+.menu-logout {
+    margin-top: 1.5em;
+}
+
+.menu-logout a {
+    color: var(--page-grey);
+}
 
 
 /* Page Menu */
