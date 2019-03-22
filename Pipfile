@@ -11,6 +11,7 @@ gunicorn = "*"
 whitenoise = "*"
 djangorestframework = "==3.8.2"
 phonenumbers = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 pylint = "*"
