@@ -605,3 +605,12 @@ textarea {
 .errorlist {
     color: var(--page-red);
 }
+
+
+/* Footer */
+
+footer {
+    margin-top: 50px;
+    min-height: 100px;
+    background-color: var(--page-light-grey);
+}
