@@ -37,7 +37,7 @@
             <div class="main-info-wrapper">
               <p class="card-subheading">{{project.abbreviation}}</p>
                 <div class="main-info">
-                  <p>{{project.additional_info}}</p>
+                  <p>{{project.additional_info|linebreaksbr|truncatechars:100}}</p>
                 </div>
             </div> 
         {% endfor %}
