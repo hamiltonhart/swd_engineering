@@ -21,6 +21,12 @@ class ProjectClientDeleteForm(forms.ModelForm):
 
 
 class ClientMediaShuttleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project')
+        super(ClientMediaShuttleForm, self).__init__(*args, **kwargs)
+        self.fields["project_client"].queryset = self.fields["project_client"].queryset.filter(project=project).order_by(
+            'client')
+
     class Meta:
         model = ClientMediaShuttle
         fields = [
