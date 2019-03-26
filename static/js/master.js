@@ -31,17 +31,27 @@ function getURL() {
         var harddrive_filters_fields = ["all", "available", "in-use", "250", "500", "1TB", "2TB"];
         for (var i = 0; field_match == false; i++){
             if (window.location.pathname.includes(harddrive_filters_fields[i])){
-                    querySelect.selectedIndex = i;
-                    field_match = true;
+                querySelect.selectedIndex = i;
+                field_match = true;
             }
         }
     }
     else if (querySelect.name === "rental_project_filters"){
-        var rental_project_filters_fields = ["all", "current", "51", "71", "atmos", "imax6", "imax12"];
+        var rental_project_filters_fields = ["all", "current", "feature", "series", "51", "71", "atmos", "imax6", "imax12"];
         for (var i = 0; field_match == false; i++){
             if (window.location.pathname.includes(rental_project_filters_fields[i])){
-                    querySelect.selectedIndex = i;
-                    field_match = true;
+                querySelect.selectedIndex = i;
+                field_match = true;
+                console.log(i)
+            }
+        }
+    }
+    else if (querySelect.name === "contacts_sorting"){
+        var contacts_sorting_fields = ["first", "last"];
+        for (var i = 0; field_match == false; i++){
+            if (window.location.pathname.includes(contacts_sorting_fields[i])){
+                querySelect.selectedIndex = i;
+                field_match = true;
             }
         }
     }
@@ -49,7 +59,7 @@ function getURL() {
 }
 
 function main(){
-    
+
     currentPageDisplay()
 
     if (document.getElementById("query-select")){

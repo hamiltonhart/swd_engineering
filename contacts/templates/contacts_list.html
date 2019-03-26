@@ -9,6 +9,28 @@
     <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
 </div>
 
+<div class="list-search-filter">
+    <select name="contacts_sorting" id="query-select" class="query-select" onChange=selectCallLink()>
+        <option value="{% url 'contacts:contacts_list' 'first' %}">First Name</option>
+        <option value="{% url 'contacts:contacts_list' 'last' %}">Last Name</option>
+      </select>
+
+
+    <form method="GET">
+      {{search_form.search_field}}
+  
+      <input class="btn btn-sm" type="submit" value="Search">
+  
+    </form>
+  </div>
+  
+  <div class="message-card">
+    {% if results %}
+      <h2>{{contacts_list|length}} results for "{{ results }}".</h2>
+    {% endif %}
+  </div>
+
+
     {% if contacts_list %}
         {% for contact in contacts_list %}
 
@@ -34,10 +56,12 @@
 
         {% endfor %}
     {% else %}
-
-        <div class="message-card">
-            <h1 class="contact-message">No contacts to show.</h1>
-        </div>
+        {% if not results %}
+          
+            <div class="message-card">
+                <h1 class="contact-message">No contacts to show.</h1>
+            </div>
+        {% endif %}
 
     {% endif %}
     
