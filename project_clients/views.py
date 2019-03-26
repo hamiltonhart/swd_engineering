@@ -21,7 +21,7 @@ def project_client_ms_list(request, abbr):
     ms_clients = project.ms_clients.all()
 
     if request.method == "POST" and "add_edit" in request.POST:
-        form = ClientMediaShuttleForm(request.POST)
+        form = ClientMediaShuttleForm(request.POST, project=project)
         if form.is_valid():
             room_pk = request.POST["project_room"]
             project_client = form.cleaned_data["project_client"]
@@ -47,7 +47,7 @@ def project_client_ms_list(request, abbr):
                 return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
 
     elif request.method == "POST" and "delete" in request.POST:
-        form = ClientMediaShuttleForm(request.POST)
+        form = ClientMediaShuttleForm(request.POST, project=project)
         if form.is_valid():
             room_pk = request.POST["project_room"]
             project_client = form.cleaned_data["project_client"]
@@ -63,10 +63,8 @@ def project_client_ms_list(request, abbr):
             ms_to_delete.delete()
             return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
 
-
-
     
-    form = ClientMediaShuttleForm()
+    form = ClientMediaShuttleForm(project=project)
     context_dict = {
         "project":project,
         "project_rooms":project_rooms,
@@ -77,10 +75,3 @@ def project_client_ms_list(request, abbr):
 
     return render(request, 'project_clients_ms_list.html', context_dict)
 
-
-# if request.method=='POST' and 'btnform1' in request.POST:
-#     do something...
-# if request.method=='POST' and 'btnform2' in request.POST:
-#     do something...
-
-# get_or_create

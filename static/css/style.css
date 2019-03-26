@@ -369,6 +369,28 @@ ul, h1, h2, h3, h4, h5 {
 }
 
 
+.list-search-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.list-search-filter form{
+    display: flex;
+    align-items: center;
+    
+}
+
+.list-search-filter form input[type='text'] {
+    font-size: 1.2em;
+}
+
+.message-card {
+    margin-bottom: 10px;
+}
+
+
 /* Detail Page */
 
 .page-heading {
@@ -484,6 +506,7 @@ ul, h1, h2, h3, h4, h5 {
 .text-emphasis-bold {
     font-weight: 600;
 }
+
 
 /* Forms */
 

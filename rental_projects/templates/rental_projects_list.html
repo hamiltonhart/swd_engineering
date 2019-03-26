@@ -9,15 +9,32 @@
   <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">New Rental</a>
 </div>
 
-<select name="rental_project_filters" id="query-select" class="query-select" onChange=selectCallLink()>
-  <option value="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</option>
-  <option value="{% url 'rental_projects:rental_projects_list' 'current' %}">Current Rentals</option>
-  <option value="{% url 'rental_projects:rental_projects_list' '51' %}">5.1</option>
-  <option value="{% url 'rental_projects:rental_projects_list' '71' %}">7.1</option>
-  <option value="{% url 'rental_projects:rental_projects_list' 'atmos' %}">ATMOS</option>
-  <option value="{% url 'rental_projects:rental_projects_list' 'imax6' %}">IMAX 6</option>
-  <option value="{% url 'rental_projects:rental_projects_list' 'imax12' %}">IMAX 12</option>
-</select>
+<div class="list-search-filter">
+  <select name="rental_project_filters" id="query-select" class="query-select" onChange=selectCallLink()>
+    <option value="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'current' %}">Current Rentals</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'feature' %}">Features</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'series' %}">Series</option>
+    <option value="{% url 'rental_projects:rental_projects_list' '51' %}">5.1</option>
+    <option value="{% url 'rental_projects:rental_projects_list' '71' %}">7.1</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'atmos' %}">ATMOS</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'imax6' %}">IMAX 6</option>
+    <option value="{% url 'rental_projects:rental_projects_list' 'imax12' %}">IMAX 12</option>
+  </select>
+
+  <form method="GET">
+    {{search_form.search_field}}
+
+    <input class="btn btn-sm" type="submit" value="Search">
+
+  </form>
+</div>
+
+<div class="message-card">
+  {% if results %}
+    <h2>{{projects_list|length}} results for "{{ results }}".</h2>
+  {% endif %}
+</div>
 
   
     {% if projects_list %}
@@ -42,9 +59,13 @@
             </div> 
         {% endfor %}
         {% else %}
-        <div class="message-card">
-          <h1 class="contact-message">No rental projects to show.</h1>
-        </div>
+        
+        {% if not results %}
+          <div class="message-card">
+            <h1 class="contact-message">No rental projects to show.</h1>
+          </div>  
+        {% endif %}
+        
             
       {% endif %}
     </a> 
