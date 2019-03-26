@@ -51,7 +51,7 @@ class RentalProjectForm(forms.ModelForm):
     #                 date_info.append(int(x[1:]))
     #             except:
     #                 raise forms.ValidationError("Must enter only numbers for the date.")
-                
+
     #         else:
     #             try:
     #                 date_info.append(int(x))
