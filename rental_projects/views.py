@@ -167,7 +167,7 @@ def project_detail_view(request, abbr):
 
     return render(request, 'rental_projects_detail.html', context_dict)
 
-
+@login_required
 def rental_project_list(request, display_option=None):
     """
     Rental Project List:

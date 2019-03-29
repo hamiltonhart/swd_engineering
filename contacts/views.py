@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from forms.forms import SimpleSearchForm
 from scripts.search import get_query
@@ -45,10 +46,11 @@ class ContactDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("contacts:contacts_list" "all")
     context_object_name = "contact"
 
-
+@login_required
 def contacts_redirect_list_view(request):
     return HttpResponseRedirect(reverse('contacts:contacts_list', kwargs={'sort_options':'first'}))
 
+@login_required
 def contacts_list(request, sort_options=None):
     """
     Contacts List:

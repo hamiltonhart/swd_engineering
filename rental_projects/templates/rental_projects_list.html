@@ -10,7 +10,7 @@
 </div>
 
 <div class="list-search-filter">
-  <select name="rental_project_filters" id="query-select" class="query-select" onChange=selectCallLink()>
+  <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
     <option value="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</option>
     <option value="{% url 'rental_projects:rental_projects_list' 'current' %}">Current Rentals</option>
     <option value="{% url 'rental_projects:rental_projects_list' 'feature' %}">Features</option>

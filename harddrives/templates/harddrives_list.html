@@ -10,7 +10,7 @@
 </div>
 
     
-        <select name="harddrive_filters" id="query-select" class="query-select" onChange=selectCallLink()>
+        <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
             <option value="{% url 'harddrives:harddrives_list' 'all' %}">All Drives</option>
             <option value="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</option>
             <option value="{% url 'harddrives:harddrives_list' 'in-use' %}">In Use Drives</option>
