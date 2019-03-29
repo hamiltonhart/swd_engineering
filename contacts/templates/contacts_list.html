@@ -10,7 +10,7 @@
 </div>
 
 <div class="list-search-filter">
-    <select name="contacts_sorting" id="query-select" class="query-select" onChange=selectCallLink()>
+    <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
         <option value="{% url 'contacts:contacts_list' 'first' %}">First Name</option>
         <option value="{% url 'contacts:contacts_list' 'last' %}">Last Name</option>
       </select>
