@@ -75,3 +75,18 @@ def project_client_ms_list(request, abbr):
 
     return render(request, 'project_clients_ms_list.html', context_dict)
 
+
+@login_required
+def project_client_detail(request, abbr, pk):
+    project = RentalProject.objects.get(abbreviation=abbr)
+    project_client = ProjectClient.objects.get(pk=pk)
+    client_ms = project_client.ms_rooms.filter(project=project)
+
+
+    context_dict = {
+        'project': project,
+        'project_client': project_client,
+        'client_ms': client_ms,
+    }
+
+    return render(request, 'project_client_detail.html', context_dict)

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{project_client.client}}{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{ project.title }}</a>
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+</div>
+
+    <div class="page-heading">
+        <h1>{{project_client.client}}</h1>
+    </div>
+    <div class="color-page-white page-area">
+        <div class="flex-header">
+            <p class="section-header">Media Shuttle</p>
+            <a href="{% url 'project_clients:project_clients_ms_list' project.abbreviation %}">Media Shuttle Details</a>
+        </div>
+        <div class="page-area-info">
+            {% for room in client_ms %}
+              <p>{{room.project_room.room}}</p>
+            {% endfor %}
+                
+        </div>
+    </div>
+
+    <div class="color-light-grey page-area">
+            <p class="section-header">Project Specific Notes</p>
+            <div class="page-area-info">
+                <p class="page-area-full-width">{{project_client.notes|linebreaksbr}}</p>
+            </div>
+        </div>
+
+
+<div class="page-bottom-btns">
+    <a class="btn" href="{% url 'contacts:contacts_detail' project_client.client.pk %}">View Contact Card</a>
+    
+</div>
+
+
+
+  
+{% endblock bodyblock %}
