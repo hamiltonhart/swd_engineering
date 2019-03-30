@@ -18,11 +18,16 @@
             <p class="section-header">Media Shuttle</p>
             <a href="{% url 'project_clients:project_clients_ms_list' project.abbreviation %}">Media Shuttle Details</a>
         </div>
-        <div class="page-area-info">
+        
+
+        <div class="">
             {% for room in client_ms %}
-              <p>{{room.project_room.room}}</p>
-            {% endfor %}
+                <div class="client-flex">
+                    <h1>{{room.project_room.room}} - {{ room.client_ms }}</h1>
+                </div>
+        {% endfor %}
                 
+
         </div>
     </div>
 

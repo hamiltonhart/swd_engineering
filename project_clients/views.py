@@ -17,7 +17,7 @@ from project_rooms.models import ProjectRoom
 @login_required
 def project_client_ms_list(request, abbr):
     project = RentalProject.objects.get(abbreviation=abbr)
-    project_rooms = project.rental_rooms.all()
+    project_rooms = project.rental_rooms.all().order_by("room")
     ms_clients = project.ms_clients.all()
 
     if request.method == "POST" and "add_edit" in request.POST:
