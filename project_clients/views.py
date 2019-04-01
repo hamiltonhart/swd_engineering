@@ -18,7 +18,7 @@ from project_rooms.models import ProjectRoom
 def project_client_ms_list(request, abbr):
     project = RentalProject.objects.get(abbreviation=abbr)
     project_rooms = project.rental_rooms.all()
-    ms_clients = project.ms_clients.all()
+    ms_clients = project.ms_clients.all().order_by("client_ms")
 
     if request.method == "POST" and "add_edit" in request.POST:
         form = ClientMediaShuttleForm(request.POST, project=project)
@@ -38,13 +38,16 @@ def project_client_ms_list(request, abbr):
                 ms_to_edit.save()
                 return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
             except:
-                ClientMediaShuttle.objects.create(
-                    project_client=project_client,
-                    project_room=project_room,
-                    project=project,
-                    client_ms=client_ms
-                )
-                return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
+                try:
+                    ClientMediaShuttle.objects.create(
+                        project_client=project_client,
+                        project_room=project_room,
+                        project=project,
+                        client_ms=client_ms
+                    )
+                    return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
+                except:
+                    return HttpResponseRedirect(reverse("project_clients:project_clients_ms_list", kwargs={"abbr":project.abbreviation}))
 
     elif request.method == "POST" and "delete" in request.POST:
         form = ClientMediaShuttleForm(request.POST, project=project)
