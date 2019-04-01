@@ -40,6 +40,7 @@ class ProjectClient(models.Model):
     client = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='rental_projects')
     project = models.ForeignKey('rental_projects.RentalProject', on_delete=models.CASCADE, related_name='rental_clients')
     client_role = models.CharField(max_length=20, choices=CLIENT_ROLE_CHOICES, blank=True, null=True, verbose_name="Role")
+    notes = models.TextField(null=True, default=None, verbose_name="Notes")
 
     objects = ProjectClientManager()
 
