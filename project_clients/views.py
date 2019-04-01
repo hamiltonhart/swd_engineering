@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import ProjectClient, ClientMediaShuttle
-from .forms import ClientMediaShuttleForm
+from .forms import ClientMediaShuttleForm, ProjectClientNotesForm
 
 from rental_projects.models import RentalProject
 from project_rooms.models import ProjectRoom
@@ -82,11 +82,41 @@ def project_client_detail(request, abbr, pk):
     project_client = ProjectClient.objects.get(pk=pk)
     client_ms = project_client.ms_rooms.filter(project=project)
 
+    if request.method == "POST" and "new" in request.POST:
+        notes_form = ProjectClientNotesForm(request.POST)
+        if notes_form.is_valid():
+            project_client.notes = notes_form.cleaned_data["notes"]
+            project_client.save()
+            # notes_form.save()
+
+            return HttpResponseRedirect(reverse('project_clients:project_client_detail', kwargs={"abbr":project.abbreviation, "pk":project_client.pk}))
+
+    elif request.method == "POST" and "update" in request.POST:
+        notes_form = ProjectClientNotesForm(request.POST, instance=project_client)
+        if notes_form.is_valid():
+            # project_client.notes = notes_form.cleaned_data["notes"]
+            # project_client.save()
+            notes_form.save()
+
+            return HttpResponseRedirect(reverse('project_clients:project_client_detail', kwargs={"abbr":project.abbreviation, "pk":project_client.pk}))
+
+    elif request.method == "POST" and "remove" in request.POST:
+        project_client.notes = None
+        project_client.save()
+
+        return HttpResponseRedirect(reverse('project_clients:project_client_detail', kwargs={"abbr":project.abbreviation, "pk":project_client.pk}))
+
+    if project_client.notes:
+        notes_form = ProjectClientNotesForm(instance = project_client)
+    else:
+        notes_form = ProjectClientNotesForm()
+
 
     context_dict = {
         'project': project,
         'project_client': project_client,
         'client_ms': client_ms,
+        'notes_form': notes_form,
     }
 
     return render(request, 'project_client_detail.html', context_dict)

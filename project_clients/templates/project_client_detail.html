@@ -34,7 +34,38 @@
     <div class="color-light-grey page-area">
             <p class="section-header">Project Specific Notes</p>
             <div class="page-area-info">
-                <p class="page-area-full-width">{{project_client.notes|linebreaksbr}}</p>
+                
+                {% if project_client.notes %}
+                    <div id="notes-display" class="page_notes page-area-full-width">
+                        <p class="page-area-full-width">{{project_client.notes|linebreaksbr}}</p>
+                        <div class="bottom-form-btns">
+                            <input id='show-form' class="btn btn-sm" type="button" value="Edit Notes">
+                        </div>
+                    </div>
+                    <div id="notes-form" class="page-notes page-area-full-width notes-hidden">
+                        <form name="update" method="POST" class="page-area-full-width">
+                            {% csrf_token %}
+                            <span>{{ notes_form.notes }}</span>
+                            
+                            <div class="bottom-form-btns form-btn">
+                                <input class="btn btn-sm delete-btn" name="remove" type="submit" value="Remove">
+                                <input id='hide-form' class="btn btn-sm form-field cancel-btn" type="button" value="Cancel">
+                                <input class="btn btn-sm form-field" name="update" type="submit" value="Edit Notes">
+                            </div>
+                        </form>
+
+                    </div>
+                {% else %}
+                    <form name="new" method="POST" class="page-area-full-width">
+                        {% csrf_token %}
+                        <span>{{ notes_form.notes }}</span>
+                        
+                        <div class="bottom-form-btns">
+                            <input class="btn btn-sm form-field" name="new" type="submit" value="Add Notes">
+                        </div>
+                    </form>
+                {% endif %}
+                
             </div>
         </div>
 

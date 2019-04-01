@@ -34,6 +34,17 @@ function getURL() {
     querySelect.selectedIndex = foundOption.index;
 }
 
+
+function showHideNotes(display, form){
+    const notesDisplay = document.getElementById("notes-display");
+    const notesForm = document.getElementById("notes-form");
+
+    notesDisplay.classList.toggle('notes-hidden');
+    notesForm.classList.toggle('notes-hidden');
+}
+
+
+
 function main() {
 
     currentPageDisplay()
@@ -42,6 +53,14 @@ function main() {
         getURL();
     }
 }
+
+    if (document.getElementById("notes-display") && (document.getElementById("notes-form"))) {
+        const showForm = document.getElementById('show-form');
+        showForm.addEventListener('click', showHideNotes);
+        const hideForm = document.getElementById('hide-form');
+        hideForm.addEventListener('click', showHideNotes);
+        
+    }
 
 main()
 

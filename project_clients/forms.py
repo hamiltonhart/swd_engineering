@@ -33,3 +33,10 @@ class ClientMediaShuttleForm(forms.ModelForm):
             "project_client",
             "client_ms",
         ]
+
+class ProjectClientNotesForm(forms.ModelForm):
+    class Meta:
+        model = ProjectClient
+        fields = [
+            'notes',
+        ]
