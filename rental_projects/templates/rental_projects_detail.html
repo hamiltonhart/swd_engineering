@@ -54,7 +54,7 @@
     <div class="client-list">
         {% for client in project.rental_clients.all %}
             <div class="client-flex">
-                <h2><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client.client}}</a></h2>
+                <h2><a href="{% url 'project_clients:project_client_detail' project.abbreviation client.pk %}">{{client.client}}</a></h2>
                 <p>{{ client.client_role }}</p>
             </div>
         {% endfor %}

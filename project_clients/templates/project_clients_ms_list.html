@@ -36,7 +36,7 @@
             {% for client in ms_clients %}
                     {% if client.project_room == room %}
                     <div class="client-flex">
-                        <h2><a href="{% url 'contacts:contacts_detail' client.project_client.client.pk %}">{{ client.project_client.client }}</a></h2>
+                        <h2><a href="{% url 'project_clients:project_client_detail' project.abbreviation client.project_client.pk %}">{{ client.project_client.client }}</a></h2>
                         <!-- <div class="sub-info"> -->
                             <p>{{ client.project_client.client_role }}</p>
                             <p>{{ client.client_ms }}</p>
