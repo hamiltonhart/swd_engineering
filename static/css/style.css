@@ -544,6 +544,7 @@ input[type=text], input[type=email], textarea {
 
 textarea {
     height: 200px;
+    font-size: 1rem;
 }
 
 .form-content input[type=text]:focus,
@@ -630,5 +631,8 @@ textarea {
     color: var(--page-red);
 }
 
+.notes-hidden {
+    display: none;
+}
 
 /* Footer */

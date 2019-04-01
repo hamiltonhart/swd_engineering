@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titleblock %}{{project_client.client}}{% endblock titleblock %}
+
+{% block bodyblock %}
+
+<div class="page-top-btns">
+    <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{ project.title }}</a>
+    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+</div>
+
+    <div class="page-heading">
+        <h1>{{project_client.client}}</h1>
+    </div>
+    <div class="color-page-white page-area">
+        <div class="flex-header">
+            <p class="section-header">Media Shuttle</p>
+            <a href="{% url 'project_clients:project_clients_ms_list' project.abbreviation %}">Media Shuttle Details</a>
+        </div>
+        
+
+        <div class="">
+            {% for room in client_ms %}
+                <div class="client-flex">
+                    <h1>{{room.project_room.room}} - {{ room.client_ms }}</h1>
+                </div>
+        {% endfor %}
+                
+
+        </div>
+    </div>
+
+    <div class="color-light-grey page-area">
+            <p class="section-header">Project Specific Notes</p>
+            <div class="page-area-info">
+                
+                {% if project_client.notes %}
+                    <div id="notes-display" class="page_notes page-area-full-width">
+                        <p class="page-area-full-width">{{project_client.notes|linebreaksbr}}</p>
+                        <div class="bottom-form-btns">
+                            <input id='show-form' class="btn btn-sm" type="button" value="Edit Notes">
+                        </div>
+                    </div>
+                    <div id="notes-form" class="page-notes page-area-full-width notes-hidden">
+                        <form name="update" method="POST" class="page-area-full-width">
+                            {% csrf_token %}
+                            <span>{{ notes_form.notes }}</span>
+                            
+                            <div class="bottom-form-btns form-btn">
+                                <input class="btn btn-sm delete-btn" name="remove" type="submit" value="Remove">
+                                <input id='hide-form' class="btn btn-sm form-field cancel-btn" type="button" value="Cancel">
+                                <input class="btn btn-sm form-field" name="update" type="submit" value="Edit Notes">
+                            </div>
+                        </form>
+
+                    </div>
+                {% else %}
+                    <form name="new" method="POST" class="page-area-full-width">
+                        {% csrf_token %}
+                        <span>{{ notes_form.notes }}</span>
+                        
+                        <div class="bottom-form-btns">
+                            <input class="btn btn-sm form-field" name="new" type="submit" value="Add Notes">
+                        </div>
+                    </form>
+                {% endif %}
+                
+            </div>
+        </div>
+
+
+<div class="page-bottom-btns">
+    <a class="btn" href="{% url 'contacts:contacts_detail' project_client.client.pk %}">View Contact Card</a>
+    
+</div>
+
+
+
+  
+{% endblock bodyblock %}
