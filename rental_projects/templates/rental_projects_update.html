@@ -47,12 +47,32 @@
                     <p>{{form.channel_config}}</p>
                 </div>
     
+                <p>{{form.files_link.errors}}</p>
+                <p>{{form.files_link.label_tag}}</p>
+                <p>{{form.files_link}}</p>
+
                 <p>{{form.start_date.errors}}</p>
                 <div class="flex-horizontal">
                     <p>{{ form.start_date.label_tag }}</p>
                     <p>{{ form.start_date }}</p>
+                </div>    
+                
+                {% if form.mixing_complete_date.value %}
+                    <p>{{form.mixing_complete_date.errors}}</p>
+                    <div class="flex-horizontal">
+                        <p>{{ form.mixing_complete_date.label_tag }}</p>
+                        <p>{{ form.mixing_complete_date }}</p>
+                    </div>
+                {% endif %}
+
+                {% if form.project_complete_date.value %}
+                    <p>{{form.project_complete_date.errors}}</p>
+                    <div class="flex-horizontal">
+                        <p>{{ form.project_complete_date.label_tag }}</p>
+                        <p>{{ form.project_complete_date }}</p>
+                    </div>
+                {% endif %}
                     
-                </div>
     
                 <p>{{form.additional_info.errors}}</p>
                 <p>{{form.additional_info.label_tag}}</p>

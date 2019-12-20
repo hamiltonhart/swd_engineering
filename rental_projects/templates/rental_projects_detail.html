@@ -133,7 +133,12 @@
     </div>
         
 <div class="color-page-white page-area">
+    <div class="flex-header">
         <p class="section-header">Notes</p>
+        {% if project.files_link %}
+        <a href={{ project.files_link }} target="_blank">GoogleDrive</a>
+        {% endif %}
+    </div>
         <div class="page-area-info">
                 <p class="page-area-full-width">{{ project.additional_info|linebreaksbr }}</p>
                 

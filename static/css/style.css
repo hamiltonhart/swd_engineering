@@ -532,7 +532,7 @@ label[for="id_country"]{
 }
 
 
-input[type=text], input[type=email], textarea {
+input[type=text], input[type=email], input[type=url], textarea {
     border: solid 1px var(--page-grey);
     border-radius: var(--btn-radius);
     font-size: .9em;

@@ -32,6 +32,8 @@ class RentalProject(models.Model):
 
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
 
+    files_link = models.URLField(blank=True, null=True, verbose_name='GoogleDrive Link')
+
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     
