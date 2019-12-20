@@ -49,7 +49,7 @@ class DriveDeleteView(LoginRequiredMixin, DeleteView):
     model = models.RentalDrive
     context_object_name = "drive"
     template_name = "harddrives_delete.html"
-    success_url = reverse_lazy("harddrives:harddrives_list")
+    success_url = reverse_lazy("harddrives:harddrives_list", kwargs={"display_option":"all"})
 
 
 @login_required

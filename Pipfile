@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "==2.1.7"
+django = "==2.1.15"
 "psycopg2" = "*"
 dj-database-url = "*"
 gunicorn = "*"
 whitenoise = "*"
-djangorestframework = "==3.8.2"
+djangorestframework = "==3.9.1"
 phonenumbers = "*"
 "psycopg2-binary" = "*"
 
