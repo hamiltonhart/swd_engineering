@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import dj_database_url
+import json
+
+with open('/etc/django-config.json') as config_file:
+    config = json.load(config_file)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +25,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'os.environ.get("DJANGO_SECRET_KEY", "")'
+SECRET_KEY = config["secret_key"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'swdengineering.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '45.56.94.96']
 
 
 # Application definition
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -101,14 +106,17 @@ db_from_env = dj_database_url.config()
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': os.environ.get('PSQL_DB_NAME', ''),
-    'USER': os.environ.get('PSQL_DB_USER', ''),
-    'PASSWORD': os.environ.get('PSQL_DB_PASS', ''),
+    'NAME': config['db_name'],
+    'USER': config['db_user'],
+    'PASSWORD': config['db_pass'],
     'HOST': 'localhost',
     'PORT': '5432',
         }
     }
 DATABASES['default'].update(db_from_env)
+
+# 'localhost'
+# '5432'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
