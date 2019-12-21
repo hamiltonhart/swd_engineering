@@ -14,28 +14,20 @@ import os
 import dj_database_url
 import json
 
-with open('/etc/django-config.json') as config_file:
-    config = json.load(config_file)
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-sensitive_info = "/etc/django-config.json"
-
-with open(sensitive_info) as config_file:
-    config = json.load(config_file)
-
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config["secret_key"]
+# SECRET_KEY = config["secret_key"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '45.56.94.96']
+# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '45.56.94.96']
 
 
 # Application definition
@@ -107,21 +99,18 @@ WSGI_APPLICATION = 'swd_engineering_project.wsgi.application'
 #     }
 # }
 
-db_from_env = dj_database_url.config()
-DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': config['db_name'],
-    'USER': config['db_user'],
-    'PASSWORD': config['db_pass'],
-    'HOST': 'localhost',
-    'PORT': '5432',
-        }
-    }
-DATABASES['default'].update(db_from_env)
-
-# 'localhost'
-# '5432'
+# db_from_env = dj_database_url.config()
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#     'NAME': config['db_name'],
+#     'USER': config['db_user'],
+#     'PASSWORD': config['db_pass'],
+#     'HOST': 'localhost',
+#     'PORT': '5432',
+#         }
+#     }
+# DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
