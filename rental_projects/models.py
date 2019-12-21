@@ -30,6 +30,8 @@ class RentalProject(models.Model):
     ms_user = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Username')
     ms_pass = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Password')
 
+    files_link = models.URLField(blank=True, null=True, verbose_name="GoogleDrive Link")
+
     channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
 
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
