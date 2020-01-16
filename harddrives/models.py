@@ -11,6 +11,21 @@ class RentalDriveQueryset(models.query.QuerySet):
     def unavailable(self):
         return self.filter(~Q(rental_projects=None))
 
+    def twofifty_available(self):
+        return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='250GB'))
+    
+    def fivehundred_available(self):
+        return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='500GB'))
+    
+    def onetb_available(self):
+        return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='1TB'))
+    
+    def twotb_available(self):
+        return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='2TB'))
+    
+    def threetb_available(self):
+        return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='3TB'))
+
 
 class RentalDriveManager(models.Manager):
     def get_queryset(self):
@@ -21,6 +36,21 @@ class RentalDriveManager(models.Manager):
 
     def unavailable(self):
         return self.get_queryset().unavailable()
+
+    def twofifty_available(self):
+        return self.get_queryset().twofifty_available()
+    
+    def fivehundred_available(self):
+        return self.get_queryset().fivehundred_available()
+    
+    def onetb_available(self):
+        return self.get_queryset().onetb_available()
+    
+    def twotb_available(self):
+        return self.get_queryset().twotb_available()
+    
+    def threetb_available(self):
+        return self.get_queryset().threetb_available()
 
 
 class RentalDrive(models.Model):

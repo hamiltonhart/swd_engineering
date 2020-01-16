@@ -6,6 +6,7 @@ app_name = "rental_projects"
 urlpatterns = [
     path('', views.rental_project_list_redirect_view, name="rental_projects_home"),
     path('new/', views.RentalProjectCreateView.as_view(), name="rental_projects_create"),
+    path('list/', views.rental_project_list, name="rental_projects_list"),
     path('list/<str:display_option>/', views.rental_project_list, name="rental_projects_list"),
     path("update/<int:pk>/", views.RentalProjectUpdateView.as_view(), name="rental_projects_update"),
     path("delete/<int:pk>/", views.RentalProjectDeleteView.as_view(), name="rental_projects_delete"),

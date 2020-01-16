@@ -43,6 +43,45 @@ function showHideNotes(display, form){
     notesForm.classList.toggle('notes-hidden');
 }
 
+function showModal(className) {
+    const element =  document.querySelector(className);
+    element.style.display = 'flex';
+}
+
+function closeModal(className) {
+    const element = document.querySelector(className);
+    element.style.display = 'none';
+}
+
+function showModalId(IdName) {
+    const element = document.getElementById(IdName);
+    element.style.display = 'flex';
+}
+
+function closeModalId(IdName) {
+    const element = document.getElementById(IdName);
+    element.style.display = 'none';
+}
+
+
+function getRentalSelectionValues() {
+    const statusValue = document.getElementById("id_status_field");
+    const statusClear = document.getElementById("status_field_search_clear");
+    statusClear.value = statusValue.options[statusValue.selectedIndex].value;
+    const channelConfigValue = document.getElementById("id_channel_config_field");
+    const channelConfigClear = document.getElementById("channel_field_search_clear");
+    channelConfigClear.value = channelConfigValue.options[channelConfigValue.selectedIndex].value;
+    const typeValue = document.getElementById("id_type_field");
+    const typeClear = document.getElementById("type_field_search_clear");
+    typeClear.value = typeValue.options[typeValue.selectedIndex].value;
+}
+
+function getContactSortingValues() {
+    const sortingValue = document.getElementById('id_name_sorting');
+    const sortingClear = document.getElementById("sorting_search_clear");
+    console.log(sortingClear)
+    sortingClear.value = sortingValue.options[sortingValue.selectedIndex].value;
+}
 
 
 function main() {
@@ -59,7 +98,14 @@ function main() {
         showForm.addEventListener('click', showHideNotes);
         const hideForm = document.getElementById('hide-form');
         hideForm.addEventListener('click', showHideNotes);
-        
+    }
+
+    if (document.getElementById("rental-clear-search")) {
+        getRentalSelectionValues();
+    }
+
+    if (document.getElementById('contacts-clear-search')) {
+        getContactSortingValues();
     }
 
 main()

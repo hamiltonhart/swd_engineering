@@ -5,69 +5,114 @@
 
 {% block bodyblock %}
 
-<div class="page-top-btns">
-  <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">New Rental</a>
+<h2 class="page-heading-wide">RENTALS</h2>
+
+<div class="top-btn">
+  <a class="btn--inline btn--call-to-action" href="{% url 'rental_projects:rental_projects_create' %}">New Rental</a>
+
 </div>
 
-<div class="list-search-filter">
-  <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
-    <option value="{% url 'rental_projects:rental_projects_list' 'all' %}">All Rentals</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'current' %}">Current Rentals</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'feature' %}">Features</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'series' %}">Series</option>
-    <option value="{% url 'rental_projects:rental_projects_list' '51' %}">5.1</option>
-    <option value="{% url 'rental_projects:rental_projects_list' '71' %}">7.1</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'atmos' %}">ATMOS</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'imax6' %}">IMAX 6</option>
-    <option value="{% url 'rental_projects:rental_projects_list' 'imax12' %}">IMAX 12</option>
-  </select>
+  <form class="list-page-top rental-list-page-top" method="GET" class="list-page-search">
+    <div class="filter">
+      <label for="id_status_field">Status</label>
+      {{filter_search_form.status_field}}
+    </div>
+    <div class="filter">
+      <label for="id_channel_config_field">Channel Config</label>
+      {{filter_search_form.channel_config_field}}
+    </div>
+    <div class="filter">
+      <label for="id_type_field">Show Type</label>
+      {{filter_search_form.type_field}}
+    </div>
+    {{filter_search_form.search_field}}
 
-  <form method="GET">
-    {{search_form.search_field}}
-
-    <input class="btn btn-sm" type="submit" value="Search">
+    <input class="btn--inline btn--btn-outline-black" type="submit" name="search_filter" placeholder="" value="Go">
 
   </form>
-</div>
+
 
 <div class="message-card">
   {% if results %}
-    <h2>{{projects_list|length}} results for "{{ results }}".</h2>
+    <h2>{{projects_list|length}} results for "{{ results }}".<form action="" method="GET">
+      <input type="hidden" id="status_field_search_clear" name="status_field" value="">
+      <input type="hidden" id="channel_field_search_clear" name="channel_config_field" value="">
+      <input type="hidden" id="type_field_search_clear" name="type_field" value="">
+      <input type="submit" id="rental-clear-search" name="clear_search" value="Clear Search">
+    </form></h2>
   {% endif %}
 </div>
 
-  
-    {% if projects_list %}
-      
-      {% for project in projects_list %}
-      <a class="card" href="{%url 'rental_projects:rental_projects_detail' project.abbreviation %}"> 
-          {% if project.season %}
 
-            <h2 class="card-heading">{{project.title}}: Season {{project.season}}</h2>
+<div class="rental-list-wrapper">
+
+  {% if projects_list %}
+    
+    {% for project in projects_list %}
+      
+      <div class="card card-wide card-rental">
+        <div class="">
+          {% if project.season %}
+            <h1 class="card-heading">
+              <a href="{%url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}} - S{{project.season}}</a>
+            </h1>
 
             {% else %}
+            <h1 class="card-heading">
+              <a href="{%url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}}</a>
+            </h1>
 
-            <h2 class="card-heading">{{project.title}}</h2>
+          {% endif %}
 
-            {% endif %}
+      </div>
 
-            <div class="main-info-wrapper">
-              <p class="card-subheading">{{project.abbreviation}}</p>
-                <div class="main-info">
-                  <p>{{project.additional_info|linebreaksbr|truncatechars:100}}</p>
-                </div>
-            </div> 
-        {% endfor %}
-        {% else %}
-        
-        {% if not results %}
-          <div class="message-card">
-            <h1 class="contact-message">No rental projects to show.</h1>
-          </div>  
-        {% endif %}
-        
+          <div class="main-info-wrapper">
             
+            <p class="card-subheading">
+            
+              {% if project.project_complete_date %}
+              <span class="dot project-backup"></span>
+            {% elif project.mixing_complete_date %}
+              <span class="dot project-complete"></span>
+            {% elif project.start_date %}
+              <span class="dot project-working"></span>
+            {% endif %}
+            {{project.abbreviation}}
+            </p>
+              <div class="main-info">
+                <div class="card-wide-text">
+                  
+                  {% if not project.rental_rooms.all|length %}
+                    <p>Room: ---</p>
+                  {% else %}
+                  {% for room in project.rental_rooms.all %}
+                    {% if room.primary_room %}
+                      <p>Room: {{room.room}}</p>
+                    {% endif %}
+                  {% endfor %}
+                  {%endif%}
+                  <p>Drives: {{project.rental_drives.all|length}} {%if project.total_storage%}({{project.total_storage}} TB){%endif%}</p>
+                  <p>Config: {{project.channel_config}}</p>
+                  {% if project.files_link %}
+                  <p><a href="{{project.files_link}}" target="_blank">GoogleDrive</a></p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <p class="list-edit"><a href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a></p>
+          </div>
+      {% endfor %}
+      {% else %}
+      
+      {% if not results %}
+        <div class="message-card">
+          <h1 class="contact-message">Nothing to show.</h1>
+        </div>  
       {% endif %}
-    </a> 
+      
+          
+      {% endif %}
+    </div> 
+
 
 {% endblock bodyblock %}

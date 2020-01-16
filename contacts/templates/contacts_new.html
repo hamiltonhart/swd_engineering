@@ -5,17 +5,79 @@
 
 {% block bodyblock %}
   
-    <form method="POST">
-        {% csrf_token %}
+<h1 class='page-heading-wide'>NEW CONTACT</h1>
+    <form class="large-form-wrapper" method="POST">
         
-        <div class="form-content">
-            {{form.as_p}}
+        {% csrf_token %}
+        <div class="contact-form">
+            <p class="first-name">
+                <label for="first-name">First Name<span class="form-error">{% for error in form.first_name.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.first_name.value %}
+                <input type="text" name="first_name" id="first-name"  value="{{form.first_name.value}}" autocomplete="off">
+                {% else %}
+                <input type="text" name="first_name" id="first-name"  value="" autocomplete="off">
+                {% endif %}
+
+            </p>
+            <p class="last-name"> 
+                <label for="last-name">Last Name<span class="form-error">{% for error in form.last_name.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.last_name.value %}
+                <input type="text" name="last_name" id="last-name" value="{{form.last_name.value}}" autocomplete="off">
+                {% else %}
+                <input type="text" name="last_name" id="last-name" value="" autocomplete="off">
+                {% endif %}
+            </p>
+            <p class="phone-number">
+                <label for="phone-number">Phone<span class="form-error">{% for error in form.phone_number.errors %}{{error}}{%endfor%}</span></label>
+                <span class="phone-number">
+                    {{form.country}}
+                    {% if form.phone_number.value %}
+                    <input type="text" name="phone_number" id="phone-number" value="{{form.phone_number.value}}" placeholder="555 555 5555" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="phone_number" id="phone-number" placeholder="555 555 5555" autocomplete="off">
+                    {% endif %}
+                </span>
+            </p>
+            <p class="email">
+                <label for="email">Email<span class="form-error">{% for error in form.email.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.email.value %}
+                <input type="email" name="email" id="email" value="{{form.email.value}}" autocomplete="off">
+                {% else %}
+                <input type="email" name="email" id="email" autocomplete="off">
+                {% endif %}
+            </p>
+            <p class="company">
+                <label for="company">Company<span class="form-error">{% for error in form.company.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.company.value %}
+                <input type="text" name="company" id="company" value="{{form.company.value}}" autocomplete="off">
+                {% else %}
+                <input type="text" name="company" id="company" autocomplete="off">
+                {% endif %}
+            </p>
+            <p class="title">
+                <label for="title">Title<span class="form-error">{% for error in form.title.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.title.value %}
+                <input type="text" name="title" id="title" value="{{form.title.value}}" autocomplete="off">
+                {% else %}
+                <input type="text" name="title" id="title" autocomplete="off">
+                {% endif %}
+            </p>
+            <p class="notes">
+                <label for="notes">Notes<span class="form-error">{% for error in form.notes.errors %}{{error}}{%endfor%}</span></label>
+                {% if form.notes.value %}
+                <textarea name="notes" id="notes" cols="30" rows="10">{{form.notes.value}}</textarea>
+                {% else %}
+                <textarea name="notes" id="notes" cols="30" rows="10"></textarea>
+                {% endif %}
+            </p>
+            <div class="form-btns">
+                <input class="btn--large btn--call-to-action" type="submit" value="Add Contact">
+                <a class="btn--cancel" href="{% url 'contacts:contacts_list' %}">Cancel</a>
+            </div>
         </div>
 
-        <div class="form-btns">
-            <a class="btn cancel-btn" href="{% url 'contacts:contacts_list' 'all' %}">Cancel</a>
-            <input class="btn confirm-btn" type="submit" value="Add Contact">
-        </div>
+
+
     </form>
 
 {% endblock bodyblock %}

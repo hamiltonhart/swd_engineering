@@ -5,59 +5,76 @@
 
 
 {% block bodyblock %}
-<div class="page-top-btns">
-    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
+
+<h2 class="page-heading-wide">CONTACTS</h2>
+
+<div class="top-btn">
+    <a class="btn--inline btn--call-to-action" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
 </div>
 
-<div class="list-search-filter">
-    <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
-        <option value="{% url 'contacts:contacts_list' 'first' %}">First Name</option>
-        <option value="{% url 'contacts:contacts_list' 'last' %}">Last Name</option>
-      </select>
+<form class="list-page-top rental-list-page-top" method="GET" class="list-page-search">
+    <div class="filter">
+      <label for="id_status_field">Sorting</label>
+      {{sorting_search_form.name_sorting}}
+    </div>
+    {{sorting_search_form.search_field}}
+
+    <input class="btn--inline btn--btn-outline-black" type="submit" name="search_filter" placeholder="" value="Go">
+
+  </form>
 
 
-    <form method="GET">
-      {{search_form.search_field}}
-  
-      <input class="btn btn-sm" type="submit" value="Search">
-  
-    </form>
-  </div>
-  
-  <div class="message-card">
-    {% if results %}
-      <h2>{{contacts_list|length}} results for "{{ results }}".</h2>
-    {% endif %}
-  </div>
+<div class="message-card">
+  {% if results %}
+    <h2>{{contacts_list|length}} results for "{{ results }}".<form action="" method="GET">
+      <input type="hidden" id="sorting_search_clear" name="name_sorting" value="">
+      <input type="hidden" id="search_field_clear" name="search_field" value="">
+      <input type="submit" id="contacts-clear-search" name="clear_search" value="Clear Search">
+    </form></h2>
+  {% endif %}
+</div>
 
+
+<div class="">
+    <div class="contact-list-wrapper">
 
     {% if contacts_list %}
         {% for contact in contacts_list %}
-
-        <a class="card" href="{% url 'contacts:contacts_detail' contact.pk %}">
-            
-                <h2 class="card-heading">{{contact}}</h2>
-            <div class="main-info-wrapper">
-                <p class="card-subheading">{{contact.company}} &middot; {{contact.title}}</p>
+            <div class="card card-wide">
                 
-                <div class="main-info">
-                    {% if contact.phone_number %}
-                        <p>p: {{contact.phone_format}}</p>  
-                    {% endif %}
-
-                    {% if contact.email %}
-                        <p>e: {{contact.email}}</p>    
-                    {% endif %}
+                    <h1 class="card-heading"><a href="{% url 'contacts:contacts_detail' contact.pk %}">{{contact}}</a></h1>
+                <div class="main-info-wrapper">
+                    <p class="card-subheading">
+                        {% if contact.company %}{{contact.company}}{%endif%} &middot; {%if contact.title%}{{contact.title}}{%endif%}
+                    </p>
+                    
+                    <div class="main-info">
+                        {% if contact.phone_number %}
+                            <p>{{contact.phone_format}}</p>  
+                        {% endif %}
+    
+                        {% if contact.email %}
+                            <p>{{contact.email}}</p>    
+                        {% endif %}
+                        {% if contact.last_project %}
+                            <p class="top-padding-3">
+                                <a href="{{contact.last_project.files_link}}" target="_blank">
+                                    {{contact.last_project.title}}{% if contact.last_project.season %} - S{{contact.last_project.season}}{%endif%} Drive
+                                </a>
+                            </p>
+                        {% endif %}
                         
+                    </div>
+                    
                 </div>
-
+                <p class="list-edit"><a href="{% url 'contacts:contacts_update' contact.pk %}">Edit</a></p>
             </div>
-        </a>
-
-        {% endfor %}
+            
+            {% endfor %}
+        </div>
+</div>
     {% else %}
         {% if not results %}
-          
             <div class="message-card">
                 <h1 class="contact-message">No contacts to show.</h1>
             </div>
