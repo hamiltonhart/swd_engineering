@@ -53,7 +53,7 @@
                     <label for="files-link">GoogleDrive<span class="required-input">*</span>
                         <span class="form-error">{% for error in form.files_link.errors %}{{error}}{%endfor%}</span>
                     </label>
-                    <a class="create-link" href="http://www.google.com" target="_blank">Create</a>
+                    <a class="create-link" href="https://drive.google.com/drive/folders/1FZ9wChQTgt8KodneFKARsFACemSAtrzG?usp=sharing" target="_blank">Create</a>
                     {% if form.files_link.value %}
                     <input type="url" name="files_link" id="files-link" value="{{form.files_link.value}}" required autocomplete="off">
                     {% else %}
