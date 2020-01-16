@@ -4,25 +4,45 @@
 {% block titleblock %}Drive {{drive.drive_number}}{% endblock titleblock %}
 
 {% block bodyblock %}
-    
-    <div class="page-top-btns">
-        <a class="btn" href="{% url 'harddrives:harddrives_list' 'available' %}">Back to Drive List</a>
-        <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
-    </div>
 
+
+<div class="container--harddrives-detail">
+    <div class="page-top-btns">
+        <a class="btn--inline btn--border-hover" href="{% url 'harddrives:harddrives_list' 'available' %}">Back to Drive List</a>
+        <a class="btn--inline btn--border-hover" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
+    </div>
+    
     <div class="page-heading">
             <h1>Drive: {{drive.drive_number}}</h1>
-            <h4><p>Capacity: {{drive.drive_capacity_gb}}</p></h4>
+            <h4>Capacity: {{drive.drive_capacity_gb}}</h4>
         </div>
-
+    
     <div class="color-page-white page-area">
-            <p class="section-header">Current Project</p>
-        <div class="page-area-info">
+            <h1 class="section-header">Current Project</h1>
+        <div class="page-area-info project-list">
             {% if drive.rental_projects.all %}
             {% for project in drive.rental_projects.all %}
-                <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
+                <a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
                     {{project.project}}
-                </a></p>
+                </a>
+                <input class="btn--inline btn--btn-outline" type="button" name="" onclick="showModal('.modal--release-form')" value="Release">
+                
+                <!-- Modal -->
+                <div id=backup-form class="modal modal--release-form">
+                    <div id="backup-form" class="backup-form">
+                        <h2 class="warning-text">Releasing a drive cannot be undone!</h2>
+                            <h2>Do you want to release DRIVE: {{drive.drive_number}} from {{project.project.title}}?</h2>
+                            <h2 class="warning-text">Are you sure?</h2>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="text" name='project-drive-pk' hidden value="{{project.pk}}">
+                            <input name="release-drive" class="btn--inline btn--btn-outline" type="submit" value="Release">
+                            <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModal('.modal--release-form')" value="Cancel">
+                        </form>
+                    </div>
+                </div>
+                <!-- End Modal -->
+
             {% endfor %}
             {% else %}
             <p>Unassigned</p>
@@ -31,13 +51,12 @@
     </div>
     {% if drive.rental_projects.all %}
         <div class="color-light-grey page-area">
-            <p class="section-header">Other Project Drives</p>
-            <div class="page-area-info">
+            <h1 class="section-header">Other Project Drives</h1>
+            <div class="page-area-info drive-list">
                 
                 {% for project in drive.rental_projects.all %}
                     {% for other_drive in project.project.rental_drives.all %}
                         {% if other_drive.drive.pk == drive.pk %}
-                          
                         {% else %}
                         <p><a href="{% url 'harddrives:harddrives_detail' other_drive.drive.pk %}">
                             {{other_drive.drive}}
@@ -51,10 +70,29 @@
         </div>
     {% endif %}
         
-
+    
     <div class="page-bottom-btns">
-        <a class="btn" href="{% url 'harddrives:harddrives_update' drive.pk %}">Update</a>
-        <a class="btn delete-btn" href="{% url 'harddrives:harddrives_delete' drive.pk %}">Delete</a>
+        <a class="btn--large btn--call-to-action" href="{% url 'harddrives:harddrives_update' drive.pk %}">Update</a>
+        <p class="btn--del" onclick="showModal('.modal--backup-form')">Delete</p>
     </div>
+
+
+    <!-- MODALS -->
+
+    <div class="modal modal--backup-form">
+        <div id="" class="backup-form">
+            <h2 class="warning-text">This cannot be undone!</h2>
+            <h2>Do you want to delete this drive?</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input name="delete-drive" class="btn--inline btn--btn-outline" type="submit" value="Delete Drive: {{drive.drive_number}}">
+                <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModal('.modal--backup-form')" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+
+</div>
+    
     
 {% endblock bodyblock %}

@@ -21,7 +21,6 @@ class Contact(models.Model):
     country = models.CharField(max_length=10, choices=COUNTRIES, default="US")
     company = models.CharField(max_length=200, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True, null=True, verbose_name="Job Description")
-    # files = models.FileField()
     notes = models.TextField(blank=True)
 
     def __str__(self):
@@ -37,10 +36,22 @@ class Contact(models.Model):
         else:
             return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
 
+    @property
+    def last_project(self):
+        try:
+            project =  self.rental_projects.reverse()
+            return project[0].project
+        except:
+            pass
+            return
+
     def save(self, *args, **kwargs):
-        self.first_name = str(self.first_name).capitalize()
-        self.last_name = str(self.last_name).capitalize()
+        # self.first_name = str(self.first_name).capitalize()
+        # self.last_name = str(self.last_name).capitalize()
         if self.title:
             self.title = str(self.title).capitalize()
+        if self.phone_number:
+            self.phone_number = self.phone_number.replace("-", "")
+            self.phone_number = self.phone_number.replace(" ", "")
         super().save(*args, **kwargs)
     

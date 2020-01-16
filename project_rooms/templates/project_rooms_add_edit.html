@@ -4,17 +4,9 @@
 {% block titleblock %}{{ project.title }} Rooms{% endblock titleblock %}
 
 {% block bodyblock %}
-<div class="page-top-btns">
+    <div class="page-top-btns">
         <a class="btn" href="{% url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}}</a>
-        
     </div>
-    
-        <!-- <div class="page-heading">
-            <h1>{{project.title}}</h1>
-                {% if project.season %}
-                    <h3>Season {{project.season}}</h3>
-                {% endif %}
-        </div>  -->
     
         <!-- .page-heading end -->
     <div class="color-light-grey page-area">
@@ -34,7 +26,7 @@
                 </div>
                 {% endif %}
             {% endfor %}
-             
+
         </div>
         <div class="section-form">
             <form class="form-flex-column" method="POST">

@@ -2,200 +2,429 @@
 {% load static %}
 
 {% block titleblock %}{% if project.season %}{{project.title}}: Season {{project.season}}{% else %}{{project.title}}{% endif %}
-  
+
 {% endblock titleblock %}
 
 {% block bodyblock %}
 
-<div class="page-top-btns">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">Rentals List</a>
-    <a class="btn" href="{% url 'rental_projects:rental_projects_create' %}">Add New Rental</a>
-</div>
+<div class="container--rental-detail">
 
-    <div class="page-heading">
-        <h1>{{project.title}}</h1>
-            {% if project.season %}
-                <h3>Season {{project.season}}</h3>
-            {% endif %}
-    </div> 
-
-    <!-- .page-heading end -->
-<div class="color-page-white page-area">
-    <div class="flex-header">
-        <p class="section-header">Basic Information</p>
-        <a href="{% url 'project_rooms:project_rooms_add_edit' project.abbreviation %}">Room Details</a>
-    </div>
-    <div class="page-area-info">
-        <p>Abbreviation:</p>
-        <p>{{ project.abbreviation}}</p>
-        <p>Room:</p>
-        {% if current_primary %}
-            <p>{{current_primary.room}}</p>
-                
-        {% else %}
-            <form method="POST">
-                {% csrf_token %}
-                {{add_room_form.room}}
-                <input name="primary_room" type="hidden" value="True">
-                <input name="add_room" class="btn btn-sm" type="submit" value="Add">
-            </form>
+    <div class="page-heading-wide">
+        <h2>{{project.title}}</h2>
+        {% if project.season %}
+        <h5>Season: {{project.season}}</h5>
         {% endif %}
-        
-        <p>Channel Configuration:</p>
-        <p>{{project.channel_config}}</p>
     </div>
-</div>
+
+    <div class="page-top-btns">
+        <a class="btn--inline btn--border-hover" href="{% url 'rental_projects:rental_projects_list' '000' %}">Rentals List</a>
+        <a class="btn--inline btn--border-hover" href="{% url 'rental_projects:rental_projects_create' %}">Add New Rental</a>
+    </div>
     
-<div class="color-light-grey page-area">
-    <div class="flex-header">
-        <p class="section-header">Clients</p>
-        <a href="{% url 'project_clients:project_clients_ms_list' project.abbreviation %}">Media Shuttle Details</a>
-    </div>
-    <div class="client-list">
-        {% for client in project.rental_clients.all %}
-            <div class="client-flex">
-                <h2><a href="{% url 'project_clients:project_client_detail' project.abbreviation client.pk %}">{{client.client}}</a></h2>
-                <p>{{ client.client_role }}</p>
-            </div>
-        {% endfor %}
-        
-            <div class="section-form">
-                <form class="form-flex-column" method="POST">
-                    {% csrf_token %}
-                    <div class="form-bottom">
-                        <div class="form-field">
-                            <p>{{add_client_form.client.label_tag}}</p>
-                            <p>{{add_client_form.client}}</p>
-                        </div>
-                        <div class="form-field">
-                                <p>{{add_client_form.client_role.label_tag}}</p>
-                                <p>{{add_client_form.client_role}}</p>
-                        </div>
-                    </div>
-                    <div class="bottom-form-btns">
-                        <input class="btn btn-sm" name="client_add_edit" type="submit" value="Add/Edit">
-                        <input class="btn btn-sm" name="client_remove" type="submit" value="Remove">
-                    </div>
-                </form>
-                
+        <!-- .page-heading end -->
+    
+    
+    <div class="color-page-white page-area basic-info">
+        <div class="flex-header">
+            <h3 class="section-header">Basic Information</h3>
+        </div>
+        <div class="page-area-info">
+            <table class="rental-info">
+                <tr>
+                    <!-- <td>Abbreviation:</td> -->
+                    <td>{{ project.abbreviation}}</td>
+                </tr>
+                <tr>
+                    <!-- <td>Room:</td> -->
+                    <td>
+                        {% if current_primary %}
+                            {{current_primary.room}}
+                        {% else %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{add_room_form.room}}
+                                <input name="primary_room" type="hidden" value="True">
+                                <input name="add_room" class="btn--inline btn--btn-outline-black" type="submit" value="Add">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <!-- <td>Channel Config:</td> -->
+                    <td>{{project.channel_config}}</td>
+                </tr>
+            </table>
         </div>
     </div>
-</div>
 
-<div class="color-page-white page-area">
-    <p class="section-header">Login Information</p>
-    <div class="page-area-info">
-        <p>Drive Username:</p>
-        <p>{{ project.drive_user}}</p>
-        <p>Drive Password:</p>
-        <p>{{project.drive_pass}}</p>
-        <p>Media Shuttle Username:</p>
-        <p>{{project.ms_user}}</p>
-        <p>Media Shuttle Password:</p>
-        <p>{{project.ms_pass}}</p>
+    <div class="manage-options">
+        <button id="" class="btn--inline" onclick="showModal('.modal--ms-info')">Media Shuttle Details</button>
+        <button id="" class="btn--inline" onclick="showModal('.modal--room-detail', 'show-block')">Room Details</button>
+        <a href={{project.files_link}} target="_blank">Google Drive</a>
     </div>
-</div>
+        
+    <div class="color-page-grey page-area project-clients">
+        <div class="flex-header">
+            <h3 class="section-header">Clients</h3>
 
-<div class="color-light-grey page-area">
-        <p class="section-header">Drives</p>
-        <div class="page-area-info">
-            {% if project.rental_drives.all %}
-            
-            {% for drive in project.rental_drives.all %}
-                <div class="client-flex">
-                    <h2><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></h2>
+        </div>
+        <div class="client-list page-area">
+            {% for client in project.rental_clients.all %}
+                <div class="client-list-info">
+                    <p><a href="{% url 'contacts:contacts_detail' client.client.pk %}">{{client.client}}</a></p>
+                    <p>{{ client.client_role }}</p>
                 </div>
             {% endfor %}
-            
-            {% elif project.number_of_systems %}
-                
-                <h2>{{project.number_of_systems}} drives used.</h2>            
+                    <form class="section-form" method="POST">
+                        {% csrf_token %}
 
-            {% else %}
-                    <h2>No Drives Assigned</h2>
-            {% endif %}
+                            <div class="form-field">
+                                <p>{{add_client_form.client.label_tag}}</p>
+                                <p>{{add_client_form.client}}</p>
+                            </div>
+                            <div class="form-field">
+                                    <p>{{add_client_form.client_role.label_tag}}</p>
+                                    <p>{{add_client_form.client_role}}</p>
+                            </div>
+                            <input class="btn--inline btn--btn-outline-black" name="client_add_edit" type="submit" value="Add/Edit Client">
+                            <input class="btn--inline btn--btn-outline" name="client_remove" type="submit" value="Remove Client">
+                        </form>
+                        <button class="btn--inline" onclick="showModal('.modal--new-contact')">Create New Contact</button>
+                    </div>
 
-            
         </div>
-            {% if project.project_complete_date %}
-
-            {% else %}
-            <div class="section-form">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{add_drive_form.drive}}
-        
-                    <input class="btn btn-sm" name="drive_add" type="submit" value="Add">
-                </form>
-            </div>
-            {% endif %}
-            
-    </div>
-        
-<div class="color-page-white page-area">
-    <div class="flex-header">
-        <p class="section-header">Notes</p>
-        {%if project.files_link%}
-        <a href={{project.files_link}} target="_blank">GoogleDrive</a>
-        {%endif%}
-    </div>
-        <div class="page-area-info">
-                <p class="page-area-full-width">{{ project.additional_info|linebreaksbr }}</p>
-                
-            </div>
-    </div>
-
-    <div class="color-light-grey page-area">
-            <p class="section-header">Dates</p>
+    
+    
+    <div class="color-page-white page-area login-info">
+        <div class="flex-header">
+            <h3 class="section-header">Login Information</h3>
+        </div>
             <div class="page-area-info">
-                <p>Start Date:</p>
-                    {% if project.start_date %}
-                        <p>{{ project.start_date|date:'M d Y'}}</p>
-                    {% else %}
-                        <p>----</p>
-                    {% endif %}
+                <table class="login-info">
+                    <tr>
+                        <td>Drive User:</td>
+                        <td>{{project.drive_user}}</td>
+                    </tr>
+                    <tr>
+                        <td>Drive Pass:</td>
+                        <td>{{project.drive_pass}}</td>
+                    </tr>
+                    <tr>
+                        <td>MS User:</td>
+                        <td>{{project.ms_user}}</td>
+                    </tr>
+                    <tr>
+                        <td>MS Pass:</td>
+                        <td>{{project.ms_pass}}</td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+    
+    <div class="color-light-grey page-area rental-drives">
+        <div class="flex-header">
+            <h3 class="section-header">Drives</h3>
+        </div>
+        <div class="drive-list page-area">
+                {% if project.rental_drives.all %}
+                <div class="drive-summary">
+                    <h2>{{project.rental_drives.all|length}}{%if project.rental_drives.all|length > 1%} Drives {%else%} Drive {%endif%}</h2>
+                    <h2>{{project.total_storage}} TB</h2>
+                </div>
                 
-                <p>Mixing Complete Date:</p>
-                    {% if project.mixing_complete_date %}
-                        <p>{{project.mixing_complete_date|date:'M d Y'}}</p>
-                    {% else %}
-                        <p>------</p>
-                    {% endif %}
+                {% for drive in project.rental_drives.all %}
+                    <div class="rental-drive-item">
+                        <p><a href="{% url 'harddrives:harddrives_detail' drive.drive.pk %}">{{drive.drive}}</a></p>
+                    </div>
+                {% endfor %}
                 
-                <p>Backup Date:</p>
-                    {% if project.project_complete_date %}
-                        <p>{{project.project_complete_date|date:'M d Y'}}</p>
-                    {% else %}
-                        <p>------</p>
-                    {% endif %}
-            </div>
-            <div class="section-form btn-form">
-                <form method="POST">
-                    {% csrf_token %}
-
-                    {% if project.mixing_complete_date %}
-                        <input name="project_incomplete" class="btn btn-sm" type="submit" value="Incomplete"> 
-                    {% else %}   
-                        <input name="project_complete" class="btn btn-sm" type="submit" value="Complete">
-                    {% endif %}
-                </form>
-                {% if project.project_complete_date and project.mixing_complete_date %}
-                  
+                {% elif project.number_of_systems %}
+                    
+                    <h2>{{project.number_of_systems}} drives used.</h2>            
+    
                 {% else %}
-                <form method="POST">
-                    {% csrf_token %}
-
-                    <a class="btn btn-sm delete-btn" href="{% url 'rental_projects:rental_projects_backup' project.abbreviation %}">Backup</a>
-                </form>
+                        <h2>No Drives Assigned</h2>
                 {% endif %}
                 
-            </div>
+                {% if project.project_complete_date %}
+    
+                {% else %}
+                    <form method="POST" class="section-form">
+                        {% csrf_token %}
+                            {{add_drive_form.drive}}
+            
+                        <input class="btn--inline btn--btn-outline-black" name="drive_add" type="submit" value="Add Drive">
+                    </form>
+                {% endif %}            
         </div>
+    </div>
+            
+    <div class="color-page-white page-area rental-notes">
+        <div class="flex-header">
+            <h3 class="section-header">Notes</h3>
+        </div>
+            <div class="page-area-info">
+                {% if project.additional_info %}
+                    <p class="page-area-full-width">{{ project.additional_info|linebreaksbr }}</p>
+                {% else %}
+                    <p>No Notes</p>
+                {% endif %}
+                    
+                </div>
+        </div>
+    
+        <div class="color-light-grey page-area rental-dates">
+            <div class="flex-header">
+                <h3 class="section-header">Dates</h3>
+            </div>
+                <div class="page-area-info">
+                    <table class="dates-info">
+                        <tr>
+                            <td>Start Date:</td>
+                            <td>
+                                {% if project.start_date %}
+                                    {{ project.start_date|date:'M d Y'}}
+                                {% else %}
+                                    -----
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mixing Complete Date:</td>
+                            <td>
+                                {% if project.mixing_complete_date %}
+                                    {{project.mixing_complete_date|date:'M d Y'}}
+                                {% else %}
+                                    ------
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Drive Erase Date:</td>
+                            <td>
+                                {% if project.project_complete_date %}
+                                    {{project.project_complete_date|date:'M d Y'}}
+                                {% else %}
+                                    ------
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form method="POST" class="section-form btn-form">
+                    {% csrf_token %}
 
-        <div class="page-bottom-btns flex-align-right">
-    <a class="btn" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
-    <a class="btn delete-btn" href="{% url 'rental_projects:rental_projects_delete' project.pk %}">Delete</a>
-</div>
+                    {% if project.mixing_complete_date %}
+                        <input name="project_incomplete" class="btn--inline btn--btn-outline-black" type="submit" value="Incomplete"> 
+                    {% else %}   
+                        <input name="project_complete" class="btn--inline btn--btn-outline-black" type="submit" value="Complete">
+                    {% endif %}
+                    {% if project.project_complete_date and project.mixing_complete_date %}
+                    {% else %}
+                        <input type="button" class="btn--inline btn--btn-outline-black" onclick="showModal('.modal--backup-form')" value="Erase Drives"/>
+                    {% endif %}
+                </form>
+            </div>
+
+            
+            <!-- MODALS -->
+
+            <!-- Backup Drives -->
+
+            <div class="modal modal--backup-form">
+                <div id="backup-form" class="backup-form">
+                    <h2 class="warning-text">Backups cannot be undone!</h2>
+                    {% if project.season %}
+                        <h2>Do you want to backup {{project.title}}: Season {{project.season}}?</h2>
+                    {% else %}
+                        <h2>Do you want to backup {{project.title}}?</h2>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input name="project_backup" class="btn--inline btn--btn-outline" type="submit" value="Erase Drives">
+                        <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModal('.modal--backup-form')" value="Cancel">
+                    </form>
+                </div>
+            </div>
+
+            <!-- Delete Project -->
+
+            <div class="modal modal--delete-form">
+                <div id="backup-form" class="backup-form">
+                    <h2 class="warning-text">This cannot be undone!</h2>
+                    {% if project.season %}
+                        <h2>Do you want to delete {{project.title}}: Season {{project.season}}?</h2>
+                    {% else %}
+                        <h2>Do you want to delete {{project.title}}?</h2>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input name="project_delete" class="btn--inline btn--btn-outline" type="submit" value="Delete">
+                        <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModal('.modal--delete-form')" value="Cancel">
+                    </form>
+                </div>
+            </div>
+
+            <!-- New Contact -->
+            <div class="modal modal--new-contact">
+                <div id="new-contact-window" class="new-contact-window">
+                    <h1>New Contact</h1>
+                    <form method="POST" class="new-contact-short-form">
+                        {%csrf_token %}
+                        <p>
+                            <label for="first-name">First Name</label>
+                            <input type="text" name="first_name" id="first-name" autocomplete="off">
+                        </p>
+                        <p>
+                            <label for="last-name">Last Name</label>
+                            <input type="text" name="last_name" id="last-name" autocomplete="off">
+                        </p>
+                        <p>
+                            <label for="phone-number">Phone</label>
+                            <input type="text" name="phone_number" id="phone-number" autocomplete="off">
+                        </p>
+                        <p>
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" autocomplete="off">
+                        </p>
+                        <p>
+                            <label for="company">Company</label>
+                            <input type="text" name="company" id="company" autocomplete="off">
+                        </p>
+                        <p>
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" autocomplete="off">
+                        </p>
+                        <p>
+                            <input type="checkbox" name="add_to_project" id="add-to-project" hidden>
+                        </p>
+                        <p class="pop-btn"><input type="submit" class="btn--inline btn--call-to-action" name="create_contact" value="Create Contact"></p>
+                        <!-- <p class="pop-btn"><input type="button" class="btn--inline btn--btn-outline-black" onclick="closeModal('.modal--new-contact')" value="Cancel"></p> -->
+                        <!-- <p class="btn--close"><input type="button" class="btn--inline btn--btn-outline-black" onclick="closeModal('.modal--new-contact')" value="+"></p> -->
+                        <h5 class='btn--close' onclick="closeModal('.modal--new-contact')">+</h5>
+                    </form>
+                </div>
+            </div>
+            <!-- End modal--new-contact -->
+
+            <!-- MS Info -->
+            <div id="modal--ms-info" class="modal modal--ms-info">
+
+                <div id="ms-info-window" class="ms-info-window">
+                    <h5 class='btn--close' onclick="closeModal('.modal--ms-info')">+</h5>
+                    <div class="heading">
+                        <h1>Media Shuttle</h1>
+                        <h3>smb://10.254.129.251</h3>
+                    </div>
+    
+
+                    <div class="color-page-grey page-area">
+                        <div class="">
+                            <h1 class="section-header">{{ current_primary.room }}</h1>
+                        </div>
+                
+                        <div class="color-page-white page-area instructions">
+                            <table>
+                                <tr>
+                                    <th>IP Range</th>
+                                    <th>Subnet</th>
+                                    <th>Router</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ current_primary.room.media_shuttle_ip_range }}</td>
+                                    <td>{{ current_primary.room.media_shuttle_subnet }}</td>
+                                    <td>{{ current_primary.room.media_shuttle_host }}</td>
+                                </tr>
+                            </table>
+                        </div>
+    
+                        <div class="ms-clients">
+                            <table>
+                                {% for client in project.ms_clients.all %}
+                                        {% if client.project_room == current_primary %}
+                                            <tr>
+                                                <td><h3><a href="{% url 'project_clients:project_client_detail' project.abbreviation client.project_client.pk %}">{{ client.project_client.client }}</a></h3></td>
+                                                <td><p>{{ client.project_client.client_role }}</p></td>
+                                                <td><p>{{ client.client_ms }}</p></td>
+                                            </tr>
+                                        {% endif %}  <!-- client.project_room == room -->
+                                    
+                                {% endfor %} <!-- client in ms_clients -->
+    
+                            </table>
+                        </div>
+    
+                            <form class="section-form" method="POST">
+                                {% csrf_token %}
+                                <div class="form-field">
+                                    <p>{{ ms_client_form.project_client.label_tag }}</p>
+                                    <p>{{ ms_client_form.project_client }}</p>
+                                </div>
+                                <div class="form-field">
+                                    <p>{{ ms_client_form.client_ms.label_tag }}</p>
+                                    <p>{{ ms_client_form.client_ms }}</p>
+                                </div>
+                                <input type="hidden" name="project_room" value="{{ current_primary.pk }}">
+                                <input class="btn--inline btn--btn-outline" name="ms_add_edit" type="submit" value="Add/Edit">
+                                <input class="btn--inline btn--btn-outline-black" name="ms_delete" type="submit" value="Remove">
+                            </form>
+                
+                    </div>
+
+                </div>
+            </div>
+            <!-- End modal--ms-info -->
+
+            <!-- Room Details -->
+            <div class="modal modal--room-detail">
+                <div id="room-detail-window" class="room-details">
+                    <div class="color-light-grey page-area">
+                        <h5 class='btn--close' onclick="closeModal('.modal--room-detail')">+</h5>
+                        <h1 class="section-header">Project Rooms</h1>
+    
+                        <div class="room-info">
+                            {% for room in project.rental_rooms.all %}
+                                {% if room.primary_room %}
+                                    <div class="client-flex">
+                                        <p class="text-emphasis">{{ room.room }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="client-flex">
+                                        <p>{{ room.room }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+    
+    
+                            <form class="room-form" method="POST">
+                                {% csrf_token %}
+                                    <div class="form-field">
+                                        {{ room_form.room.label_tag }}
+                                        {{ room_form.room }}
+                                    </div>
+                                    
+                                    <div class="form-field">
+                                        {{ room_form.primary_room.label_tag }}
+                                        {{ room_form.primary_room }}
+                                    </div>
+    
+                                    <input class="btn--inline btn--call-to-action" name="room_add_edit" type="submit" value="Add/Edit">
+                                    <input class="btn--inline btn--btn-outline-black" name="room_remove" type="submit" value="Remove">
+                            </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Room Details -->
+    
+            <div class="page-bottom-btns">
+                <a class="btn--large btn--call-to-action" href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a>
+                <p class="btn--del" onclick="showModal('.modal--delete-form')">Delete Project</p>
+            </div>
+    </div>
+
+
 
 
 {% endblock bodyblock %}

@@ -4,75 +4,140 @@
 {% block titleblock %}{{contact}}{% endblock titleblock %}
 
 {% block bodyblock %}
+<div class="container--contact-detail">
 
-<div class="page-top-btns">
-    <a class="btn" href="{% url 'contacts:contacts_list' 'first' %}">Back to Contacts</a>
-    <a class="btn" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
-</div>
-
-    <div class="page-heading">
+    
+    <div class="page-heading-wide">
         <h1>{{contact}}</h1>
-        <!-- <div class="contact-subheading">
-            {% if contact.company %}
-            <h3>{{contact.company}}</h3>
-            {% endif %}
-            {% if contact.title %}
-                <h3>{{contact.title}}</h3>
-            {% endif %}
-        </div> -->
     </div>
-    <div class="color-page-white page-area">
-        <p class="section-header">Basic Information</p>
-        <div class="page-area-info">
-                {% if contact.company %}
-                    <p>Company:</p>
-                    <p>{{contact.company}}</p>
-                {% endif %}
-                {% if contact.title %}
-                    <p>Title:</p>
-                    <p>{{contact.title}}</p>
-                {% endif %}
-                {% if contact.email %}
-                    <p>Email:</p>
-                    <p><a href="mailto:{{contact.email}}">
-                            {{contact.email}}
-                        </a></p>
-                {% endif %}
-
-                {% if contact.phone_number %}
-                    <p>Phone:</p>
-                    
-                    <p><a href="tel:{{contact.phone_number}}">
-                        {{contact.phone_format}}
-                    </a></p>
-                {% endif %}
+    
+    <div class="detail-body">
+        <div class="page-top-btns">
+            <a class="btn--inline btn--border-hover" href="{% url 'contacts:contacts_list' %}">Back to Contacts</a>
+            <a class="btn--inline btn--border-hover" href="{% url 'contacts:contacts_create' %}">Add New Contact</a>
         </div>
-    </div>
-
-    <div class="color-light-grey page-area">
-            <p class="section-header">Notes</p>
-            <div class="page-area-info">
-                <p class="page-area-full-width">{{contact.notes|linebreaksbr}}</p>
-            </div>
-        </div>
-
         <div class="color-page-white page-area">
-                <p class="section-header">Projects</p>
-                <div class="page-area-info">
-                   
-                   {% for project in contact.rental_projects.all %}
-                       <p><a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
-                           {{project.project}}
-                       </a></p>
-                   {% endfor %}
-                       
-                </div>
-            </div>
+            <h3 class="section-header">Personal Information</h3>
+            <table class="page-area-info personal-info">
+                <tr>
+                    <td>Company:</td>
+                    <td>
+                        {% if contact.company %}
+                            {{contact.company}}
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Title:</td>
+                    <td>
+                        {% if contact.title %}
+                            {{contact.title}}
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        {% if contact.email %}
+                            <a href="mailto:{{contact.email}}">
+                                    {{contact.email}}
+                                </a>
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>
+                        {% if contact.phone_number %}
+                            <a href="tel:{{contact.phone_number}}">
+                                {{contact.phone_format}}
+                            </a>
+                        {% else %}
+                            ----
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-<div class="page-bottom-btns">
-    <a class="btn" href="{% url 'contacts:contacts_update' contact.pk %}">Update</a>
-    <a class="btn delete-btn" href="{% url 'contacts:contacts_delete' contact.pk %}">Delete</a>
-</div>
+
+
+        <div class="contact-project-table">
+            {% if contact.rental_projects.all %}
+            <table>
+                <tr>
+                    <th>Project</th>
+                    <th>GoogleDrive</th>
+                    <th class="table-wide">Format</th>
+                </tr>
+                {% for project in contact.rental_projects.all %}
+                <tr>
+                    <td>
+                        <a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
+                            {{project.project}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{project.project.files_link}}" target="_blank">GoogleDrive</a>
+                    </td>
+                    <td class="table-wide">
+                        {{project.project.channel_config}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <h2>No Projects Assigned</h2>
+            {% endif %}
+        </div>
+
+        
+        <div class="color-page-grey page-area">
+            <h3 class="section-header">Notes</h3>
+            <div class="page-area-info">
+                {% if contact.notes %}
+                <p class="align-left">{{contact.notes|linebreaksbr}}</p>
+                {% else %}
+                <p class="">No Notes</p>
+                {% endif %}
+
+            </div>
+        </div>
+        
+            
+        
+        
+        
+        <div class="page-bottom-btns">
+            <a class="btn--large btn--call-to-action" href="{% url 'contacts:contacts_update' contact.pk %}">Edit Contact</a>
+            <p class="btn--cancel" onclick="showModal('.modal--backup-form')">Delete Contact</p>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal modal--backup-form">
+        <div id="backup-form" class="backup-form">
+            <h2 class="warning-text">This cannot be undone!</h2>
+                <h2>Do you want to delete {{contact}}?</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input name="delete_contact" class="btn--inline btn--btn-outline" type="submit" value="Delete">
+                <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModal('.modal--backup-form')" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <!-- End Modals -->
+
+    <!-- End detail-body -->
+    <div class="detail-footer"></div>
+</divpage>
 
 
 

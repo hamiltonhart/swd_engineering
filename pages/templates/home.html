@@ -5,20 +5,100 @@
 
 {% block bodyblock %}
 
+    <div class="container--home">
+
+        <h2 class="page-heading-wide">Summary</h2>
+
+        <div class="home-content">
+            <div class="home-section home-drive-summary">
+                <h1 class="home-heading"><a href="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</a></h1>
+                <div class="drive-summary">
+                    <h1>250GB: {{twofifty|length}}</h2``>
+                    <h1>500GB: {{fivehundred|length}}</h`2>
+                    <h1>1TB: {{onetb|length}}</h2>
+                    <h1>2TB: {{twotb|length}}</h2>
+                </div>
+            </div>
+    
+            <div class="home-section home-rental-list">
+                <h1 class="home-heading"><a href="{% url 'rental_projects:rental_projects_list' '100' %}">Current Rentals</a></h1>
+                <div class="rental-list-wrapper">
+                    {% if current_projects %}
+            
+                        {% for project in current_projects %}
+                        
+                        <div class="card card-wide card-rental">
+                            <div class="">
+                            {% if project.season %}
+                                <h1 class="card-heading">
+                                <a href="{%url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}} - S{{project.season}}</a>
+                                </h1>
+        
+                                {% else %}
+                                <h1 class="card-heading">
+                                <a href="{%url 'rental_projects:rental_projects_detail' project.abbreviation %}">{{project.title}}</a>
+                                </h1>
+        
+                            {% endif %}
+        
+                        </div>
+        
+                            <div class="main-info-wrapper">
+                                
+                                <p class="card-subheading">
+                                
+                                {% if project.project_complete_date %}
+                                <span class="dot project-backup"></span>
+                                {% elif project.mixing_complete_date %}
+                                <span class="dot project-complete"></span>
+                                {% elif project.start_date %}
+                                <span class="dot project-working"></span>
+                                {% endif %}
+                                {{project.abbreviation}}
+                                </p>
+                                <div class="main-info">
+                                    <div class="card-wide-text">
+                                    
+                                    {% if not project.rental_rooms.all|length %}
+                                        <p>Room: ---</p>
+                                    {% else %}
+                                    {% for room in project.rental_rooms.all %}
+                                        {% if room.primary_room %}
+                                        <p>Room: {{room.room}}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {%endif%}
+                                    <p>Drives: {{project.rental_drives.all|length}} {%if project.total_storage%}({{project.total_storage}} TB){%endif%}</p>
+                                    <p>Config: {{project.channel_config}}</p>
+                                    {% if project.files_link %}
+                                    <p><a href="{{project.files_link}}" target="_blank">GoogleDrive</a></p>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                </div>
+                                <p class="list-edit"><a href="{% url 'rental_projects:rental_projects_update' project.pk %}">Edit</a></p>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                        
+                        {% if not results %}
+                            <div class="message-card">
+                            <h1 class="contact-message">Nothing to show.</h1>
+                            </div>  
+                        {% endif %}
+              
+                  
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
 
 
-      
+    </div>
 
-        <a class="card home-card" href="{%url 'contacts:contacts_list' 'first' %}"> 
-            <h1 class="card-heading">Contacts</h1>
-        </a> 
 
-        <a class="card home-card" href="{%url 'rental_projects:rental_projects_list' 'all' %}"> 
-            <h1 class="card-heading">Rental Projects</h1>
-        </a> 
+        
 
-        <a class="card home-card" href="{%url 'harddrives:harddrives_list' 'available' %}"> 
-            <h1 class="card-heading">Drives</h1>
-        </a> 
 
 {% endblock bodyblock %}

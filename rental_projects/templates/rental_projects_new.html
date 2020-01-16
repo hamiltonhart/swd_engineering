@@ -4,74 +4,125 @@
 {% block titleblock %}New Rental{% endblock titleblock %}
 
 {% block bodyblock %}
+
+<h1 class="page-heading-wide">NEW RENTAL PROJECT</h1>
   
-    <form method="POST">
+    <form method="POST" class='large-form-wrapper'>
         {% csrf_token %}
-        
-        <div class="form-content">
 
-            <p>{{form.title.errors}}</p>
-            <p>{{form.title.label_tag}}</p>
-            <p>{{form.title}}</p>
-            
-            <p>{{form.season.errors}}</p>
-            <p>{{form.season.label_tag}}</p>
-            <p>{{form.season}}</p>
-            
-            <p>{{form.files_link.errors}}</p>
-            <p>{{form.files_link.label_tag}}</p>
-            <p>{{form.files_link}}</p>
-
-
-            <p>{{form.abbreviation.errors}}</p>
-            <p>{{form.abbreviation.label_tag}}</p>
-            <p>{{form.abbreviation}}</p>
-
-            <p>{{form.protools_vers.errors}}</p>
-            <p>{{form.protools_vers.label_tag}}</p>
-            <p>{{form.protools_vers}}</p>
-
-            <p>{{form.drive_user.errors}}</p>
-            <p>{{form.drive_user.label_tag}}</p>
-            <p>{{form.drive_user}}</p>
-
-            <p>{{form.drive_pass.errors}}</p>
-            <p>{{form.drive_pass.label_tag}}</p>
-            <p>{{form.drive_pass}}</p>
-
-            <p>{{form.ms_user.errors}}</p>
-            <p>{{form.ms_user.label_tag}}</p>
-            <p>{{form.ms_user}}</p>
-
-            <p>{{form.ms_pass.errors}}</p>
-            <p>{{form.ms_pass.label_tag}}</p>
-            <p>{{form.ms_pass}}</p>
-
-            <p>{{form.channel_config.errors}}</p>
-            <div class="flex-horizontal">
-                <p>{{form.channel_config.label_tag}}</p>
-                <p>{{form.channel_config}}</p>
+            <!-- REQUIRED -->
+            <h2 class="required-heading">Primary</h2>
+            <div class="rental-form form-required">
+                <p class="rental-title">
+                    <label for="rental-title">Title<span class="required-input">*</span><span class="form-error">{% for error in form.title.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.title.value %}
+                    <input type="text" name="title" id="rental-title" value="{{form.title.value}}" required autocomplete="off">
+                    {% else %}
+                    <input type="text" name="title" id="rental-title" required autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class='season'>
+                    <label for="season">Season<span class="form-error">{% for error in form.season.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.season.value %}
+                    <input type="text" name="season" id="season" value="{{form.season.value}}" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="season" id="season" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="abbr">
+                    <label for="abbr">Abbreviation<span class="required-input">*</span><span class="form-error">{% for error in form.abbreviation.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.abbreviation.value %}
+                    <input type="text" name="abbreviation" id="abbr" value="{{form.abbreviation.value}}" required autocomplete="off">
+                    {% else %}
+                    <input type="text" name="abbreviation" id="abbr" required autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="pt-vers">
+                    <label for="pt-vers">PT Vers<span class="required-input">*</span><span class="form-error">{% for error in form.protools_vers.errors %}Required{%endfor%}</span></label>
+                    {% if form.protools_vers.value %}
+                    <input type="text" name="protools_vers" value="{{form.protools_vers.value}}" id="pt-vers" required>
+                    {% else %}
+                    <input type="text" name="protools_vers" id="pt-vers" required>
+                    {% endif %}
+                </p>
+                <p class="channel-config">
+                    <label for="id_channel_config">Config<span class="required-input">*</span><span class="form-error">{% for error in form.channel_config.errors %}{{error}}{%endfor%}</span></label>
+                    <span class="arrows">{{form.channel_config}}</span>
+                </p>
+                <p class="files-link">
+                    <label for="files-link">GoogleDrive<span class="required-input">*</span>
+                        <span class="form-error">{% for error in form.files_link.errors %}{{error}}{%endfor%}</span>
+                    </label>
+                    <a class="create-link" href="https://drive.google.com/drive/folders/1FZ9wChQTgt8KodneFKARsFACemSAtrzG?usp=sharing" target="_blank">Create</a>
+                    {% if form.files_link.value %}
+                    <input type="url" name="files_link" id="files-link" value="{{form.files_link.value}}" required autocomplete="off">
+                    {% else %}
+                    <input type="url" name="files_link" id="files-link" required autocomplete="off">
+                    {% endif %}
+                </p>
             </div>
 
-            <p>{{form.start_date.errors}}</p>
-            <div class="flex-horizontal">
-                <p>{{ form.start_date.label_tag }}</p>
-                <p>{{ form.start_date }}</p>
+            <!-- OPTIONAL -->
+
+            <h2 class="optional-heading">Secondary</h2>
+            <div class="rental-form form-optional">
                 
+                <p class="drive-user">
+                    <label for="drive-user">Drive Username<span class="form-error">{% for error in form.drive_user.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.drive_user.value %}
+                    <input type="text" name="drive_user" id="drive-user" value="{{form.drive_user.value}}" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="drive_user" id="drive-user" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="drive-pass">
+                    <label for="drive-pass">Drive Password<span class="form-error">{% for error in form.drive_pass.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.drive_pass.value %}
+                    <input type="text" name="drive_pass" id="drive-pass" value="{{form.drive_pass.value}}" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="drive_pass" id="drive-pass" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="ms-user">
+                    <label for="ms-user">MS Username<span class="form-error">{% for error in form.ms_user.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.ms_user.value %}
+                    <input type="text" name="ms_user" id="ms-user" value="{{form.ms_user.value}}" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="ms_user" id="ms-user" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="ms-pass">
+                    <label for="ms-pass">MS Password<span class="form-error">{% for error in form.ms_pass.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.ms_pass.value %}
+                    <input type="text" name="ms_pass" id="ms-pass" value="{{form.ms_pass.value}}" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="ms_pass" id="ms-pass" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="start-date">
+                    <label for="start-date">Start Date<span class="form-error">{% for error in form.start_date.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.start_date.value %}
+                    <input type="text" name="start_date" id="start-date" value="{{form.start_date.value}}" placeholder="mm-dd-yyyy" autocomplete="off">
+                    {% else %}
+                    <input type="text" name="start_date" id="start-date" placeholder="mm-dd-yyyy" autocomplete="off">
+                    {% endif %}
+                </p>
+                <p class="notes">
+                    <label for="additional_info">Notes<span class="form-error">{% for error in form.additional_info.errors %}{{error}}{%endfor%}</span></label>
+                    {% if form.additional_info.value %}
+                    <textarea name="additional_info" id="additional_info" cols="30" rows="10">{{form.additional_info.value}}</textarea>
+                    {% else %}
+                    <textarea name="additional_info" id="additional_info" cols="30" rows="10"></textarea>
+                    {% endif %}
+                </p>
+                <div class="form-btns">
+                    <input class="btn--large btn--call-to-action" type="submit" value="Create Project">
+                    <a class="btn--cancel" href="{% url 'rental_projects:rental_projects_list' '000' %}">Cancel</a>
+                </div>
             </div>
 
-            <p>{{form.additional_info.errors}}</p>
-            <p>{{form.additional_info.label_tag}}</p>
-            <p>{{form.additional_info}}</p>
-            
-            
 
-        </div>
 
-        <div class="page-bottom-btns">
-            <a class="btn cancel-btn" href="{% url 'rental_projects:rental_projects_list' 'all' %}">Cancel</a>
-            <input class="btn confirm-btn" type="submit" value="Create Project">
-        </div>
     </form>
 
 {% endblock bodyblock %}

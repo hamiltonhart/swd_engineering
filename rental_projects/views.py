@@ -8,18 +8,21 @@ from django.contrib.postgres.search import SearchVector
 from scripts.search import get_query
 
 from . import models
-from .forms import RentalProjectForm, RentalProjectCompletedForm, RentalProjectBackupForm, RentalProjectCompletedForm
+from .forms import RentalProjectForm, RentalProjectCompletedForm, RentalProjectBackupForm, RentalProjectCompletedForm, RentalProjectQuickForm
 
-from forms.forms import SimpleSearchForm
+from forms.forms import SimpleSearchForm, FilterSearchForm
 
-from project_clients.models import ProjectClient
+from project_clients.models import ProjectClient, ClientMediaShuttle
 from project_drives.models import ProjectDrive
 from project_rooms.models import ProjectRoom
+from contacts.models import Contact
 
 
 from project_clients.forms import ProjectClientForm, ProjectClientDeleteForm
 from project_drives.forms import ProjectDriveForm
-from project_rooms.forms import ProjectRoomForm
+from project_rooms.forms import ProjectRoomForm, ProjectRoomAddEditRemoveForm
+from contacts.forms import ContactsShortForm
+from project_clients.forms import ClientMediaShuttleForm
 
 import datetime
 
@@ -30,34 +33,6 @@ class RentalProjectCreateView(LoginRequiredMixin, CreateView):
     model = models.RentalProject
     template_name = "rental_projects_new.html"
     form_class = RentalProjectForm
-
-
-# class RentalProjectListView(LoginRequiredMixin, ListView):
-#     model = models.RentalProject
-#     template_name = "rental_projects_list.html"
-#     context_object_name = "projects_list"
-
-#     def get_queryset(self):
-#         if self.kwargs["display_option"] == "all" or self.kwargs["display_option"] == '':
-#             return models.RentalProject.objects.all().order_by('title')
-#         elif self.kwargs["display_option"] == "current":
-#             return models.RentalProject.objects.filter(mixing_complete_date=None).order_by('title')
-#         elif self.kwargs["display_option"] == "51":
-#             return models.RentalProject.objects.filter(channel_config="5.1")
-#         elif self.kwargs["display_option"] == "71":
-#             return models.RentalProject.objects.filter(channel_config="7.1")
-#         elif self.kwargs["display_option"] == "atmos":
-#             return models.RentalProject.objects.filter(channel_config="ATMOS")
-#         elif self.kwargs["display_option"] == "imax6":
-#             return models.RentalProject.objects.filter(channel_config="IMAX 6")
-#         elif self.kwargs["display_option"] == "imax12":
-#             return models.RentalProject.objects.filter(channel_config="IMAX 12")
-
-
-# class RentalProjectDetailView(LoginRequiredMixin, DetailView):
-#     model = models.RentalProject
-#     template_name = "rental_projects_detail.html"
-#     context_object_name = "project"
 
 
 class RentalProjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -145,12 +120,123 @@ def project_detail_view(request, abbr):
             complete_project_form = RentalProjectCompletedForm(request.POST)
             if complete_project_form.is_valid():
                 project.mixing_completed(request.user)
+        
+        elif "project_backup" in request.POST:
+            backup_form = RentalProjectBackupForm(request.POST)
+            if backup_form.is_valid():
+                project.backup(request.user)
+
+        elif "create_contact" in request.POST:
+            contact_form = ContactsShortForm(request.POST)
+            if contact_form.is_valid():
+                data = contact_form.cleaned_data
+                new_contact = Contact.objects.create(
+                    first_name=data["first_name"],
+                    last_name=data["last_name"],
+                    phone_number=data["phone_number"],
+                    email=data["email"],
+                    company=data["company"],
+                    title=data["title"],
+                    country='US',
+                )
+        elif "ms_add_edit" in request.POST:
+            form = ClientMediaShuttleForm(request.POST, project=project)
+            if form.is_valid():
+                room_pk = request.POST["project_room"]
+                project_client = form.cleaned_data["project_client"]
+                project_room = ProjectRoom.objects.get(pk=room_pk)
+                client_ms = form.cleaned_data["client_ms"]
+
+                try:
+                    ms_to_edit = ClientMediaShuttle.objects.get(
+                        project_client=project_client,
+                        project_room=project_room,
+                        project=project,
+                    )
+                    ms_to_edit.client_ms = client_ms
+                    ms_to_edit.save()
+                    return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+                except:
+                    try:
+                        ClientMediaShuttle.objects.create(
+                            project_client=project_client,
+                            project_room=project_room,
+                            project=project,
+                            client_ms=client_ms
+                        )
+                        return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+                    except:
+                        return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+
+        elif "ms_delete" in request.POST:
+            form = ClientMediaShuttleForm(request.POST, project=project)
+            if form.is_valid():
+                room_pk = request.POST["project_room"]
+                project_client = form.cleaned_data["project_client"]
+                project_room = ProjectRoom.objects.get(pk=room_pk)
+                client_ms = form.cleaned_data["client_ms"]
+
+                ms_to_delete = ClientMediaShuttle.objects.get(
+                    project_client=project_client,
+                    project_room=project_room,
+                    project=project,
+                )
+
+                ms_to_delete.delete()
+                return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+        
+        elif "room_add_edit" in request.POST:
+            form = ProjectRoomAddEditRemoveForm(request.POST)
+            if form.is_valid():
+                room = form.cleaned_data["room"]
+                if  'primary_room' in request.POST and request.POST['primary_room'] == 'on':
+                    is_primary = True
+                else:
+                    is_primary = False
+
+                if is_primary:
+                    for project_room in project.rental_rooms.all():
+                        if project_room.primary_room:
+                            project_room.primary_room = False
+                            project_room.save()
+
+                try:
+                    edit_project_room = ProjectRoom.objects.get(room=room, project=project)
+                    edit_project_room.primary_room = is_primary
+                    edit_project_room.save()
+                except:
+                    
+                    new_project_room = ProjectRoom.objects.create(room=room, project=project, primary_room=is_primary)
+                    new_project_room.save()
+
+        elif "room_remove" in request.POST:
+            form = ProjectRoomAddEditRemoveForm(request.POST)
+            if form.is_valid():
+                room = form.cleaned_data['room']
+                try:
+                    project_room_delete = ProjectRoom.objects.get(room=room, project=project)
+                    project_room_delete.delete()
+                    return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+                except:
+                    return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+        
+        elif "project_delete" in request.POST:
+            try:
+                project.delete()
+
+                return HttpResponseRedirect(reverse("rental_projects:rental_projects_list", kwargs={'display_option':'current'}))
+            except:
+                pass
+            
 
         return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
 
     add_client_form = ProjectClientForm()
     add_drive_form = ProjectDriveForm()
     add_room_form = ProjectRoomForm()
+    backup_form = RentalProjectBackupForm()
+    ms_client_form = ClientMediaShuttleForm(project=project)
+    room_form = ProjectRoomAddEditRemoveForm()
 
     current_primary = None
     for room in project_rooms:
@@ -162,6 +248,9 @@ def project_detail_view(request, abbr):
         'add_client_form': add_client_form,
         'add_drive_form': add_drive_form,
         'add_room_form': add_room_form,
+        'backup_form': backup_form,
+        'ms_client_form': ms_client_form,
+        'room_form': room_form,
         'current_primary': current_primary,
     }
 
@@ -175,52 +264,122 @@ def rental_project_list(request, display_option=None):
     If search, it is applied to the overall filter.
     """
 
-    search_form = SimpleSearchForm()
+    filter_search_form = FilterSearchForm()
+    new_project_form = RentalProjectQuickForm()
     query_string = None
 
-    if display_option == None or display_option == 'all':
-        projects_list = models.RentalProject.objects.all().order_by('title')
-    elif display_option == 'current':
-        projects_list = models.RentalProject.objects.filter(
-            mixing_complete_date=None).order_by('title')
-    elif display_option == 'feature':
-        projects_list = models.RentalProject.objects.filter(
-            season__isnull=True).order_by('title')
-    elif display_option == 'series':
-        projects_list = models.RentalProject.objects.filter(
-            season__isnull=False).order_by('title')
-    elif display_option == '51':
-        projects_list = models.RentalProject.objects.filter(
-            channel_config="5.1").order_by('title')
-    elif display_option == '71':
-        projects_list = models.RentalProject.objects.filter(
-            channel_config="7.1").order_by('title')
-    elif display_option == 'atmos':
-        projects_list = models.RentalProject.objects.filter(
-            channel_config="ATMOS").order_by('title')
-    elif display_option == 'imax6':
-        projects_list = models.RentalProject.objects.filter(
-            channel_config="IMAX 6").order_by('title')
-    elif display_option == 'imax12':
-        projects_list = models.RentalProject.objects.filter(
-            channel_config="IMAX 12").order_by('title')
-    else:
-        projects_list = models.RentalProject.objects.all().order_by('title')
 
-    if request.method == "GET" and 'search_field' in request.GET:
-        if request.GET['search_field'] == '':
-            search_form = SimpleSearchForm()
+    '''
+    FILTERING
+
+    Status:
+    all, current, completed, erased
+    0, 1, 2, 3
+
+    Format:
+    all, ST, 5.1, 7.1, ATMOS, DTS, IMAX 6, IMAX 12
+    0, 1, 2, 3, 4, 5, 6, 7
+
+    Type:
+    all, features, series
+    0, 1, 2
+    '''
+
+    status_options = {
+        "0": models.RentalProject.objects.all().order_by('title'),
+        "1": models.RentalProject.objects.current().order_by('title'),
+        "2": models.RentalProject.objects.mixing_complete().order_by('title'),
+        "3": models.RentalProject.objects.project_complete().order_by('title')
+    }
+
+
+    format_options = {
+        "1": "ST",
+        "2": "5.1",
+        "3": "7.1",
+        "4": "ATMOS",
+        "5": "DTS",
+        "6": "IMAX 6", 
+        "7": "IMAX 12"
+    }
+
+    type_options = {
+        "1": True,
+        "2": False
+    }
+
+    if display_option == None:
+        projects_list = models.RentalProject.objects.all().order_by('title')
+    else:
+        display_option = [x for x in display_option]
+
+        projects_list = status_options[display_option[0]]
+        
+        if display_option[1] == "0":
+            pass
         else:
-            query_string = request.GET['search_field']
-            query = get_query(
-                query_string, ['title', 'abbreviation', 'drive_user', 'ms_user'])
-            projects_list = projects_list.filter(query).order_by('title')
-            search_form = SimpleSearchForm()
+            projects_list = projects_list.filter(channel_config=format_options[display_option[1]])
+        
+        if display_option[2] == "0":
+            pass
+        else:
+            projects_list = projects_list.filter(season__isnull=type_options[display_option[2]])
+
+        filter_search_form.fields['status_field'].initial = filter_search_form.fields['status_field'].choices[int(display_option[0])]
+        filter_search_form.fields['channel_config_field'].initial = filter_search_form.fields['channel_config_field'].choices[int(display_option[1])]
+        filter_search_form.fields['type_field'].initial = filter_search_form.fields['type_field'].choices[int(display_option[2])]
+
+
+
+    if request.method == "GET":
+            if 'search_filter' in request.GET or 'clear_search' in request.GET:
+                projects_list = status_options[request.GET['status_field']]
+            
+                if request.GET['channel_config_field'] == "0":
+                    pass
+                else:
+                    projects_list = projects_list.filter(channel_config=format_options[request.GET['channel_config_field']])
+                
+                if request.GET['type_field'] == "0":
+                    pass
+                else:
+                    projects_list = projects_list.filter(season__isnull=type_options[request.GET['type_field']])
+
+                if 'search_field' in request.GET and request.GET['search_field']:
+                    query_string = request.GET['search_field']
+                    query = get_query(
+                        query_string, ['title', 'abbreviation', 'drive_user', 'ms_user'])
+                    projects_list = projects_list.filter(query)
+
+                filter_search_form = FilterSearchForm(request.GET)
+
+    if request.method == "POST":
+        new_project_form = RentalProjectQuickForm(request.POST)
+        if new_project_form.is_valid():
+            title = new_project_form.cleaned_data['title']
+            season = new_project_form.cleaned_data['season']
+            abbr = new_project_form.cleaned_data['abbreviation']
+            pt_vers = new_project_form.cleaned_data['protools_vers']
+            link = new_project_form.cleaned_data['files_link']
+            new_project = models.RentalProject.objects.create(
+                title=title,
+                season=season,
+                abbreviation=abbr,
+                protools_vers=pt_vers,
+                files_link=link,
+                channel_config="5.1",
+                start_date=datetime.date.today()
+                )
+            if abbr == "":
+                abbr = new_project.abbreviation
+            return HttpResponseRedirect(reverse("rental_projects:rental_projects_detail", kwargs={"abbr": abbr}))
+
 
     context_dict = {
         'projects_list': projects_list,
-        'search_form': search_form,
+        'filter_search_form': filter_search_form,
         'results': query_string,
+        'new_project_form': new_project_form
     }
 
     return render(request, 'rental_projects_list.html', context_dict)

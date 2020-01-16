@@ -2,8 +2,43 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.urls import reverse
+from django.db.models import Q
+
+from functools import reduce
 
 import datetime
+
+class RentalProjectQueryset(models.query.QuerySet):
+    # def available(self):
+    #     return self.filter(Q(rental_projects=None))
+
+    # def unavailable(self):
+    #     return self.filter(~Q(rental_projects=None))
+
+    # return self.filter(Q(client_role='DX') | Q(client_role='MX') | Q(client_role='DXMX') | Q(client_role='FX'))
+
+    def current(self):
+        return self.filter(Q(mixing_complete_date=None) & Q(project_complete_date=None))
+    
+    def mixing_complete(self):
+        return self.filter(~Q(mixing_complete_date=None) & Q(project_complete_date=None))
+    
+    def project_complete(self):
+        return self.filter(~Q(mixing_complete_date=None) & ~Q(project_complete_date=None))
+
+
+class RentalProjectManager(models.Manager):
+    def get_queryset(self):
+        return RentalProjectQueryset(self.model, using=self._db)
+
+    def current(self):
+        return self.get_queryset().current()
+
+    def mixing_complete(self):
+        return self.get_queryset().mixing_complete()
+
+    def project_complete(self):
+        return self.get_queryset().project_complete()
 
 
 class RentalProject(models.Model):
@@ -22,7 +57,7 @@ class RentalProject(models.Model):
 
     season = models.IntegerField(blank=True, null=True)
 
-    protools_vers = models.FloatField(default=18.4, verbose_name="ProTools Version")
+    protools_vers = models.FloatField(verbose_name="ProTools Version")
 
     number_of_systems = models.IntegerField(blank=True, null=True, verbose_name="Number of Systems")
     drive_user = models.CharField(max_length=50, blank=True, verbose_name='Drive Username')
@@ -37,7 +72,7 @@ class RentalProject(models.Model):
     additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
     # files
     
-    start_date = models.DateField(default=datetime.date.today)
+    start_date = models.DateField(default=datetime.date.today, blank=True)
     mixing_complete_date = models.DateField(blank=True, null=True)
     project_complete_date = models.DateField(blank=True, null=True)
 
@@ -58,6 +93,8 @@ class RentalProject(models.Model):
         related_name="feature_project_marked_completed"
         )
 
+    objects = RentalProjectManager()
+
     def __str__(self):
         if self.season:
             return f'{self.title}: Season {self.season}'
@@ -67,7 +104,6 @@ class RentalProject(models.Model):
     def get_absolute_url(self):
         return reverse("rental_projects:rental_projects_detail", kwargs={"abbr": self.abbreviation})
     
-
     def mixing_completed(self, user):
         self.mixing_complete_date = datetime.date.today()
         self.mixing_completed_by = user
@@ -92,8 +128,28 @@ class RentalProject(models.Model):
         else:
             self.save()
 
+    @property
+    def total_storage(self):
+        tb_total = []
+        gb_total = []
+        for drive in self.rental_drives.all():
+            if drive.drive.drive_capacity_gb.endswith('TB'):
+                tb_total.append(int(drive.drive.drive_capacity_gb.strip('TB')))
+            else:
+                gb_total.append(int(drive.drive.drive_capacity_gb.strip('GB')) / 1000)
+        if len(tb_total) > 0:
+            tb_total = reduce(lambda a,b: a + b, tb_total)
+        else:
+            tb_total = 0
+        if len(gb_total) > 0:
+            gb_total = reduce(lambda a,b: a + b, gb_total)
+            return tb_total + gb_total
+        else:
+            return tb_total
+
+
     def save(self, *args, **kwargs):
-        self.title = str(self.title).title()
+        # self.title = str(self.title).title()
         if not self.abbreviation:
             abbr_title = str(self.title).lower().replace(" ", "")
             if self.season:
@@ -107,8 +163,8 @@ class RentalProject(models.Model):
             self.drive_pass = str(self.abbreviation).lower().replace(" ", "")
         if not self.ms_user:
             self.ms_user = str(self.abbreviation).lower().replace(" ", "")
-        if not self.ms_pass:
-            self.ms_pass = str(self.abbreviation).lower().replace(" ", "")
+        if not self.start_date:
+            self.start_date = datetime.date.today()
         super().save(*args, **kwargs)
 
     class Meta:

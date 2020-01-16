@@ -5,35 +5,95 @@
 
 {% block bodyblock %}
 
-<div class="page-top-btns">
-    <a class="btn" href="{% url 'harddrives:harddrives_create' %}">New Drive</a>
+<h1 class="page-heading-wide">HARDDRIVES</h1>
+
+<div class="list-page-top drive-list-page-top">
+    <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
+        <option value="{% url 'harddrives:harddrives_list' 'all' %}">All Drives</option>
+        <option value="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</option>
+        <option value="{% url 'harddrives:harddrives_list' 'in-use' %}">In Use Drives</option>
+        <option value="{% url 'harddrives:harddrives_list' '250GB' %}">250GB</option>
+        <option value="{% url 'harddrives:harddrives_list' '500GB' %}">500GB</option>
+        <option value="{% url 'harddrives:harddrives_list' '1TB' %}">1TB</option>
+        <option value="{% url 'harddrives:harddrives_list' '2TB' %}">2TB</option>
+    </select>
+    
+    <span class="spacer"></span>
+
+    <form class="new-drive-form" method="POST">
+        {% csrf_token %}
+        <p>
+            {% if new_drive_form.drive_number.errors %}
+                <label for="drive-number" class="drive-number-error">Enter an unused number</label>
+                {% else %}
+                <label for="drive-number">Drive Number</label>
+                {% endif %}
+            {% if new_drive_form.drive_number.value %}
+            <input type="text" id="drive-number" placeholder="{{next_drive}}" name="drive_number" value="{{new_drive_form.drive_number.value}}" autocomplete="off">
+            {% else %}
+            <input type="text" id="drive-number" placeholder="{{next_drive}}" name="drive_number" autocomplete="off">
+            {% endif %}
+        </p>
+        <p>
+            <label for="id_drive_capacity">Drive Capacity</label>
+            {{new_drive_form.drive_capacity_gb}}
+        </p>
+        <input name="new-drive" type="submit" class="btn--inline btn--call-to-action" value="Add Drive">
+    </form>
+
+    <div class="overall_drive_info">
+        <h2>Total: {{all_drives|length}}</h2>
+        <h2>Available: {{all_drives.available|length}}</h2>
+        <h2>Unavailable: {{all_drives.unavailable|length}}</h2>
+    </div>
 </div>
 
+
+<div class="drive-list-wrapper">
     
-        <select name="query-select" id="query-select" class="query-select" onChange=selectCallLink()>
-            <option value="{% url 'harddrives:harddrives_list' 'all' %}">All Drives</option>
-            <option value="{% url 'harddrives:harddrives_list' 'available' %}">Available Drives</option>
-            <option value="{% url 'harddrives:harddrives_list' 'in-use' %}">In Use Drives</option>
-            <option value="{% url 'harddrives:harddrives_list' '250GB' %}">250GB</option>
-            <option value="{% url 'harddrives:harddrives_list' '500GB' %}">500GB</option>
-            <option value="{% url 'harddrives:harddrives_list' '1TB' %}">1TB</option>
-            <option value="{% url 'harddrives:harddrives_list' '2TB' %}">2TB</option>
-        </select>
+    {% if drive_list %}
+        {% for drive in drive_list %}
+        <div class="card">
 
-
-    {% if drives_list %}
-        {% for drive in drives_list %}
-
-        <a class="card" href="{% url 'harddrives:harddrives_detail' drive.pk %}">
-
-            <h2 class="card-heading">Drive: {{drive.drive_number}}</h2>
+            <h1 class="card-heading"><a href="{% url 'harddrives:harddrives_detail' drive.pk %}">Drive: {{drive.drive_number}}</a></h1>
             <div class="main-info-wrapper">
                 <div class="main-info">
                     <p>Capacity: {{drive.drive_capacity_gb}}</p>
+                    {% if drive.rental_projects.all %}
+                    {%for project in drive.rental_projects.all %}
+                    <p class="">
+                        <a href="{% url 'rental_projects:rental_projects_detail' project.project.abbreviation %}">
+                            {{project.project.title}}{%if project.project.season%} - S{{project.project.season}}{%endif%}
+                        </a>
+                    </p>
+
+                    <!-- MODAL -->
+
+                    <div id={{drive.drive_number}} class="modal modal--release-drive">
+                        <div id="release-drive-form" class="release-drive-form">
+                                <h4 class="warning-text">Are you sure?</h4>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="text" name='project-drive-pk' hidden value="{{project.pk}}">
+                                <input name="release-drive" class="btn--inline btn--btn-outline" type="submit" value="Release">
+                                <input class="btn--inline btn--btn-outline-black" type="button" name="" onclick="closeModalId('{{drive.drive_number}}')" value="No">
+                            </form>
+                        </div>
+                    </div>
+
+                    {%endfor%}
+                    {% endif %}
+                    <p class="list-edit">
+                        {% if drive.rental_projects.all %}
+                            <span onclick="showModalId('{{drive.drive_number}}')">Release</span>
+                        {% endif %}
+                        <a href="{% url 'harddrives:harddrives_update' drive.pk %}">Edit</a>
+                    </p>
                 </div>
             </div>
-        </a>
+        </div>
         {% endfor %}
+</div>
     {% else %}
     <div class="message-card">
         <h1 class="contact-message">No drives to show.</h1>
