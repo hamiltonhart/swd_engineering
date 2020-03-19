@@ -12,6 +12,9 @@ whitenoise = "*"
 djangorestframework = "*"
 phonenumbers = "*"
 "psycopg2-binary" = "*"
+graphene-django = "*"
+django-graphql-jwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pylint = "*"

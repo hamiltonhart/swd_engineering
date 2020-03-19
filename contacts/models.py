@@ -45,11 +45,15 @@ class Contact(models.Model):
             pass
             return
 
+    @property
+    def name(self):
+        return f'{self.first_name} {self.last_name}'
+
     def save(self, *args, **kwargs):
         # self.first_name = str(self.first_name).capitalize()
         # self.last_name = str(self.last_name).capitalize()
-        if self.title:
-            self.title = str(self.title).capitalize()
+        # if self.title:
+        #     self.title = str(self.title).capitalize()
         if self.phone_number:
             self.phone_number = self.phone_number.replace("-", "")
             self.phone_number = self.phone_number.replace(" ", "")

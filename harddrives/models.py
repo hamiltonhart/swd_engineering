@@ -13,16 +13,16 @@ class RentalDriveQueryset(models.query.QuerySet):
 
     def twofifty_available(self):
         return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='250GB'))
-    
+
     def fivehundred_available(self):
         return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='500GB'))
-    
+
     def onetb_available(self):
         return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='1TB'))
-    
+
     def twotb_available(self):
         return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='2TB'))
-    
+
     def threetb_available(self):
         return self.filter(Q(rental_projects=None) & Q(drive_capacity_gb='3TB'))
 
@@ -39,16 +39,16 @@ class RentalDriveManager(models.Manager):
 
     def twofifty_available(self):
         return self.get_queryset().twofifty_available()
-    
+
     def fivehundred_available(self):
         return self.get_queryset().fivehundred_available()
-    
+
     def onetb_available(self):
         return self.get_queryset().onetb_available()
-    
+
     def twotb_available(self):
         return self.get_queryset().twotb_available()
-    
+
     def threetb_available(self):
         return self.get_queryset().threetb_available()
 
@@ -62,8 +62,10 @@ class RentalDrive(models.Model):
         ('3TB', '3TB')
     )
 
-    drive_number = models.IntegerField(unique=True, verbose_name="Drive Number")
-    drive_capacity_gb = models.CharField(max_length=10, choices=DRIVE_CAPACITY_CHOICES, verbose_name="Drive Capacity")
+    drive_number = models.IntegerField(
+        unique=True, verbose_name="Drive Number")
+    drive_capacity_gb = models.CharField(
+        max_length=10, choices=DRIVE_CAPACITY_CHOICES, verbose_name="Drive Capacity")
 
     objects = RentalDriveManager()
 
@@ -72,5 +74,23 @@ class RentalDrive(models.Model):
 
     def get_absolute_url(self):
         return reverse("harddrives:harddrives_detail", kwargs={"pk": self.pk})
-    
 
+
+def get_storage(self):
+    tb_total = []
+    gb_total = []
+    for drive in RentalDrive.objects.all():
+        if drive.drive.drive_capacity_gb.endswith('TB'):
+            tb_total.append(int(drive.drive.drive_capacity_gb.strip('TB')))
+        else:
+            gb_total.append(
+                int(drive.drive.drive_capacity_gb.strip('GB')) / 1000)
+    if len(tb_total) > 0:
+        tb_total = reduce(lambda a, b: a + b, tb_total)
+    else:
+        tb_total = 0
+    if len(gb_total) > 0:
+        gb_total = reduce(lambda a, b: a + b, gb_total)
+        return tb_total + gb_total
+    else:
+        return tb_total

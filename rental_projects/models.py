@@ -128,6 +128,29 @@ class RentalProject(models.Model):
         else:
             self.save()
 
+    def set_primary_room(self, new_primary_id):
+        try:
+            current_primary = self.primary_room
+            current_primary.primary_room = False
+            current_primary.save()
+        except:
+            pass
+        new_primary = self.rental_rooms.get(id=new_primary_id)
+        new_primary.primary_room = True
+        new_primary.save()
+
+    def unset_primary_room(self):
+        try:
+            current_primary = self.primary_room
+            current_primary.primary_room = False
+            current_primary.save()
+        except:
+            return
+
+    @property
+    def total_drives(self):
+        return len(self.rental_drives.all())
+
     @property
     def total_storage(self):
         tb_total = []
@@ -145,7 +168,27 @@ class RentalProject(models.Model):
             gb_total = reduce(lambda a,b: a + b, gb_total)
             return tb_total + gb_total
         else:
-            return tb_total
+            return f'{tb_total}TB'
+
+    @property
+    def is_mixing_complete(self):
+        if self.mixing_complete_date:
+            return True
+        else:
+            return False
+
+    @property
+    def is_project_complete(self):
+        if self.project_complete_date:
+            return True
+        else:
+            return False
+
+    @property
+    def primary_room(self):
+        for room in self.rental_rooms.all():
+            if room.primary_room:
+                return room
 
 
     def save(self, *args, **kwargs):

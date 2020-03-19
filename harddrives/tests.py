@@ -1,67 +1,139 @@
-from django.test import TestCase
+import json
+from django.contrib.auth import get_user_model
+
+from graphene_django.utils.testing import GraphQLTestCase
+from graphql_jwt.testcases import JSONWebTokenTestCase
+from graphql_jwt.shortcuts import get_token
+from swd_engineering_project.schema import schema
 
 from .models import RentalDrive
-from rental_projects.models import Feature, Series
 
-class RentalDriveTests(TestCase):
+class ContactQueryTestCase(JSONWebTokenTestCase, GraphQLTestCase):
+    GRAPHQL_SCHEMA = schema
 
     def setUp(self):
+        self.user = get_user_model().objects.create(username='test', email='test@email.com', password='test')
+        self.token = get_token(self.user)
 
-        # Drive setup
-        self.drive_a = RentalDrive(
-            drive_number=5,
-            drive_capacity_gb=1000,
+        self.drive_a = RentalDrive.objects.create(drive_number='100', drive_capacity_gb='1TB')
+        self.drive_b = RentalDrive.objects.create(drive_number='101', drive_capacity_gb='2TB')
+
+    def test_drives_query(self):
+        nonauth_response = self.query(
+            '''
+            {
+                drives{
+                    driveNumber
+                    driveCapacityGb
+                }
+            }
+            ''',
+            op_name='drives'
         )
-        self.drive_a.save()
 
-        self.drive_b = RentalDrive(
-            drive_number=10,
-            drive_capacity_gb=2000,
+
+        auth_response = self.query(
+            '''
+            {
+                drives{
+                    driveNumber
+                    driveCapacityGb
+                }
+            }
+            ''',
+            op_name='drives',
+            headers={'HTTP_AUTHORIZATION': f'JWT {self.token}'}
         )
-        self.drive_b.save()
 
-        # Project setup
-
-        self.feature = Feature(
-            title="Feature",
-            abbreviation="F1",
-        )
-        self.feature.save()
-
-        self.series = Series(
-            title="Series",
-            abbreviation="S1S1",
-            season=1,
-        )
-        self.series.save()
-
+        self.assertResponseHasErrors(nonauth_response)
+        self.assertResponseNoErrors(auth_response)
     
-    def test_drive_string(self):
-        self.assertEqual(str(self.drive_a), str(self.drive_a.drive_number))
+    def test_drive_query(self):
+        nonauth_response = self.query(
+            '''
+            {
+                drive(id:1){
+                    id
+                    driveNumber
+                    driveCapacityGb
+                }
+            }
+            ''',
+            op_name='drive'
+        )
+
+        auth_response = self.query(
+            '''
+            {
+                drive(id:1){
+                    id
+                    driveNumber
+                    driveCapacityGb
+                }
+            }
+            ''',
+            op_name='drive',
+            headers={'HTTP_AUTHORIZATION': f'JWT {self.token}'}
+        )
+
+        self.assertResponseHasErrors(nonauth_response)
+        self.assertResponseNoErrors(auth_response)
+        self.assertTrue(json.loads(auth_response.content)['data']['drive']['driveNumber'] == 100)
+
+    def test_create_drive_mut(self):
+        response = self.query(
+            '''
+            mutation {
+                createDrive(driveNumber:102, driveCapacityGb:"2TB"){
+                    drive {
+                        id
+                        driveNumber
+                        driveCapacityGb
+                    }
+                }
+            }
+            ''',
+            op_name='drive',
+            headers={'HTTP_AUTHORIZATION': f'JWT {self.token}'}
+        )
+
+        self.assertResponseNoErrors(response)
+        self.assertTrue(json.loads(response.content)['data']['createDrive']['drive']['driveNumber'] == 102)
     
-    def test_drive_attr(self):
-        self.assertEqual(self.drive_a.drive_number, 5)
-        self.assertEqual(self.drive_a.drive_capacity_gb, 1000)
+    def test_update_drive_mut(self):
+        response = self.query(
+            '''
+            mutation {
+                updateDrive(id:1, driveNumber:106){
+                    drive {
+                        id
+                        driveNumber
+                        driveCapacityGb
+                    }
+                }
+            }
+            ''',
+            op_name='drive',
+            headers={'HTTP_AUTHORIZATION': f'JWT {self.token}'}
+        )
 
-    # Method tests
-
-
+        self.assertResponseNoErrors(response)
+        self.assertTrue(json.loads(response.content)['data']['updateDrive']['drive']['driveNumber'] == 106)
     
-    # Query tests
-    def test_feature_available(self):
-        available_len = len(RentalDrive.objects.available())
-        self.assertEqual(available_len, 2)
+    def test_delete_drive_mut(self):
+        response = self.query(
+            '''
+            mutation {
+                deleteDrive(id:1){
+                    drive {
+                        driveNumber
+                        driveCapacityGb
+                    }
+                }
+            }
+            ''',
+            op_name='drive',
+            headers={'HTTP_AUTHORIZATION': f'JWT {self.token}'}
+        )
 
-        self.drive_a.feature_project.create(drive=self.drive_a, project=self.feature)
-
-        available_len = len(RentalDrive.objects.available())
-        self.assertEqual(available_len, 1)
-
-    def test_series_available(self):
-        available_len = len(RentalDrive.objects.available())
-        self.assertEqual(available_len, 2)
-
-        self.drive_a.series_project.create(drive=self.drive_a, project=self.series)
-
-        available_len = len(RentalDrive.objects.available())
-        self.assertEqual(available_len, 1)
+        self.assertResponseNoErrors(response)
