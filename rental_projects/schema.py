@@ -22,7 +22,7 @@ class RentalProjectType(DjangoObjectType):
 
     class Meta:
         model = RentalProject
-        convert_choices_to_enum = True
+        convert_choices_to_enum = False
         exclude = ('number_of_systems',)
 
 
@@ -79,7 +79,7 @@ class CreateRentalProject(graphene.Mutation):
         title = graphene.String(required=True)
         abbreviation = graphene.String(required=True)
         season = graphene.Int()
-        protools_vers = graphene.String(required=True)
+        # protools_vers = graphene.String()
         drive_user = graphene.String()
         drive_pass = graphene.String()
         ms_user = graphene.String()
@@ -90,11 +90,10 @@ class CreateRentalProject(graphene.Mutation):
         start_date = graphene.types.datetime.Date()
 
     # @login_required
-    def mutate(self, info, title, abbreviation, protools_vers, files_link, channel_config, **kwargs):
+    def mutate(self, info, title, abbreviation, files_link, channel_config, **kwargs):
         project = RentalProject(
             title=title,
             abbreviation=abbreviation,
-            protools_vers=protools_vers,
             files_link=files_link,
             channel_config=channel_config,
             **kwargs
@@ -143,23 +142,54 @@ class UpdateRentalProject(graphene.Mutation):
         if kwargs.get('channel_config'):
             project.channel_config = kwargs.get('channel_config')
         if kwargs.get('season'):
-            project.season = kwargs.get('season')
+            if kwargs.get('season') == 999:
+                print("Season None")
+                project.season = None
+            else:
+                print(f"Season {kwargs.get('season')}")
+                project.season = kwargs.get('season')
         if kwargs.get('drive_user'):
-            project.drive_user = kwargs.get('drive_user')
+            if kwargs.get('drive_user') == "0":
+                project.drive_user = None
+            else:
+                project.drive_user = kwargs.get('drive_user')
         if kwargs.get('drive_pass'):
-            project.drive_pass = kwargs.get('drive_pass')
+            if kwargs.get('drive_pass') == "0":
+                project.drive_pass = None
+            else:
+                project.drive_pass = kwargs.get('drive_pass')
         if kwargs.get('ms_user'):
-            project.ms_user = kwargs.get('ms_user')
+            if kwargs.get('ms_user') == "0":
+                project.ms_user = None
+            else:
+                project.ms_user = kwargs.get('ms_user')
         if kwargs.get('ms_pass'):
-            project.ms_pass = kwargs.get('ms_pass')
+            if kwargs.get('ms_pass') == "0":
+                project.ms_pass = None
+            else:
+                project.ms_pass = kwargs.get('ms_pass')
         if kwargs.get('additional_info'):
-            project.additional_info = kwargs.get('additional_info')
+            if kwargs.get('additional_info') == "0":
+                project.additional_info = None
+            else:
+                project.additional_info = kwargs.get('additional_info')
         if kwargs.get('start_date'):
-            project.start_date = kwargs.get('start_date')
+            if kwargs.get('start_date') == "0":
+                project.start_date = None
+            else:
+                project.start_date = kwargs.get('start_date')
         if kwargs.get('mixing_complete_date'):
-            project.mixing_complete_date = kwargs.get('mixing_complete_date')
+            if kwargs.get('mixing_complete_date') == "0":
+                project.mixing_complete_date = None
+            else:
+                project.mixing_complete_date = kwargs.get(
+                    'mixing_complete_date')
         if kwargs.get('project_complete_date'):
-            project.project_complete_date = kwargs.get('project_complete_date')
+            if kwargs.get('project_complete_date') == "0":
+                project.project_complete_date = None
+            else:
+                project.project_complete_date = kwargs.get(
+                    'project_complete_date')
 
         project.save()
 

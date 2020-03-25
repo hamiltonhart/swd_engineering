@@ -8,6 +8,7 @@ from functools import reduce
 
 import datetime
 
+
 class RentalProjectQueryset(models.query.QuerySet):
     # def available(self):
     #     return self.filter(Q(rental_projects=None))
@@ -19,10 +20,10 @@ class RentalProjectQueryset(models.query.QuerySet):
 
     def current(self):
         return self.filter(Q(mixing_complete_date=None) & Q(project_complete_date=None))
-    
+
     def mixing_complete(self):
         return self.filter(~Q(mixing_complete_date=None) & Q(project_complete_date=None))
-    
+
     def project_complete(self):
         return self.filter(~Q(mixing_complete_date=None) & ~Q(project_complete_date=None))
 
@@ -57,21 +58,30 @@ class RentalProject(models.Model):
 
     season = models.IntegerField(blank=True, null=True)
 
-    protools_vers = models.FloatField(verbose_name="ProTools Version")
+    protools_vers = models.FloatField(
+        verbose_name="ProTools Version", blank=True, null=True)
 
-    number_of_systems = models.IntegerField(blank=True, null=True, verbose_name="Number of Systems")
-    drive_user = models.CharField(max_length=50, blank=True, verbose_name='Drive Username')
-    drive_pass = models.CharField(max_length=50, blank=True, verbose_name='Drive Password')
-    ms_user = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Username')
-    ms_pass = models.CharField(max_length=50, blank=True, verbose_name='Media Shuttle Password')
+    number_of_systems = models.IntegerField(
+        blank=True, null=True, verbose_name="Number of Systems")
+    drive_user = models.CharField(
+        max_length=50, blank=True, verbose_name='Drive Username')
+    drive_pass = models.CharField(
+        max_length=50, blank=True, verbose_name='Drive Password')
+    ms_user = models.CharField(
+        max_length=50, blank=True, verbose_name='Media Shuttle Username')
+    ms_pass = models.CharField(
+        max_length=50, blank=True, verbose_name='Media Shuttle Password')
 
-    files_link = models.URLField(blank=True, null=True, verbose_name="GoogleDrive Link")
+    files_link = models.URLField(
+        blank=True, null=True, verbose_name="GoogleDrive Link")
 
-    channel_config = models.CharField(max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
+    channel_config = models.CharField(
+        max_length=200, choices=CHANNEL_CONFIG_CHOICES, default="5.1", verbose_name='Channel Configuration')
 
-    additional_info = models.TextField(blank=True, null=True, verbose_name='Other Information')
+    additional_info = models.TextField(
+        blank=True, null=True, verbose_name='Other Information')
     # files
-    
+
     start_date = models.DateField(default=datetime.date.today, blank=True)
     mixing_complete_date = models.DateField(blank=True, null=True)
     project_complete_date = models.DateField(blank=True, null=True)
@@ -83,7 +93,7 @@ class RentalProject(models.Model):
         null=True,
         default=None,
         related_name="feature_mixing_marked_completed"
-        )
+    )
     project_complete_by = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
@@ -91,7 +101,7 @@ class RentalProject(models.Model):
         null=True,
         default=None,
         related_name="feature_project_marked_completed"
-        )
+    )
 
     objects = RentalProjectManager()
 
@@ -103,7 +113,7 @@ class RentalProject(models.Model):
 
     def get_absolute_url(self):
         return reverse("rental_projects:rental_projects_detail", kwargs={"abbr": self.abbreviation})
-    
+
     def mixing_completed(self, user):
         self.mixing_complete_date = datetime.date.today()
         self.mixing_completed_by = user
@@ -159,13 +169,14 @@ class RentalProject(models.Model):
             if drive.drive.drive_capacity_gb.endswith('TB'):
                 tb_total.append(int(drive.drive.drive_capacity_gb.strip('TB')))
             else:
-                gb_total.append(int(drive.drive.drive_capacity_gb.strip('GB')) / 1000)
+                gb_total.append(
+                    int(drive.drive.drive_capacity_gb.strip('GB')) / 1000)
         if len(tb_total) > 0:
-            tb_total = reduce(lambda a,b: a + b, tb_total)
+            tb_total = reduce(lambda a, b: a + b, tb_total)
         else:
             tb_total = 0
         if len(gb_total) > 0:
-            gb_total = reduce(lambda a,b: a + b, gb_total)
+            gb_total = reduce(lambda a, b: a + b, gb_total)
             return tb_total + gb_total
         else:
             return f'{tb_total}TB'
@@ -190,7 +201,6 @@ class RentalProject(models.Model):
             if room.primary_room:
                 return room
 
-
     def save(self, *args, **kwargs):
         # self.title = str(self.title).title()
         if not self.abbreviation:
@@ -211,4 +221,5 @@ class RentalProject(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        unique_together = (("title", "season", "abbreviation", "drive_user", "drive_pass", "ms_user", "ms_pass"))
+        unique_together = (("title", "season", "abbreviation",
+                            "drive_user", "drive_pass", "ms_user", "ms_pass"))

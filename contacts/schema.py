@@ -7,6 +7,8 @@ from .models import Contact
 
 from rental_projects.schema import RentalProjectType
 
+import re
+
 
 # Queries
 
@@ -19,12 +21,21 @@ class ContactType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    contacts = graphene.List(ContactType)
+    contacts = graphene.List(
+        ContactType, limit=graphene.Int(), reverse=graphene.Boolean())
     contact = graphene.Field(ContactType, id=graphene.Int(required=True))
 
     @login_required
-    def resolve_contacts(self, info):
-        return Contact.objects.all()
+    def resolve_contacts(self, info, limit=None, reverse=None):
+        if reverse:
+            contacts = Contact.objects.order_by('-pk')
+        else:
+            contacts = Contact.objects.all()
+
+        if limit:
+            return contacts[:limit]
+        else:
+            return contacts
 
     @login_required
     def resolve_contact(self, info, id):

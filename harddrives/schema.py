@@ -31,12 +31,21 @@ class DrivesAvailableType(graphene.ObjectType):
     two_tb_available = graphene.Int()
 
 
+class DrivesUnavailableType(graphene.ObjectType):
+    two_fifty_unavailable = graphene.Int()
+    five_hundred_unavailable = graphene.Int()
+    one_tb_unavailable = graphene.Int()
+    two_tb_unavailable = graphene.Int()
+
+
 class Query(graphene.ObjectType):
     drives = graphene.List(DriveType, capacity=graphene.String())
     drive = graphene.Field(DriveType, id=graphene.Int(required=True))
     available_drives = graphene.List(DriveType)
     total_drives = graphene.Field(DriveTotalType)
     drives_available = graphene.Field(DrivesAvailableType)
+    drive_unavailable = graphene.Field(DrivesUnavailableType)
+    last_drive = graphene.Field(DriveType)
 
     @login_required
     def resolve_drives(self, info, capacity=None):
@@ -88,21 +97,41 @@ class Query(graphene.ObjectType):
 
         return DrivesAvailableType(two_fifty_available=two_fifty, five_hundred_available=five_hundred, one_tb_available=one_tb, two_tb_available=two_tb)
 
+    @login_required
+    def resolve_drives_unavailable(self, info):
+        two_fifty = len(RentalDrive.objects.twofifty_unavailable())
+        five_hundred = len(RentalDrive.objects.fivehundred_unavailable())
+        one_tb = len(RentalDrive.objects.onetb_unavailable())
+        two_tb = len(RentalDrive.objects.twotb_unavailable())
+
+        return DrivesUnavailableType(two_fifty_unavailable=two_fifty, five_hundred_unavailable=five_hundred, one_tb_unavailable=one_tb, two_tb_unavailable=two_tb)
+
+    @login_required
+    def resolve_last_drive(self, info):
+        return RentalDrive.objects.order_by("-drive_number")[0]
+
+
 # Mutations
 
 
 class CreateDrive(graphene.Mutation):
-    drive = graphene.Field(DriveType)
+    drives = graphene.List(DriveType)
 
     class Arguments:
         drive_number = graphene.Int(required=True)
         drive_capacity_gb = graphene.String(required=True)
+        number_of_drives = graphene.Int()
 
     @login_required
-    def mutate(self, info, drive_number, drive_capacity_gb):
-        drive = RentalDrive.objects.create(
-            drive_number=drive_number, drive_capacity_gb=drive_capacity_gb)
-        return CreateDrive(drive=drive)
+    def mutate(self, info, drive_number, drive_capacity_gb, number_of_drives):
+        created_drives = []
+        while number_of_drives != 0:
+            drive = RentalDrive.objects.create(
+                drive_number=drive_number, drive_capacity_gb=drive_capacity_gb)
+            created_drives.append(drive)
+            number_of_drives = number_of_drives - 1
+            drive_number = drive_number + 1
+        return CreateDrive(drives=created_drives)
 
 
 class UpdateDrive(graphene.Mutation):
@@ -145,7 +174,26 @@ class DeleteDrive(graphene.Mutation):
         return DeleteDrive(drive_id=drive_id)
 
 
+class ReleaseDrive(graphene.Mutation):
+    drive_id = graphene.Int()
+
+    class Arguments:
+        drive_id = graphene.Int(required=True)
+
+    @login_required
+    def mutate(self, info, drive_id):
+        try:
+            drive = RentalDrive.objects.get(id=drive_id)
+            drive.rental_projects.all()[0].delete()
+            # drive.rentals_drives[0].delete()
+        except:
+            raise GraphQLError("A valid Drive ID was not supplied.")
+
+        return ReleaseDrive(drive_id=drive_id)
+
+
 class Mutation(graphene.ObjectType):
     create_drive = CreateDrive.Field()
     update_drive = UpdateDrive.Field()
     delete_drive = DeleteDrive.Field()
+    release_drive = ReleaseDrive.Field()
