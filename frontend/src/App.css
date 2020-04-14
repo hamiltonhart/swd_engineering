@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+a:visited {
+  text-decoration: none;
+  color: "inherit";
+}
+
+.hover__control:hover .hover__show {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+}
+
+.hover__show {
+  opacity: 0;
+  transform: scale3d(0, 1, 1);
+  transform-origin: right;
+  transition: all 175ms ease-in-out;
+}
+
+.hacky-width {
+  min-width: 100%;
+}
