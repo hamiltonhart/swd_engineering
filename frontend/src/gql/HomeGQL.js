@@ -11,7 +11,7 @@ export const HOME_PAGE_QUERY = gql`
       email
       phoneNumber
     }
-    rentalProjects {
+    currentProjects {
       id
       title
       abbreviation

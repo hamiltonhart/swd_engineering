@@ -13,7 +13,7 @@ import { useQuery } from "@apollo/react-hooks";
 
 const HomePage = () => {
   const { loading, error, data } = useQuery(HOME_PAGE_QUERY, {
-    variables: { limit: 8, reverse: true }
+    variables: { limit: 8, reverse: true },
   });
 
   return (
@@ -26,7 +26,7 @@ const HomePage = () => {
             <PageHeading>Summary</PageHeading>
           </PageHeadingWrapper>
           <HomePageDrives drives={data.drivesAvailable} />
-          <HomePageRentals rentals={data.rentalProjects} />
+          <HomePageRentals rentals={data.currentProjects} />
           <HomePageContact contacts={data.contacts} />
         </>
       )}
