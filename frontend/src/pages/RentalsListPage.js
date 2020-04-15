@@ -9,7 +9,7 @@ import { RentalListToolbar } from "../components/RentalProjects/RentalUtilities"
 
 import { MainWrapper, PageHeadingWrapper } from "../styled/containers";
 import { PageHeading } from "../styled/typography";
-import { RentalCard } from "../components/RentalProjects";
+import { RentalList } from "../components/RentalProjects/RentalList";
 
 import { NewRentalModal } from "../components/RentalProjects";
 
@@ -65,21 +65,17 @@ const RentalsListPage = () => {
       </div>
       <RentalToolbarContext.Provider value={toolbarContext}>
         <RentalListToolbar />
-      </RentalToolbarContext.Provider>
 
-      {loading && <h1>Loading...</h1>}
-      {error && <h1>{error.message}</h1>}
-      {data && (
-        <div className={classes.gridContainer}>
-          <Grid container spacing={2}>
-            {data.rentalProjects.map((rental) => (
-              <Grid key={rental.id} item xs={12} sm={6} md={4} lg={3}>
-                <RentalCard rental={rental} />
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      )}
+        {loading && <h1>Loading...</h1>}
+        {error && <h1>{error.message}</h1>}
+        {data && (
+          <div className={classes.gridContainer}>
+            <Grid container spacing={2}>
+              <RentalList rentals={data.rentalProjects} />
+            </Grid>
+          </div>
+        )}
+      </RentalToolbarContext.Provider>
     </MainWrapper>
   );
 };

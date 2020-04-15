@@ -12,7 +12,7 @@ export const DriveListInfo = ({ drives, filterValue }) => {
     <>
       <DriveInfoHeading drives={filteredDrives} />
       <GridWrapper padding="0 0 20px 0">
-        {filteredDrives.map(drive => (
+        {filteredDrives.map((drive) => (
           <DriveCard key={drive.id} drive={drive} />
         ))}
       </GridWrapper>
