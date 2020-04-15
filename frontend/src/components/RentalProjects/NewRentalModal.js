@@ -10,7 +10,7 @@ import { PageHeading } from "../../styled/typography";
 import {
   GridWrapper,
   InputWrapper,
-  PositionWrapper
+  PositionWrapper,
 } from "../../styled/containers";
 
 import { RedButton, RoundButton } from "../../styled/buttons";
@@ -22,19 +22,22 @@ import {
   MenuItem,
   Select,
   OutlinedInput,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  button: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
   select: {
-    minWidth: "212px"
+    minWidth: "212px",
   },
   label: {
-    paddingLeft: "12px"
+    paddingLeft: "12px",
   },
-  search: {}
-});
+  search: {},
+}));
 
 export const NewRentalModal = ({ homeButton }) => {
   const [newRentalId, setNewRentalId] = useState("");
@@ -49,7 +52,7 @@ export const NewRentalModal = ({ homeButton }) => {
 
   const [createRentalProject, { error }] = useMutation(CREATE_RENTAL);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await createRentalProject({
       variables: {
@@ -58,12 +61,12 @@ export const NewRentalModal = ({ homeButton }) => {
         filesLink: googleDrive,
         channelConfig,
         season,
-        startDate
+        startDate,
       },
       refetchQueries: [
         { query: GET_RENTALS_QUERY },
-        { query: HOME_PAGE_QUERY, variables: { limit: 8, reverse: true } }
-      ]
+        { query: HOME_PAGE_QUERY, variables: { limit: 8, reverse: true } },
+      ],
     });
     if (res.data.createRentalProject.project) {
       setNewRentalId(res.data.createRentalProject.project.id);
@@ -86,15 +89,17 @@ export const NewRentalModal = ({ homeButton }) => {
   return (
     <>
       {newRentalId && <Redirect push to={`/rentals/${newRentalId}`} />}
-      {homeButton ? (
-        <RedButton small onClick={() => toggle()}>
-          New Rental
-        </RedButton>
-      ) : (
-        <PositionWrapper position="fixed" bottom="5%" right="4%">
-          <RoundButton onClick={() => toggle()}>+</RoundButton>
-        </PositionWrapper>
-      )}
+
+      <Button
+        className={classes.button}
+        color="primary"
+        variant="contained"
+        large
+        onClick={() => toggle()}
+      >
+        New Rental
+      </Button>
+
       <Modal isShowing={isShowing}>
         <ModalArea>
           <ModalCloseIcon toggle={handleToggle} />
@@ -105,7 +110,7 @@ export const NewRentalModal = ({ homeButton }) => {
             minWidth="622px;"
             maxWidth="622px;"
             margin="20px 0 0 0 "
-            onSubmit={e => handleSubmit(e)}
+            onSubmit={(e) => handleSubmit(e)}
           >
             <InputWrapper gridColumn="span 6">
               <InputLabel className={classes.label}>Title</InputLabel>
@@ -113,7 +118,7 @@ export const NewRentalModal = ({ homeButton }) => {
                 placeholder="Star Wars"
                 fullWidth
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </InputWrapper>
 
@@ -122,7 +127,7 @@ export const NewRentalModal = ({ homeButton }) => {
               <OutlinedInput
                 placeholder="1"
                 value={season}
-                onChange={e => setSeason(e.target.value)}
+                onChange={(e) => setSeason(e.target.value)}
               />
             </InputWrapper>
 
@@ -131,7 +136,7 @@ export const NewRentalModal = ({ homeButton }) => {
               <OutlinedInput
                 placeholder="starwars "
                 value={abbr}
-                onChange={e => setAbbr(e.target.value)}
+                onChange={(e) => setAbbr(e.target.value)}
               />
             </InputWrapper>
 
@@ -142,7 +147,7 @@ export const NewRentalModal = ({ homeButton }) => {
                 variant="outlined"
                 fullWidth
                 defaultValue={channelConfig}
-                onChange={e => setChannelConfig(e.target.value)}
+                onChange={(e) => setChannelConfig(e.target.value)}
               >
                 <MenuItem value="ST">Stereo</MenuItem>
                 <MenuItem value="5.1">5.1</MenuItem>
@@ -159,7 +164,7 @@ export const NewRentalModal = ({ homeButton }) => {
               <OutlinedInput
                 type="date"
                 value={startDate}
-                onChange={e => setStartDate(e.target.value)}
+                onChange={(e) => setStartDate(e.target.value)}
               />
             </InputWrapper>
 
@@ -174,7 +179,7 @@ export const NewRentalModal = ({ homeButton }) => {
                   </IconButton>
                 }
                 value={googleDrive}
-                onChange={e => setGoogleDrive(e.target.value)}
+                onChange={(e) => setGoogleDrive(e.target.value)}
               />
             </InputWrapper>
 
