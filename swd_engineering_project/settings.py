@@ -204,10 +204,10 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-LOGIN_URL = 'login'
+# LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'pages:home'
-LOGOUT_REDIRECT_URL = 'pages:home'
+# LOGIN_REDIRECT_URL = 'pages:home'
+# LOGOUT_REDIRECT_URL = 'pages:home'
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
