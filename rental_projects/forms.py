@@ -2,7 +2,7 @@ from django import forms
 from .models import RentalProject
 from contacts.models import Contact
 
-from swd_engineering_project.settings import base
+# from swd_engineering_project.settings import base
 
 import datetime
 

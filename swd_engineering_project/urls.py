@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt
+from .views import FrontendAppView
 
 urlpatterns = [
     path('', include('pages.urls')),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('media_shuttle/', include('project_clients.urls')),
     path('project_rooms/', include('project_rooms.urls')),
     path('users/', include('django.contrib.auth.urls')),
+    re_path(r'^', FrontendAppView.as_view()),
 ]
