@@ -73,8 +73,8 @@ const RentalsListPage = () => {
         <div className={classes.gridContainer}>
           <Grid container spacing={2}>
             {data.rentalProjects.map((rental) => (
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                <RentalCard key={rental.id} rental={rental} />
+              <Grid key={rental.id} item xs={12} sm={6} md={4} lg={3}>
+                <RentalCard rental={rental} />
               </Grid>
             ))}
           </Grid>

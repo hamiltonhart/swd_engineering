@@ -28,6 +28,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const RentalCard = ({ rental }) => {
+  const getDotColor = () => {
+    if (rental.isProjectComplete) {
+      return "2";
+    } else if (rental.isMixingComplete) {
+      return "1";
+    } else {
+      return "0";
+    }
+  };
+
   const handleLinkClick = (e) => {
     e.stopPropagation();
   };
@@ -54,7 +64,7 @@ export const RentalCard = ({ rental }) => {
             : `${rental.title}`}
         </Typography>
         <FlexWrapper justifyContent="left" padding="8px 0 0 0">
-          <Dot color="0" />
+          <Dot color={getDotColor()} />
           <CardSubheading>{rental.abbreviation}</CardSubheading>
         </FlexWrapper>
         <SimpleDiv padding="16px 0 0 0 " className="handle-link">

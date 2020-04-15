@@ -17,6 +17,8 @@ export const GET_RENTALS_QUERY = gql`
       totalDrives
       channelConfig
       filesLink
+      isMixingComplete
+      isProjectComplete
     }
   }
 `;
