@@ -14,8 +14,8 @@ export const Modal = ({ children, isShowing }) => {
     : null;
 };
 
-export const ModalArea = ({ children }) => {
-  return <ModalWrapper>{children}</ModalWrapper>;
+export const ModalArea = ({ children, className }) => {
+  return <ModalWrapper className={className}>{children}</ModalWrapper>;
 };
 
 export const ModalCloseIcon = ({ toggle }) => {
@@ -25,7 +25,7 @@ export const ModalCloseIcon = ({ toggle }) => {
       top="42px"
       right="60px"
       cursor="pointer"
-      onClick={e => {
+      onClick={(e) => {
         e.stopPropagation();
         toggle();
       }}

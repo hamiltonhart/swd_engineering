@@ -7,6 +7,8 @@ export const useDrivesFilter = (drivesList, filterValue) => {
         return drivesList.filter((drive) => drive.rentalProjects.length === 1);
       case "all":
         return drivesList;
+      default:
+        return drivesList;
     }
   }
 

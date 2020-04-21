@@ -7,13 +7,8 @@ import { CREATE_RENTAL, HOME_PAGE_QUERY, GET_RENTALS_QUERY } from "../../gql";
 
 import { Modal, ModalArea, ModalCloseIcon } from "../utilities";
 import { PageHeading } from "../../styled/typography";
-import {
-  GridWrapper,
-  InputWrapper,
-  PositionWrapper,
-} from "../../styled/containers";
-
-import { RedButton, RoundButton } from "../../styled/buttons";
+import { GridWrapper, InputWrapper } from "../../styled/containers";
+import { Error } from "../global";
 
 import {
   makeStyles,
@@ -70,6 +65,8 @@ export const NewRentalModal = ({ homeButton }) => {
     });
     if (res.data.createRentalProject.project) {
       setNewRentalId(res.data.createRentalProject.project.id);
+    } else if (error) {
+      return <Error error={error} />;
     }
   };
 

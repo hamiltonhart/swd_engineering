@@ -20,6 +20,8 @@ export const useRentalFilter = (
         );
       case "0":
         return rentalList;
+      default:
+        return rentalList;
     }
   }
 
@@ -47,6 +49,8 @@ export const useRentalFilter = (
         return filteredList.filter(
           (rental) => rental.channelConfig === "IMAX 12"
         );
+      default:
+        return filteredList;
     }
   }
 
@@ -58,6 +62,8 @@ export const useRentalFilter = (
         return filteredList.filter((rental) => !rental.season);
       case "2":
         return filteredList.filter((rental) => rental.season);
+      default:
+        return filteredList;
     }
   }
 

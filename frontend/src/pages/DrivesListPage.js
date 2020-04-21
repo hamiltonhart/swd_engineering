@@ -9,7 +9,6 @@ import {
   MenuItem,
   Select,
   OutlinedInput,
-  TextField
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -17,22 +16,32 @@ import {
   MainWrapper,
   PageHeadingWrapper,
   FlexWrapper,
-  InputWrapper
+  InputWrapper,
 } from "../styled/containers";
 import { PageHeading } from "../styled/typography";
 import { DriveListInfo } from "../components/Drives";
-import { Label } from "../styled/forms";
-import { Icon } from "../styled/icons";
 import { NewDriveModal } from "../components/Drives";
 
 const useStyles = makeStyles({
   select: {
-    minWidth: "212px"
+    minWidth: "212px",
   },
   label: {
-    paddingLeft: "12px"
+    paddingLeft: "12px",
   },
-  search: {}
+  cardActionHeading: {
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: "20px 10px",
+  },
+  search: {},
+  tempGrid: {
+    border: "1px solid black",
+    padding: "16px",
+  },
+  tempText: {
+    border: "1px solid black",
+  },
 });
 
 const DrivesListPage = () => {
@@ -48,6 +57,9 @@ const DrivesListPage = () => {
       <PageHeadingWrapper>
         <PageHeading>Drives</PageHeading>
       </PageHeadingWrapper>
+      <div className={classes.cardActionHeading}>
+        <NewDriveModal />
+      </div>
 
       <FlexWrapper justifyContent="space-between" alignItems="flex-end">
         <InputWrapper width="none">
@@ -61,7 +73,7 @@ const DrivesListPage = () => {
             value={filterValue}
             color="primary"
             variant="outlined"
-            onChange={e => setFilterValue(e.target.value)}
+            onChange={(e) => setFilterValue(e.target.value)}
           >
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="available">Available</MenuItem>
@@ -79,7 +91,7 @@ const DrivesListPage = () => {
             notched={false}
             endAdornment={<SearchIcon />}
             variant="outlined"
-            onChange={e => setSearchValue(e.target.value)}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </InputWrapper>
       </FlexWrapper>
@@ -91,8 +103,6 @@ const DrivesListPage = () => {
           <DriveListInfo drives={data.drives} filterValue={filterValue} />
         </>
       )}
-
-      <NewDriveModal />
     </MainWrapper>
   );
 };

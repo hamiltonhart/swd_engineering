@@ -4,38 +4,55 @@ import { NewDriveForm } from "./NewDriveForm";
 
 import { Modal, ModalArea, ModalCloseIcon } from "../utilities";
 import { PageHeading } from "../../styled/typography";
-import { PositionWrapper } from "../../styled/containers";
 
-import { RedButton, RoundButton } from "../../styled/buttons";
-import { CircularProgress } from "@material-ui/core";
+import { makeStyles, CircularProgress, Button } from "@material-ui/core";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_LAST_DRIVE } from "../../gql";
 
-export const NewDriveModal = ({ homeButton }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  button: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+}));
+
+export const NewDriveModal = () => {
   const { isShowing, toggle } = useModal();
 
   const { data, loading, error } = useQuery(GET_LAST_DRIVE);
 
+  const classes = useStyles();
   return (
     <>
-      {homeButton ? (
-        <RedButton small onClick={() => toggle()}>
-          New Drive
-        </RedButton>
-      ) : (
-        <PositionWrapper position="fixed" bottom="5%" right="4%">
-          <RoundButton onClick={() => toggle()}>+</RoundButton>
-        </PositionWrapper>
-      )}
+      <Button
+        className={classes.button}
+        color="primary"
+        variant="contained"
+        large
+        onClick={() => toggle()}
+      >
+        New Drive
+      </Button>
+
       <Modal isShowing={isShowing}>
-        <ModalArea>
+        <ModalArea className={classes.root}>
           <ModalCloseIcon toggle={toggle} />
           <PageHeading>Add Drives</PageHeading>
           {loading && <CircularProgress />}
-          {data && (
+          {data ? (
             <NewDriveForm
+              className={classes.form}
               toggle={toggle}
               nextDriveNumber={data.lastDrive.driveNumber + 1}
+            />
+          ) : (
+            <NewDriveForm
+              className={classes.form}
+              toggle={toggle}
+              nextDriveNumber="1"
             />
           )}
         </ModalArea>
