@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     width: "150px",
   },
+  projectLink: {
+    color: theme.palette.primary.main,
+    fontSize: "1.1em",
+  },
 }));
 
 export const DriveListItem = ({ drive }) => {
@@ -22,7 +26,10 @@ export const DriveListItem = ({ drive }) => {
       <TableCell align="right">{drive.driveCapacityGb}</TableCell>
       <TableCell align="right">
         {drive.rentalProjects.length > 0 ? (
-          <Link to={`/rentals/${drive.rentalProjects[0].project.id}`}>
+          <Link
+            className={classes.projectLink}
+            to={`/rentals/${drive.rentalProjects[0].project.id}`}
+          >
             {drive.rentalProjects[0].project.title}
           </Link>
         ) : (
@@ -31,7 +38,10 @@ export const DriveListItem = ({ drive }) => {
       </TableCell>
       <TableCell align="right" className={classes.actions}>
         {drive.rentalProjects.length > 0 && (
-          <ClearDriveProjectIcon projectId={drive.rentalProjects[0].id} />
+          <ClearDriveProjectIcon
+            drive={drive}
+            driveProject={drive.rentalProjects[0]}
+          />
         )}
         <EditDriveIcon drive={drive} />
         <DeleteDriveIcon drive={drive} />
