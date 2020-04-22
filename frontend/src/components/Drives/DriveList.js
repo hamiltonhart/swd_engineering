@@ -43,12 +43,13 @@ export const DriveList = ({ drives }) => {
   return (
     <>
       <DriveInfoHeading drives={driveList} />
-      <Table className={classes.root}>
+      <Table className={classes.root} size="small">
         <TableHead>
           <TableRow>
             <TableCell>Drive Number</TableCell>
-            <TableCell>Capacity</TableCell>
-            <TableCell>Current Project</TableCell>
+            <TableCell align="right">Capacity</TableCell>
+            <TableCell align="right">Current Project</TableCell>
+            <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

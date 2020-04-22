@@ -6,3 +6,5 @@ export * from "./EditDriveModal";
 export * from "./DriveInfoHeading";
 export * from "./DriveList";
 export * from "./DriveListItem";
+export * from "./ClearDriveProjectIcon";
+export * from "./DeleteDriveIcon";
