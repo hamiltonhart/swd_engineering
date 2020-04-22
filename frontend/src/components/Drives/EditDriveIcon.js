@@ -14,12 +14,7 @@ export const EditDriveIcon = ({ drive }) => {
         <EditIcon />
       </IconButton>
       {isShowing && (
-        <EditDriveModal
-          driveId={drive.id}
-          drive={drive}
-          isShowing={isShowing}
-          toggle={toggle}
-        />
+        <EditDriveModal drive={drive} isShowing={isShowing} toggle={toggle} />
       )}
     </>
   );

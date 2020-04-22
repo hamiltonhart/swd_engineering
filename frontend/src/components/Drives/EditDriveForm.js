@@ -1,56 +1,45 @@
 import React, { useState } from "react";
-import { InputWrapper, FlexWrapper } from "../../styled/containers";
-import { Input, Label, Select, Required } from "../../styled/forms";
 
-import { Button, ClickAwayListener } from "@material-ui/core";
+import {
+  makeStyles,
+  Grid,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from "@material-ui/core";
 
 import { useMutation } from "@apollo/react-hooks";
-import {
-  UPDATE_DRIVE,
-  DELETE_DRIVE,
-  RELEASE_DRIVE,
-  HOME_PAGE_QUERY,
-  ALL_DRIVES_QUERY
-} from "../../gql";
+import { UPDATE_DRIVE } from "../../gql";
+
+import { Error } from "../global";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
+}));
 
 export const EditDriveForm = ({ toggle, driveId, drive }) => {
-  const [updateDrive, { error: updateError }] = useMutation(UPDATE_DRIVE);
-  const [deleteDrive, { error: deleteError }] = useMutation(DELETE_DRIVE);
-  const [releaseDrive, { error: releaseError }] = useMutation(RELEASE_DRIVE);
+  const [updateDrive, { error }] = useMutation(UPDATE_DRIVE);
 
   const [driveNumber, setDriveNumber] = useState(`${drive.driveNumber}`);
   const [driveCapacityGb, setDriveCapacityGb] = useState(drive.driveCapacityGb);
-  const [releaseActive, setReleaseActive] = useState(false);
-  const [deleteActive, setDeleteActive] = useState(false);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     updateDrive({
       variables: {
         id: driveId,
         driveNumber,
-        driveCapacityGb
+        driveCapacityGb,
       },
-      onCompleted: editDriveCompleted()
-    });
-  };
-
-  const handleDelete = e => {
-    e.preventDefault();
-    deleteDrive({
-      variables: { driveId },
-      refetchQueries: [{ query: ALL_DRIVES_QUERY }, { query: HOME_PAGE_QUERY }],
-      onCompleted: deleteDriveCompleted()
-    });
-  };
-
-  const handleRelease = e => {
-    e.preventDefault();
-    console.log(`Release Drive: ${driveId}`);
-    releaseDrive({
-      variables: { driveId },
-      refetchQueries: [{ query: ALL_DRIVES_QUERY }, { query: HOME_PAGE_QUERY }],
-      onCompleted: releaseDriveCompleted()
+      onCompleted: editDriveCompleted(),
     });
   };
 
@@ -58,126 +47,62 @@ export const EditDriveForm = ({ toggle, driveId, drive }) => {
     toggle();
   };
 
-  const deleteDriveCompleted = () => {
-    toggle();
-  };
-
-  const releaseDriveCompleted = () => {
-    toggle();
-  };
-
+  const classes = useStyles();
   return (
-    <>
-      <FlexWrapper
-        as="form"
-        minWidth="350px"
-        maxWidth="350px"
-        justifyContent="space-evenly"
-        margin="0 0 0 0 "
-        padding="30px 20px 20px 30px"
-        rowGap="30px"
-        onSubmit={e => handleSubmit(e)}
-      >
-        <InputWrapper gridColumn="4/6" maxWidth="100px">
-          <Label>
-            Number <Required>*</Required>
-          </Label>
-          <Input
-            placeholder="1"
-            value={driveNumber}
-            onChange={e => setDriveNumber(e.target.value)}
-          />
-        </InputWrapper>
+    <Grid
+      container
+      className={classes.root}
+      component="form"
+      spacing={2}
+      onSubmit={(e) => handleSubmit(e)}
+    >
+      {error && <Error error={error} />}
+      <Grid item xs={12} sm={6}>
+        <TextField
+          label="Drive Number"
+          placeholder="ex. 1"
+          variant="outlined"
+          defaultValue={driveNumber}
+          fullWidth
+          required
+          onChange={(e) => setDriveNumber(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </Grid>
 
-        <InputWrapper gridColumn="6/8" maxWidth="100px">
-          <Label>
-            Capacity <Required>*</Required>
-          </Label>
+      <Grid item xs={12} sm={6}>
+        <FormControl fullWidth variant="outlined" required>
+          <InputLabel id="drive-capacity-label">Capacity</InputLabel>
           <Select
-            defaultValue={driveCapacityGb}
-            padding="16px 18px"
-            onChange={e => setDriveCapacityGb(e.target.value)}
-          >
-            <option value="250GB">250GB</option>
-            <option value="500GB">500GB</option>
-            <option value="1TB">1TB</option>
-            <option value="2TB">2TB</option>
-          </Select>
-        </InputWrapper>
-
-        <InputWrapper gridColumn="4 / 10" width="100%">
-          <Button
-            type="submit"
-            size="large"
+            labelId="drive-capacity-label"
+            label="Capacity"
+            id="drive-capacity-select"
+            color="primary"
             fullWidth
-            variant="contained"
-            color="primary"
-            disabled={
-              !driveNumber.trim() ||
-              !driveCapacityGb ||
-              releaseActive ||
-              deleteActive
-            }
+            defaultValue={driveCapacityGb}
+            onChange={(e) => setDriveCapacityGb(e.target.value)}
           >
-            {`Edit Drive ${drive.driveNumber}`}
-          </Button>
-        </InputWrapper>
-        {deleteActive ? (
-          <ClickAwayListener onClickAway={() => setDeleteActive(false)}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={e => handleDelete(e)}
-            >
-              Delete Drive
-            </Button>
-          </ClickAwayListener>
-        ) : (
-          <Button
-            color="primary"
-            disabled={releaseActive}
-            variant="outlined"
-            onClick={e => setDeleteActive(true)}
-          >
-            Delete Drive
-          </Button>
-        )}
-        {drive.rentalProjects.length > 0 && (
-          <ReleaseDriveButtons
-            releaseActive={releaseActive}
-            setReleaseActive={setReleaseActive}
-            deleteActive={deleteActive}
-            handleRelease={handleRelease}
-          />
-        )}
-      </FlexWrapper>
-    </>
+            <MenuItem value="250GB">250GB</MenuItem>
+            <MenuItem value="500GB">500GB</MenuItem>
+            <MenuItem value="1TB">1TB</MenuItem>
+            <MenuItem value="2TB">2TB</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+
+      <Grid container item xs={12} justify="flex-end">
+        <Button
+          type="submit"
+          size="large"
+          variant="contained"
+          color="primary"
+          disabled={!driveNumber.trim() || !driveCapacityGb}
+        >
+          Edit
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
-
-const ReleaseDriveButtons = ({
-  releaseActive,
-  setReleaseActive,
-  deleteActive,
-  handleRelease
-}) =>
-  releaseActive ? (
-    <ClickAwayListener onClickAway={() => setReleaseActive(false)}>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={e => handleRelease(e)}
-      >
-        Release Drive
-      </Button>
-    </ClickAwayListener>
-  ) : (
-    <Button
-      color="primary"
-      variant="outlined"
-      disabled={deleteActive}
-      onClick={e => setReleaseActive(true)}
-    >
-      Release Drive
-    </Button>
-  );
