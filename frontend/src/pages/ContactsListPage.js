@@ -8,7 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  OutlinedInput
+  OutlinedInput,
 } from "@material-ui/core";
 
 import SearchIcon from "@material-ui/icons/Search";
@@ -17,23 +17,28 @@ import {
   MainWrapper,
   PageHeadingWrapper,
   FlexWrapper,
-  InputWrapper
+  InputWrapper,
 } from "../styled/containers";
 import { PageHeading } from "../styled/typography";
 
 import {
   NewContactModal,
-  SortedContactListCards
+  SortedContactListCards,
 } from "../components/Contacts";
 
 const useStyles = makeStyles({
+  cardActionHeading: {
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: "20px 10px",
+  },
   select: {
-    minWidth: "212px"
+    minWidth: "212px",
   },
   label: {
-    paddingLeft: "12px"
+    paddingLeft: "12px",
   },
-  search: {}
+  search: {},
 });
 
 const ContactsListPage = () => {
@@ -53,7 +58,9 @@ const ContactsListPage = () => {
           <PageHeadingWrapper>
             <PageHeading>Contacts</PageHeading>
           </PageHeadingWrapper>
-
+          <div className={classes.cardActionHeading}>
+            <NewContactModal />
+          </div>
           <FlexWrapper justifyContent="space-between">
             <InputWrapper width="none">
               <InputLabel className={classes.label} id="contact-filter-label">
@@ -66,7 +73,7 @@ const ContactsListPage = () => {
                 defaultValue={sortValue}
                 color="primary"
                 variant="outlined"
-                onChange={e => setSortValue(e.target.value)}
+                onChange={(e) => setSortValue(e.target.value)}
               >
                 <MenuItem value="first-name">First Name</MenuItem>
                 <MenuItem value="last-name">Last Name</MenuItem>
@@ -83,14 +90,12 @@ const ContactsListPage = () => {
                 notched={false}
                 endAdornment={<SearchIcon />}
                 variant="outlined"
-                onChange={e => setSearchValue(e.target.value)}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
             </InputWrapper>
           </FlexWrapper>
 
           <SortedContactListCards contacts={data.contacts} sortBy={sortValue} />
-
-          <NewContactModal roundButton />
         </>
       )}
     </MainWrapper>

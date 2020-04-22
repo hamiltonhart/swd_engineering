@@ -5,23 +5,29 @@ import { useModal } from "../../utils";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_CONTACT, ALL_CONTACTS_QUERY, HOME_PAGE_QUERY } from "../../gql";
 
-import { Button } from "@material-ui/core";
+import { makeStyles, Button } from "@material-ui/core";
 
 import { Modal, ModalArea, ModalCloseIcon } from "../utilities";
 import { PageHeading } from "../../styled/typography";
 import {
   GridWrapper,
   InputWrapper,
-  PositionWrapper
+  PositionWrapper,
 } from "../../styled/containers";
 import { Input, Label, Select, Textarea, Required } from "../../styled/forms";
 import {
   RedButton,
   InactiveButton,
   RoundButton,
-  BlackButton
+  BlackButton,
 } from "../../styled/buttons";
 import { Error } from "../global";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+}));
 
 export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
   const [firstName, setFirstName] = useState("");
@@ -56,13 +62,13 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
         title,
         email,
         notes,
-        phoneNumber: phone
+        phoneNumber: phone,
       },
       refetchQueries: [
         { query: ALL_CONTACTS_QUERY },
-        { query: HOME_PAGE_QUERY, variables: { limit: 8, reverse: true } }
+        { query: HOME_PAGE_QUERY, variables: { limit: 8, reverse: true } },
       ],
-      onCompleted: createCompleted()
+      onCompleted: createCompleted(),
     });
   };
 
@@ -77,28 +83,19 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
     toggle();
   };
 
+  const classes = useStyles();
   return (
     <>
-      {redButton && (
-        <RedButton small onClick={() => toggle()}>
-          New Contact
-        </RedButton>
-      )}
-      {blackButton && (
-        <Button
-          size="small"
-          color="secondary"
-          variant="contained"
-          onClick={() => toggle()}
-        >
-          New Contact
-        </Button>
-      )}
-      {roundButton && (
-        <PositionWrapper position="fixed" bottom="5%" right="4%">
-          <RoundButton onClick={() => toggle()}>+</RoundButton>
-        </PositionWrapper>
-      )}
+      <Button
+        className={classes.button}
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={() => toggle()}
+      >
+        New Contact
+      </Button>
+
       <Modal isShowing={isShowing}>
         <ModalArea>
           <ModalCloseIcon toggle={toggle} />
@@ -109,7 +106,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
             minWidth="622px;"
             maxWidth="622px;"
             margin="20px 0 0 0 "
-            onSubmit={e =>
+            onSubmit={(e) =>
               formSubmit(
                 e,
                 firstName,
@@ -130,7 +127,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
                 placeholder="John (required)"
                 value={firstName}
                 required
-                onChange={e => setFirstName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
@@ -141,7 +138,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
                 placeholder="Doe (required)"
                 value={lastName}
                 required
-                onChange={e => setLastName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
@@ -149,7 +146,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
               <Input
                 placeholder="Technicolor"
                 value={company}
-                onChange={e => setCompany(e.target.value)}
+                onChange={(e) => setCompany(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
@@ -157,7 +154,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
               <Input
                 placeholder="Mixer"
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 2">
@@ -178,7 +175,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
                 placeholder="(555) 555-5555"
                 value={phone}
                 onChange={
-                  e => setPhone(e.target.value)
+                  (e) => setPhone(e.target.value)
                   //   e.target.value.isNaN ? null : setPhone(e.target.value)
                 }
               />
@@ -189,7 +186,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
                 type="email"
                 placeholder="johndoe@email.com"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 12">
@@ -197,7 +194,7 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
               <Textarea
                 placeholder="Something that may be useful to know."
                 value={notes}
-                onChange={e => setNotes(e.target.value)}
+                onChange={(e) => setNotes(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="4 / 10">
