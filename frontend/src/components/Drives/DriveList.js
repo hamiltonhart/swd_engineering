@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 import {
   makeStyles,
-  Grid,
   Table,
   TableHead,
   TableBody,

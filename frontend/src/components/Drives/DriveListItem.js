@@ -31,12 +31,10 @@ export const DriveListItem = ({ drive }) => {
       </TableCell>
       <TableCell align="right" className={classes.actions}>
         {drive.rentalProjects.length > 0 && (
-          <ClearDriveProjectIcon
-            projectId={drive.rentalProjects[0].project.id}
-          />
+          <ClearDriveProjectIcon projectId={drive.rentalProjects[0].id} />
         )}
         <EditDriveIcon drive={drive} />
-        <DeleteDriveIcon driveId={drive.id} />
+        <DeleteDriveIcon drive={drive} />
       </TableCell>
     </TableRow>
   );

@@ -25,16 +25,3 @@ a:visited {
 .hacky-width {
   min-width: 100%;
 }
-
-/* .show-on-hover button {
-  opacity: 0;
-  font-size: 1rem;
-}
-
-.show-on-hover:hover button {
-  opacity: 1;
-} */
-
-/* .show-on-hover svg {
-  scale: 75%;
-} */
