@@ -16,9 +16,14 @@ import { DriveInfoHeading } from "./DriveInfoHeading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    "& tbody tr:hover": {
+    marginLeft: "auto",
+    marginRight: "auto",
+    maxWidth: "800px",
+    "& th": {
+      fontWeight: 600,
+    },
+    "& table tbody tr:hover": {
       boxShadow: theme.shadows[4],
-      cursor: "pointer",
     },
   },
 }));
@@ -37,26 +42,33 @@ export const DriveList = ({ drives }) => {
     searchContext.searchValue.toLowerCase()
   );
 
+  // Sort drives by drive number in ascending order
+  driveList = driveList.sort(function (a, b) {
+    return a.driveNumber - b.driveNumber;
+  });
+
   const classes = useStyles();
 
   return (
     <>
       <DriveInfoHeading drives={driveList} />
-      <Table className={classes.root} size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Drive Number</TableCell>
-            <TableCell align="right">Capacity</TableCell>
-            <TableCell align="right">Current Project</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {driveList.map((drive) => (
-            <DriveListItem key={drive.id} drive={drive} />
-          ))}
-        </TableBody>
-      </Table>
+      <div className={classes.root}>
+        <Table className={classes.root} size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Number</TableCell>
+              <TableCell align="right">Capacity</TableCell>
+              <TableCell align="right">Current Project</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {driveList.map((drive) => (
+              <DriveListItem key={drive.id} drive={drive} />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };

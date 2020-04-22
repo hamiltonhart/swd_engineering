@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { makeStyles, TableRow, TableCell } from "@material-ui/core";
+import { makeStyles, TableRow, TableCell, Button } from "@material-ui/core";
 
 import { EditDriveIcon } from "./EditDriveIcon";
 import { ClearDriveProjectIcon } from "./ClearDriveProjectIcon";
@@ -16,22 +16,28 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     fontSize: "1.1em",
   },
+  driveProject: {
+    width: "50%",
+  },
 }));
 
 export const DriveListItem = ({ drive }) => {
   const classes = useStyles();
   return (
     <TableRow key={drive.id} hover>
-      <TableCell>{drive.driveNumber}</TableCell>
-      <TableCell align="right">{drive.driveCapacityGb}</TableCell>
-      <TableCell align="right">
+      <TableCell className={classes.driveNumber}>{drive.driveNumber}</TableCell>
+      <TableCell className={classes.driveCapacity} align="right">
+        {drive.driveCapacityGb}
+      </TableCell>
+      <TableCell className={classes.driveProject} align="right">
         {drive.rentalProjects.length > 0 ? (
-          <Link
+          <Button
+            component={Link}
             className={classes.projectLink}
             to={`/rentals/${drive.rentalProjects[0].project.id}`}
           >
             {drive.rentalProjects[0].project.title}
-          </Link>
+          </Button>
         ) : (
           "---"
         )}
