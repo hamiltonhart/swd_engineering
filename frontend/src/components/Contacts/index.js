@@ -5,3 +5,6 @@ export * from "./ContactDetailModal";
 export * from "./EditContactModal";
 export * from "./ContactDetailEditModal";
 export * from "./SortedContactListCards";
+export * from "./ContactList";
+export * from "./ContactListItem";
+export * from "./ContactDetail";

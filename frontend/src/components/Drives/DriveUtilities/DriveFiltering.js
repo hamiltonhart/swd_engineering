@@ -18,18 +18,6 @@ const useStyles = makeStyles({
   label: {
     paddingLeft: "12px",
   },
-  search: { marginRight: "8px" },
-  gridContainer: {
-    marginTop: "40px",
-    marginLeft: "20px",
-    marginRight: "20px",
-    maxWidth: "100%",
-  },
-  cardActionHeading: {
-    display: "flex",
-    justifyContent: "flex-end",
-    margin: "20px 10px",
-  },
 });
 
 export const DriveFiltering = () => {

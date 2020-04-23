@@ -48,21 +48,16 @@ const DrivesListPage = () => {
       <PageHeadingWrapper>
         <PageHeading>Drives</PageHeading>
       </PageHeadingWrapper>
+
       <div className={classes.cardActionHeading}>
         <NewDriveModal />
       </div>
 
       <DriveToolbarContext.Provider value={toolbarContext}>
         <DriveListToolbar />
-
         {loading && <h1>Loading...</h1>}
         {error && <h1>{error.message}</h1>}
-        {data && (
-          <>
-            {/* <DriveListInfo drives={data.drives} statusFilter={statusFilter} /> */}
-            <DriveList drives={data.drives} />
-          </>
-        )}
+        {data && <DriveList drives={data.drives} />}
       </DriveToolbarContext.Provider>
     </MainWrapper>
   );

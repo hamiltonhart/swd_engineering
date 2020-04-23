@@ -6,9 +6,6 @@ import { makeStyles, TextField } from "@material-ui/core";
 
 import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles({
-  label: {
-    paddingLeft: "12px",
-  },
   search: { marginRight: "8px" },
 });
 
