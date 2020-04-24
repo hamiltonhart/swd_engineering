@@ -8,26 +8,15 @@ import { makeStyles } from "@material-ui/core";
 import { MainWrapper, PageHeadingWrapper } from "../styled/containers";
 import { PageHeading } from "../styled/typography";
 
-import { NewContactModal, ContactList } from "../components/Contacts";
+import { ContactList } from "../components/Contacts";
 
-import { ContactsListToolbar } from "../components/Contacts/ContactUtilities";
+export const ContactPageContext = React.createContext();
 
 const useStyles = makeStyles({
-  cardActionHeading: {
-    display: "flex",
-    justifyContent: "flex-end",
-    margin: "20px 10px",
+  root: {
+    position: "relative",
   },
-  select: {
-    minWidth: "212px",
-  },
-  label: {
-    paddingLeft: "12px",
-  },
-  search: {},
 });
-
-export const ContactsToolbarContext = React.createContext();
 
 const ContactsListPage = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -35,7 +24,7 @@ const ContactsListPage = () => {
 
   const { data, loading, error } = useQuery(ALL_CONTACTS_QUERY);
 
-  const toolbarContext = {
+  const contactPageContext = {
     searchContext: {
       searchValue: searchValue,
       setSearchValue: setSearchValue,
@@ -47,23 +36,19 @@ const ContactsListPage = () => {
   };
 
   const classes = useStyles();
-
   return (
     <MainWrapper>
       <PageHeadingWrapper>
         <PageHeading>Contacts</PageHeading>
       </PageHeadingWrapper>
-      <div className={classes.cardActionHeading}>
-        <NewContactModal />
-      </div>
-      <>
-        <ContactsToolbarContext.Provider value={toolbarContext}>
-          <ContactsListToolbar />
+
+      <div className={classes.root}>
+        <ContactPageContext.Provider value={contactPageContext}>
           {loading && <h1>Loading...</h1>}
           {error && <h1>{error.message}</h1>}
           {data && <ContactList contacts={data.contacts} />}
-        </ContactsToolbarContext.Provider>
-      </>
+        </ContactPageContext.Provider>
+      </div>
     </MainWrapper>
   );
 };

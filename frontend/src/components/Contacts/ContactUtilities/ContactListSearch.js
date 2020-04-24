@@ -6,15 +6,19 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import { FlexWrapper } from "../../../styled/containers";
 
-import { ContactsToolbarContext } from "../../../pages/ContactsListPage";
+import { ContactPageContext } from "../../../pages/ContactsListPage";
+import { ThemeConsumer } from "styled-components";
 
-const useStyles = makeStyles({
-  search: { marginRight: "8px" },
-});
+const useStyles = makeStyles((theme) => ({
+  search: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+}));
 
 export const ContactListSearch = () => {
   const { searchValue, setSearchValue } = useContext(
-    ContactsToolbarContext
+    ContactPageContext
   ).searchContext;
 
   const classes = useStyles();
@@ -22,18 +26,17 @@ export const ContactListSearch = () => {
   return (
     <FlexWrapper justifyContent="space-between">
       <TextField
-        placeholder="First, Last, Company, Title"
+        placeholder="Search"
         className={classes.search}
         value={searchValue}
-        label="Search"
         color="primary"
+        fullWidth
         InputLabelProps={{
           shrink: true,
         }}
         InputProps={{
           endAdornment: <SearchIcon />,
         }}
-        variant="outlined"
         onChange={(e) => setSearchValue(e.target.value)}
       />
     </FlexWrapper>

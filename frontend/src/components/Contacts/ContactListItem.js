@@ -11,13 +11,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ContactListItem = ({ contact, setSelected }) => {
+export const ContactListItem = ({
+  contact,
+  setSelected,
+  isShowingEdit,
+  toggleEdit,
+  isShowingNew,
+  toggleNew,
+}) => {
+  const handleClick = () => {
+    // If an edit window isShowing, toggle that closed and setSelected to the contact.id of the selected list item to display
+    if (isShowingEdit) {
+      toggleEdit();
+      setSelected(contact.id);
+    } else if (isShowingNew) {
+      toggleNew();
+      setSelected(contact.id);
+    } else {
+      setSelected(contact.id);
+    }
+  };
+
   const classes = useStyles();
   return (
-    <Paper className={classes.root} onClick={() => setSelected(contact.id)}>
+    <Paper className={classes.root} onClick={() => handleClick()}>
       <Typography
         key={contact.id}
-        variant="subtitle2"
+        variant="subtitle1"
       >{`${contact.firstName} ${contact.lastName}`}</Typography>
     </Paper>
   );

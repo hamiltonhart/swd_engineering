@@ -5,22 +5,19 @@ import { useModal } from "../../utils";
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_CONTACT, ALL_CONTACTS_QUERY, HOME_PAGE_QUERY } from "../../gql";
 
-import { makeStyles, Button } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@material-ui/core";
 
 import { Modal, ModalArea, ModalCloseIcon } from "../utilities";
 import { PageHeading } from "../../styled/typography";
-import {
-  GridWrapper,
-  InputWrapper,
-  PositionWrapper,
-} from "../../styled/containers";
-import { Input, Label, Select, Textarea, Required } from "../../styled/forms";
-import {
-  RedButton,
-  InactiveButton,
-  RoundButton,
-  BlackButton,
-} from "../../styled/buttons";
+import { GridWrapper, InputWrapper } from "../../styled/containers";
 import { Error } from "../global";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
+export const NewContactModal = ({}) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [company, setCompany] = useState("");
@@ -120,55 +117,84 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
             }
           >
             <InputWrapper gridColumn="span 6">
-              <Label>
-                FirstName <Required>*</Required>
-              </Label>
-              <Input
-                placeholder="John (required)"
-                value={firstName}
+              <TextField
+                variant="outlined"
+                label="First Name"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 required
+                fullWidth
+                value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
-              <Label>
-                LastName <Required>*</Required>
-              </Label>
-              <Input
-                placeholder="Doe (required)"
-                value={lastName}
+              <TextField
+                variant="outlined"
+                label="Last Name"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 required
+                fullWidth
+                value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
-              <Label>Company</Label>
-              <Input
-                placeholder="Technicolor"
+              <TextField
+                variant="outlined"
+                label="Company"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
-              <Label>Title</Label>
-              <Input
-                placeholder="Mixer"
+              <TextField
+                variant="outlined"
+                label="Title"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 2">
-              <Label>Country</Label>
-              <Select>
-                <option value="US" default>
-                  US
-                </option>
-                <option value="UK">UK</option>
-                <option value="CA">CA</option>
-              </Select>
+              <FormControl gridColumn="span 2" variant="outlined" fullWidth>
+                <InputLabel id="country-input-label">Country</InputLabel>
+                <Select
+                  label="Country"
+                  labelId="country-input-label"
+                  defaultValue="US"
+                >
+                  <MenuItem value="US" default>
+                    US
+                  </MenuItem>
+                  <MenuItem value="UK">UK</MenuItem>
+                  <MenuItem value="CA">CA</MenuItem>
+                </Select>
+              </FormControl>
             </InputWrapper>
             <InputWrapper gridColumn="span 4">
-              <Label>Phone Number</Label>
+              <TextField
+                variant="outlined"
+                label="PhoneNumber"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+
+              {/* <Label>Phone Number</Label>
               <Input
                 as={InputMask}
                 mask="(999) 999-9999"
@@ -178,33 +204,43 @@ export const NewContactModal = ({ redButton, roundButton, blackButton }) => {
                   (e) => setPhone(e.target.value)
                   //   e.target.value.isNaN ? null : setPhone(e.target.value)
                 }
-              />
+              /> */}
             </InputWrapper>
             <InputWrapper gridColumn="span 6">
-              <Label>Email</Label>
-              <Input
-                type="email"
-                placeholder="johndoe@email.com"
+              <TextField
+                variant="outlined"
+                label="Email"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 12">
-              <Label>Notes</Label>
-              <Textarea
-                placeholder="Something that may be useful to know."
+              <TextField
+                variant="outlined"
+                label="Notes"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                multiline
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="4 / 10">
-              {firstName && lastName ? (
-                <RedButton minWidth="100%">{`Create ${firstName}`}</RedButton>
-              ) : (
-                <InactiveButton minWidth="100%" disabled>
-                  Create Contact
-                </InactiveButton>
-              )}
+              <Button
+                color="primary"
+                variant="contained"
+                size="large"
+                fullWidth
+                inactive={!firstName || !lastName}
+              >
+                Create Contact
+              </Button>
             </InputWrapper>
           </GridWrapper>
           {error && <Error>{error.message}</Error>}
