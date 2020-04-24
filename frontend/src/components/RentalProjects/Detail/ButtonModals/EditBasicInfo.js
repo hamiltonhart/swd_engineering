@@ -10,10 +10,11 @@ import {
   makeStyles,
   Button,
   InputLabel,
-  OutlinedInput,
   Select,
   MenuItem,
-  IconButton
+  IconButton,
+  TextField,
+  FormControl,
 } from "@material-ui/core";
 
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -23,8 +24,8 @@ import { useMutation } from "@apollo/react-hooks";
 
 const useStyles = makeStyles({
   label: {
-    paddingLeft: "12px"
-  }
+    paddingLeft: "12px",
+  },
 });
 
 export const EditBasicInfo = ({ project, projectId }) => {
@@ -42,7 +43,7 @@ export const EditBasicInfo = ({ project, projectId }) => {
 
   const [updateRentalProject, { error }] = useMutation(EDIT_BASIC_INFO);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await updateRentalProject({
       variables: {
@@ -55,14 +56,14 @@ export const EditBasicInfo = ({ project, projectId }) => {
         msPass: msPass || "n/a",
         filesLink: googleDrive,
         season: season || 999,
-        channelConfig
-      }
+        channelConfig,
+      },
     });
     console.log(res);
     updateComplete(res);
   };
 
-  const updateComplete = res => {
+  const updateComplete = (res) => {
     console.log(res);
   };
 
@@ -85,9 +86,9 @@ export const EditBasicInfo = ({ project, projectId }) => {
     <>
       <Button
         color="secondary"
-        variant="contained"
+        variant="outlined"
         size="small"
-        onClick={e => toggle()}
+        onClick={(e) => toggle()}
       >
         Edit Basic Info
       </Button>
@@ -102,145 +103,159 @@ export const EditBasicInfo = ({ project, projectId }) => {
             minWidth="622px;"
             maxWidth="622px;"
             margin="20px 0 0 0 "
-            onSubmit={e => handleSubmit(e)}
+            onSubmit={(e) => handleSubmit(e)}
           >
             <InputWrapper gridColumn="span 6">
-              <InputLabel id="title-label" className={classes.label} required>
-                Title
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="title-label"
                 id="title-input"
                 color="primary"
+                label="Title"
                 fullWidth
                 required
                 placeholder="Star Wars"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 2">
-              <InputLabel id="season-label" className={classes.label}>
-                Season
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="season-label"
                 id="season-input"
                 placeholder="1"
+                label="Season"
                 value={season}
-                onChange={e => setSeason(e.target.value)}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(e) => setSeason(e.target.value)}
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 3">
-              <InputLabel id="config-label" className={classes.label} required>
-                Config
-              </InputLabel>
-              <Select
-                labelId="config-label"
-                id="config-input"
-                color="primary"
-                variant="outlined"
-                fullWidth
-                required
-                value={channelConfig}
-                onChange={e => setChannelConfig(e.target.value)}
-              >
-                <MenuItem value="ST">Stereo</MenuItem>
-                <MenuItem value="5.1">5.1</MenuItem>
-                <MenuItem value="7.1">7.1</MenuItem>
-                <MenuItem value="ATMOS">ATMOS</MenuItem>
-                <MenuItem value="DTS">DTS</MenuItem>
-                <MenuItem value="IMAX 6">IMAX 6</MenuItem>
-                <MenuItem value="IMAX 12">IMAX 12</MenuItem>
-              </Select>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="config-label" required>
+                  Config
+                </InputLabel>
+                <Select
+                  labelId="config-label"
+                  id="config-input"
+                  color="primary"
+                  label="Config"
+                  fullWidth
+                  required
+                  value={channelConfig}
+                  onChange={(e) => setChannelConfig(e.target.value)}
+                >
+                  <MenuItem value="ST">Stereo</MenuItem>
+                  <MenuItem value="5.1">5.1</MenuItem>
+                  <MenuItem value="7.1">7.1</MenuItem>
+                  <MenuItem value="ATMOS">ATMOS</MenuItem>
+                  <MenuItem value="DTS">DTS</MenuItem>
+                  <MenuItem value="IMAX 6">IMAX 6</MenuItem>
+                  <MenuItem value="IMAX 12">IMAX 12</MenuItem>
+                </Select>
+              </FormControl>
             </InputWrapper>
 
             <InputWrapper gridColumn="span 4" gridRow="2">
-              <InputLabel id="abbr-label" className={classes.label} required>
-                Abbreviation
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="abbr-label"
                 id="abbr-input"
                 color="primary"
+                label="Abbreviation"
                 fullWidth
                 required
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 placeholder="starwars "
                 value={abbr}
-                onChange={e => setAbbr(e.target.value)}
+                onChange={(e) => setAbbr(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 4" gridRow="3">
-              <InputLabel id="drive-user-label" className={classes.label}>
-                Drive Username
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="drive-user-label"
                 id="drive-user-input"
                 color="primary"
+                label="Drive Username"
                 fullWidth
-                placeholder="starwars "
+                placeholder="starwars"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 value={driveUser}
-                onChange={e => setDriveUser(e.target.value)}
+                onChange={(e) => setDriveUser(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 4" gridRow="3">
-              <InputLabel id="drive-pass-label" className={classes.label}>
-                Drive Password
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="drive-pass-label"
                 id="drive-pass-input"
                 color="primary"
+                label="Drive Password"
                 fullWidth
-                placeholder="starwars "
+                placeholder="starwars"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 value={drivePass}
-                onChange={e => setDrivePass(e.target.value)}
+                onChange={(e) => setDrivePass(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 4" gridRow="4">
-              <InputLabel id="ms-user-label" className={classes.label}>
-                MS Username
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="ms-user-label"
                 id="ms-user-input"
                 color="primary"
+                label="MS Username"
                 fullWidth
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 placeholder="starwars "
                 value={msUser}
-                onChange={e => setMsUser(e.target.value)}
+                onChange={(e) => setMsUser(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="span 4" gridRow="4">
-              <InputLabel id="ms-pass-label" className={classes.label}>
-                MS Password
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="ms-pass-label"
                 id="ms-pass-input"
                 color="primary"
+                label="MS Password"
                 fullWidth
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 placeholder="starwars "
                 value={msPass}
-                onChange={e => setMsPass(e.target.value)}
+                onChange={(e) => setMsPass(e.target.value)}
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 12">
-              <InputLabel
-                id="files-link-label"
-                className={classes.label}
-                required
-              >
-                GoogleDrive
-              </InputLabel>
-              <OutlinedInput
+              <TextField
                 labelId="files-link-label"
                 id="files-link-input"
                 placeholder="http://drive.google.com/to/rental/folder"
+                label="GoogleDrive"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 fullWidth
                 endAdornment={
                   <IconButton href="http://www.google.com" target="_blank">
@@ -249,7 +264,7 @@ export const EditBasicInfo = ({ project, projectId }) => {
                 }
                 required
                 value={googleDrive}
-                onChange={e => setGoogleDrive(e.target.value)}
+                onChange={(e) => setGoogleDrive(e.target.value)}
               />
             </InputWrapper>
 
