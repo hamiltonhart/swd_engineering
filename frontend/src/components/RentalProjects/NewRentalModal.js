@@ -16,8 +16,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  OutlinedInput,
   IconButton,
+  TextField,
+  FormControl,
 } from "@material-ui/core";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   search: {},
 }));
 
-export const NewRentalModal = ({ homeButton }) => {
+export const NewRentalModal = () => {
   const [newRentalId, setNewRentalId] = useState("");
   const [title, setTitle] = useState("");
   const [abbr, setAbbr] = useState("");
@@ -110,73 +111,102 @@ export const NewRentalModal = ({ homeButton }) => {
             onSubmit={(e) => handleSubmit(e)}
           >
             <InputWrapper gridColumn="span 6">
-              <InputLabel className={classes.label}>Title</InputLabel>
-              <OutlinedInput
+              <TextField
                 placeholder="Star Wars"
                 fullWidth
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                label="Title"
+                required
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 2">
-              <InputLabel className={classes.label}>Season</InputLabel>
-              <OutlinedInput
+              <TextField
                 placeholder="1"
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
+                label="Season"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 4">
-              <InputLabel className={classes.label}>Abbreviation</InputLabel>
-              <OutlinedInput
+              <TextField
                 placeholder="starwars "
                 value={abbr}
                 onChange={(e) => setAbbr(e.target.value)}
+                label="Abbreviation"
+                required
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 3">
-              <InputLabel className={classes.label}>Config</InputLabel>
-              <Select
-                color="primary"
-                variant="outlined"
-                fullWidth
-                defaultValue={channelConfig}
-                onChange={(e) => setChannelConfig(e.target.value)}
-              >
-                <MenuItem value="ST">Stereo</MenuItem>
-                <MenuItem value="5.1">5.1</MenuItem>
-                <MenuItem value="7.1">7.1</MenuItem>
-                <MenuItem value="ATMOS">ATMOS</MenuItem>
-                <MenuItem value="DTS">DTS</MenuItem>
-                <MenuItem value="IMAX6">IMAX 6</MenuItem>
-                <MenuItem value="IMAX12">IMAX 12</MenuItem>
-              </Select>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="new-rental-config-label">Config</InputLabel>
+                <Select
+                  color="primary"
+                  variant="outlined"
+                  labelId="new-rental-config-label"
+                  label="Config"
+                  fullWidth
+                  defaultValue={channelConfig}
+                  onChange={(e) => setChannelConfig(e.target.value)}
+                >
+                  <MenuItem value="ST">Stereo</MenuItem>
+                  <MenuItem value="5.1">5.1</MenuItem>
+                  <MenuItem value="7.1">7.1</MenuItem>
+                  <MenuItem value="ATMOS">ATMOS</MenuItem>
+                  <MenuItem value="DTS">DTS</MenuItem>
+                  <MenuItem value="IMAX6">IMAX 6</MenuItem>
+                  <MenuItem value="IMAX12">IMAX 12</MenuItem>
+                </Select>
+              </FormControl>
             </InputWrapper>
 
             <InputWrapper gridColumn="span 4">
-              <InputLabel className={classes.label}>Start Date</InputLabel>
-              <OutlinedInput
+              <TextField
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
+                label="Start Date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
               />
             </InputWrapper>
 
             <InputWrapper gridColumn="span 12">
-              <InputLabel className={classes.label}>GoogleDrive</InputLabel>
-              <OutlinedInput
+              <TextField
                 placeholder="http://drive.google.com/to/rental/folder"
                 fullWidth
-                endAdornment={
-                  <IconButton href="http://www.google.com" target="_blank">
-                    <OpenInNewIcon />
-                  </IconButton>
-                }
+                required
+                InputProps={{
+                  endAdornment: (
+                    <IconButton href="http://www.google.com" target="_blank">
+                      <OpenInNewIcon />
+                    </IconButton>
+                  ),
+                }}
                 value={googleDrive}
                 onChange={(e) => setGoogleDrive(e.target.value)}
+                label="GoogleDrive"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
               />
             </InputWrapper>
 

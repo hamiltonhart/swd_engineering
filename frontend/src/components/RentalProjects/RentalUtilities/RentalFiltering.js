@@ -2,7 +2,13 @@ import React, { useContext } from "react";
 import { RentalToolbarContext } from "../../../pages/RentalsListPage";
 
 import { FlexWrapper, InputWrapper } from "../../../styled/containers";
-import { makeStyles, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {
+  makeStyles,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   select: {
@@ -39,13 +45,14 @@ export const RentalFiltering = () => {
   const classes = useStyles();
   return (
     <FlexWrapper>
-      <InputWrapper width="none">
+      <FormControl variant="outlined">
         <InputLabel className={classes.label} id="rental-status-filter-label">
           Status
         </InputLabel>
         <Select
           labelId="rental-status-filter-label"
           id="rental-status-filter-select"
+          label="Status"
           className={classes.select}
           defaultValue={statusFilter}
           color="primary"
@@ -57,14 +64,15 @@ export const RentalFiltering = () => {
           <MenuItem value="2">Completed</MenuItem>
           <MenuItem value="3">Erased</MenuItem>
         </Select>
-      </InputWrapper>
-      <InputWrapper width="none">
+      </FormControl>
+      <FormControl variant="outlined">
         <InputLabel className={classes.label} id="rental-config-filter-label">
           Config
         </InputLabel>
         <Select
           labelId="rental-config-filter-label"
           id="rental-config-filter-select"
+          label="Config"
           className={classes.select}
           defaultValue={configFilter}
           color="primary"
@@ -79,14 +87,15 @@ export const RentalFiltering = () => {
           <MenuItem value="5">IMAX 6</MenuItem>
           <MenuItem value="6">IMAX 12</MenuItem>
         </Select>
-      </InputWrapper>
-      <InputWrapper width="none">
+      </FormControl>
+      <FormControl variant="outlined">
         <InputLabel className={classes.label} id="rental-type-filter-label">
           Type
         </InputLabel>
         <Select
           labelId="rental-type-filter-label"
           id="rental-type-filter-select"
+          label="Type"
           className={classes.select}
           defaultValue={typeFilter}
           color="primary"
@@ -97,7 +106,7 @@ export const RentalFiltering = () => {
           <MenuItem value="1">Feature</MenuItem>
           <MenuItem value="2">Series</MenuItem>
         </Select>
-      </InputWrapper>
+      </FormControl>
     </FlexWrapper>
   );
 };

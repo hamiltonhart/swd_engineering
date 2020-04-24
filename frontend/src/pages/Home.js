@@ -27,7 +27,7 @@ const HomePage = () => {
           </PageHeadingWrapper>
           <HomePageDrives drives={data.drivesAvailable} />
           <HomePageRentals rentals={data.currentProjects} />
-          <HomePageContact contacts={data.contacts} />
+          {/* <HomePageContact contacts={data.contacts} /> */}
         </>
       )}
     </MainWrapper>
