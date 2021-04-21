@@ -21,9 +21,7 @@ import { GridWrapper, InputWrapper } from "../../styled/containers";
 import { Error } from "../global";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    fontWeight: theme.typography.fontWeightBold,
-  },
+  button: {},
 }));
 
 export const NewContactModal = ({}) => {
@@ -85,12 +83,11 @@ export const NewContactModal = ({}) => {
     <>
       <Button
         className={classes.button}
-        size="medium"
+        size="small"
         color="primary"
-        variant="contained"
         onClick={() => toggle()}
       >
-        New Contact
+        Create New Contact
       </Button>
 
       <Modal isShowing={isShowing}>

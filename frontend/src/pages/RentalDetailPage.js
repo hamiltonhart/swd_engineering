@@ -7,7 +7,7 @@ import {
   RentalNotes,
   RentalButtons,
   RentalDates,
-  RentalDrives
+  RentalDrives,
 } from "../components/RentalProjects/Detail";
 import { Error } from "../components/global";
 
@@ -17,7 +17,7 @@ import {
   MainWrapper,
   PageHeadingWrapper,
   GridWrapper,
-  SimpleDiv
+  SimpleDiv,
 } from "../styled/containers";
 import { PageHeading, PageSubheading } from "../styled/typography";
 
@@ -26,10 +26,10 @@ import {
   GET_RENTAL_QUERY,
   DELETE_RENTAL,
   HOME_PAGE_QUERY,
-  GET_RENTALS_QUERY
+  GET_RENTALS_QUERY,
 } from "../gql";
 
-const RentalDetailPage = props => {
+const RentalDetailPage = (props) => {
   const location = useLocation();
   // const [rentalId, setRentalId] = useState(
   //   (props.location.state && props.location.state.rentalId) ||
@@ -40,29 +40,9 @@ const RentalDetailPage = props => {
 
   const { data, loading, error } = useQuery(GET_RENTAL_QUERY, {
     variables: {
-      id: rentalId
-    }
+      id: rentalId,
+    },
   });
-
-  const [deleteRentalProject, { error: deleteError }] = useMutation(
-    DELETE_RENTAL
-  );
-
-  const handleDelete = e => {
-    e.preventDefault();
-    deleteRentalProject({
-      variables: { projectId: rentalId },
-      refetchQueries: [
-        { query: HOME_PAGE_QUERY, variables: { limit: 8, reverse: true } },
-        { query: GET_RENTALS_QUERY }
-      ],
-      onCompleted: deleteCompleted()
-    });
-  };
-
-  const deleteCompleted = () => {
-    setDeleted(!deleted);
-  };
 
   useEffect(() => {
     if (location.pathname.slice(9) !== rentalId) {
@@ -99,6 +79,7 @@ const RentalDetailPage = props => {
               />
               <RentalClients
                 clients={data.rentalProject.rentalClients}
+                rentalId={rentalId}
                 setRentalId={setRentalId}
               />
               <RentalNotes
@@ -126,14 +107,6 @@ const RentalDetailPage = props => {
                 drives={data.rentalProject.rentalDrives}
               />
             </SimpleDiv>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={e => handleDelete(e)}
-            >
-              Delete
-            </Button>
-            {deleteError && <Error error={deleteError} />}
           </GridWrapper>
         </>
       )}

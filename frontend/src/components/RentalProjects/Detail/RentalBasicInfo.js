@@ -1,66 +1,88 @@
 import React from "react";
 
-import { SectionHeading, Typography } from "../../../styled/typography";
-import { darkGrey } from "../../../styled/defaults";
-import {
-  SimpleDiv,
-  GridWrapper,
-  PositionWrapper
-} from "../../../styled/containers";
+import { SectionHeading } from "../../../styled/typography";
 import { EditBasicInfo } from "./ButtonModals/EditBasicInfo";
+import { makeStyles, Grid, Typography } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "80%",
+    marginLeft: theme.spacing(6),
+    paddingTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
+  labelText: {
+    color: theme.palette.grey[600],
+  },
+  gutter: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+}));
+
+const UserPassContainer = ({ label, info }) => {
+  const classes = useStyles();
+  return (
+    <Grid item container xs={12} spacing={1}>
+      <Grid item xs={6}>
+        <Typography className={classes.labelText}>{`${label}:`}</Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Typography>{info}</Typography>
+      </Grid>
+    </Grid>
+  );
+};
 
 export const RentalBasicInfo = ({ project }) => {
+  const classes = useStyles();
   return (
-    <SimpleDiv
-      gridColumn="1 / 2"
-      gridRow="1"
-      justifySelf="start"
-      padding="15px 21px 50px 21px"
-      position="relative"
-      width="100%"
-    >
+    <>
       <SectionHeading gridColumn>Basic Information</SectionHeading>
-      <GridWrapper
-        padding="19px 30px"
-        minWidth="100%"
-        justifyItems="start"
-        columns="1fr 125px 1fr"
-      >
-        <SimpleDiv padding="0" gridColumn="">
-          <Typography padding="0 0 7px 0">{project.abbreviation}</Typography>
-          <Typography padding="0 0 7px 0">
-            {(project.primaryRoom && project.primaryRoom.room.name) || "---"}
-          </Typography>
-          <Typography padding="0 0 7px 0">{project.channelConfig}</Typography>
-        </SimpleDiv>
-        <SimpleDiv boxSizing="border-box">
-          <Typography padding="0 0 7px 0" fontColor={darkGrey}>
-            Drive Username:
-          </Typography>
-          <Typography padding="0 0 7px 0" fontColor={darkGrey}>
-            Drive Password:
-          </Typography>
-          <Typography padding="0 0 7px 0" fontColor={darkGrey}>
-            MS Username:
-          </Typography>
-          <Typography padding="0 0 7px 0" fontColor={darkGrey}>
-            MS Password:
-          </Typography>
-        </SimpleDiv>
-        <SimpleDiv boxSizing="border-box">
-          <Typography padding="0 0 7px 0">
-            {project.driveUser || "---"}
-          </Typography>
-          <Typography padding="0 0 7px 0">
-            {project.drivePass || "---"}
-          </Typography>
-          <Typography padding="0 0 7px 0">{project.msUser || "---"}</Typography>
-          <Typography padding="0 0 7px 0">{project.msPass || "---"}</Typography>
-        </SimpleDiv>
-      </GridWrapper>
-      <PositionWrapper position="absolute" bottom="5%" right="10%">
-        <EditBasicInfo project={project} projectId={project.id} />
-      </PositionWrapper>
-    </SimpleDiv>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          {/* Grid Left */}
+          <Grid item container xs={6} spacing={1}>
+            <UserPassContainer
+              label="Abbreviation"
+              info={project.abbreviation}
+            />
+            <UserPassContainer
+              label="Primary Room"
+              info={
+                project.primaryRoom ? project.primaryRoom.room.name : "Not set"
+              }
+            />
+            <UserPassContainer
+              label="Channel Config"
+              info={project.channelConfig}
+            />
+          </Grid>
+          {/* Grid Right */}
+          <Grid item container xs={6} spacing={1}>
+            <UserPassContainer
+              label="Drive Username"
+              info={project.driveUser ? project.driveUser : "Not Set"}
+            />
+            <UserPassContainer
+              label="Drive Password"
+              info={project.drivePass ? project.drivePass : "Not set"}
+            />
+            <UserPassContainer
+              label="MS Username"
+              info={project.msUser ? project.msUser : "Not set"}
+            />
+            <UserPassContainer
+              label="MS Password"
+              info={project.msPass ? project.msPass : "Not set"}
+            />
+          </Grid>
+          {/* Action Buttons */}
+          <Grid item xs={12} className={classes.gutter}>
+            <EditBasicInfo project={project} projectId={project.id} />
+          </Grid>
+        </Grid>
+      </div>
+    </>
   );
 };

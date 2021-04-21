@@ -8,20 +8,35 @@ import { Typography } from "../../styled/typography";
 import { SimpleDiv } from "../../styled/containers";
 import { darkGrey } from "../../styled/defaults";
 
-export const RentalContact = ({
-  client,
-  contactId,
-  firstName,
-  lastName,
-  index
-}) => {
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(1),
+  },
+  clientName: {
+    "& hover": {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
+export const RentalContact = ({ client, contactId }) => {
   const { isShowing, toggle } = useModal();
+
+  const classes = useStyles();
   return (
-    <SimpleDiv key={contactId} gridRow={`${index + 1}`} gridColumn="span 2">
-      <Typography fontSize="18px" cursor="pointer" onClick={e => toggle()}>
+    <SimpleDiv className={classes.root}>
+      <Typography
+        className={classes.clientName}
+        fontSize="18px"
+        cursor="pointer"
+        margin="0 0 4px 0"
+        onClick={(e) => toggle()}
+      >
         {client.client.firstName} {client.client.lastName}
       </Typography>
-      <Typography fontColor={darkGrey} fontSize=".8em">
+      <Typography fontColor={darkGrey} fontSize=".8em" margin="0 0 0 4px">
         {client.clientRole.replace(/_/g, " ")}
       </Typography>
       <ContactDetailEditModal

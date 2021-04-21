@@ -5,28 +5,40 @@ import { SectionHeading } from "../../../styled/typography";
 import { SimpleDiv, PositionWrapper } from "../../../styled/containers";
 import { EditNotesModal } from "./ButtonModals";
 
+import { makeStyles, Grid } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "80%",
+    marginLeft: theme.spacing(6),
+    paddingTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
+  gutter: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+}));
+
 export const RentalNotes = ({ notes, projectId }) => {
+  const classes = useStyles();
   return (
-    <SimpleDiv
-      gridColumn="1 / 2"
-      justifySelf="start"
-      padding="15px 21px 50px 21px"
-      position="relative"
-    >
+    <>
       <SectionHeading gridColumn>Notes</SectionHeading>
-      <SimpleDiv
-        padding="19px 30px"
-        dangerouslySetInnerHTML={{
-          __html: notes ? notes.replace(/\r?\n/g, "<br />") : null
-        }}
-      >
-        {/* {notes
-          ? notes.split("\n").map((i, key) => <div key={key}>{i}</div>)
-          : "No notes"} */}
-      </SimpleDiv>
-      <PositionWrapper position="absolute" bottom="5%" right="10%">
-        <EditNotesModal currentNotes={notes} projectId={projectId} />
-      </PositionWrapper>
-    </SimpleDiv>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: notes ? notes.replace(/\r?\n/g, "<br />") : null,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} className={classes.gutter}>
+            <EditNotesModal currentNotes={notes} projectId={projectId} />
+          </Grid>
+        </Grid>
+      </div>
+    </>
   );
 };

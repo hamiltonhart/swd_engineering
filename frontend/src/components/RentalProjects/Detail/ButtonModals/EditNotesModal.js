@@ -18,11 +18,11 @@ export const EditNotesModal = ({ currentNotes, projectId }) => {
 
   const [updateRentalProject, { error }] = useMutation(EDIT_RENTAL_NOTES);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     updateRentalProject({
       variables: { id: projectId, notes },
-      onCompleted: updateComplete()
+      onCompleted: updateComplete(),
     });
   };
 
@@ -35,7 +35,7 @@ export const EditNotesModal = ({ currentNotes, projectId }) => {
       <Button
         size="small"
         color="secondary"
-        variant="contained"
+        variant="outlined"
         onClick={() => toggle()}
       >
         Edit Notes
@@ -51,7 +51,7 @@ export const EditNotesModal = ({ currentNotes, projectId }) => {
             minWidth="622px;"
             maxWidth="622px;"
             margin="20px 0 0 0 "
-            onSubmit={e => handleSubmit(e)}
+            onSubmit={(e) => handleSubmit(e)}
           >
             <InputWrapper gridColumn="span 12">
               <TextField
@@ -60,7 +60,7 @@ export const EditNotesModal = ({ currentNotes, projectId }) => {
                 multiline
                 rows="20"
                 value={notes}
-                onChange={e => setNotes(e.target.value)}
+                onChange={(e) => setNotes(e.target.value)}
               />
             </InputWrapper>
             <InputWrapper gridColumn="4 / 10">
